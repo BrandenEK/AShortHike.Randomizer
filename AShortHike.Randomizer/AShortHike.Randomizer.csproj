@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>AShortHike.Randomizer</AssemblyName>
+    <BepInExPluginName>Randomizer</BepInExPluginName>
+    <TargetName>Randomizer</TargetName>
+    <Description>An item randomizer mod</Description>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="UnityEngine.Modules" Version="2019.4.29" IncludeAssets="compile" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="Development" AfterTargets="PostBuildEvent">
+
+    <!-- Get resource files -->
+    <PropertyGroup>
+      <ResourcesFolder>$(SolutionDir)resources\</ResourcesFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <DataDlls Include="$(ResourcesFolder)data\*" />
+      <DataFiles Include="$(ResourcesFolder)data\$(BepInExPluginName)\*" />
+      <Keybindings Include="$(ResourcesFolder)keybindings\*" />
+      <Levels Include="$(ResourcesFolder)levels\$(BepInExPluginName)\*" />
+      <Localization Include="$(ResourcesFolder)localization\*" />
+    </ItemGroup>
+
+    <!-- Copy plugin to development folder -->
+    <PropertyGroup>
+      <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\A Short Hike\Modding\</DevFolder>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
+    <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
+
+    <!-- Export & zip all mod files -->
+    <PropertyGroup>
+      <ExportFolder>$(SolutionDir)export\$(TargetName)\</ExportFolder>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
+    <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
+    <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
+    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true"/>
+
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\lib\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\lib\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
