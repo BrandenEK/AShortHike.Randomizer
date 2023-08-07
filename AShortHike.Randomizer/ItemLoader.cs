@@ -52,17 +52,15 @@ namespace AShortHike.Randomizer
         public GameObject GetRandomItemObject()
         {
             int num = Random.RandomRangeInt(0, 4);
-            string item;
-            switch (num)
+            string item = num switch
             {
-                case 0: item = "RunningShoes"; break;
-                case 1: item = "Stick"; break;
-                case 2: item = "GoldenFeather"; break;
-                case 3: item = "Shell"; break;
-                case 4: item = "Bucket"; break;
-                default: item = "Pickaxe"; break;
-            }
-
+                0 => "RunningShoes",
+                1 => "Stick",
+                2 => "GoldenFeather",
+                3 => "Shell",
+                4 => "Bucket",
+                _ => "Pickaxe",
+            };
             return GetItemObject(item);
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AShortHike.Randomizer
 {
@@ -57,20 +56,7 @@ namespace AShortHike.Randomizer
 
         public bool IsRandomized(string locationId)
         {
-            return _locationMapping.ContainsKey(locationId);
+            return Main.DataStorage.allLocations.ContainsKey(locationId);
         }
-
-        private readonly Dictionary<string, string> _locationMapping = new()
-        {
-            { "(706.2, 7.3, 344.4)", "Beside cabin (Shell)" },
-            { "(579.8, 29.3, 250.0)", "Beginning shore (Stick)" },
-            { "(522.8, 7.3, 120.5)", "Beginning shore (Shell)" },
-            { "(482.4, 14.4, 26.8)", "Begininng islands right chest" },
-            { "(387.7, 8.8, 60.4)", "Beginning islands left chest" },
-            { "(402.0, 21.6, 11.9)", "Beginning islands (Shell)" },
-            { "(348.9, 8.5, 40.0)", "Rock wall shell" },
-            { "(407.7, 8.5, 127.1)", "Beginning umbrellas shell" },
-            { "(123.2, 35.0, 168.2)", "Ranger cabin rock" },
-        };
     }
 }

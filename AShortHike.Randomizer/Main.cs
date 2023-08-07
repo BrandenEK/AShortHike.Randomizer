@@ -10,6 +10,7 @@ namespace AShortHike.Randomizer
     {
         public static ItemLoader ItemLoader { get; private set; }
         public static ItemChanger ItemChanger { get; private set; }
+        public static DataStorage DataStorage { get; private set; }
 
         public static Transform TransformHolder => _instance.transform;
 
@@ -20,9 +21,11 @@ namespace AShortHike.Randomizer
             _instance ??= this;
             ItemLoader = new ItemLoader();
             ItemChanger = new ItemChanger();
+            DataStorage = new DataStorage();
 
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
+            DataStorage.LoadData();
         }
 
         private void OnDisable()
