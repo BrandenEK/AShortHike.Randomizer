@@ -106,5 +106,157 @@
     {
         "id": "(61.3, 8.5, 866.1)",
         "name": "Farm beach (Shell)"
+    },
+    {
+        "id": "(870.7, 19.8, 567.3)",
+        "name": "Toucan island close (Shell)"
+    },
+    {
+        "id": "(848.4, 18.9, 396.0)",
+        "name": "Toucan island far (Shell)"
+    },
+    {
+        "id": "(832.6, 20.6, 422.2)",
+        "name": "Toucan island far (Chest)"
+    },
+    {
+        "id": "(768.5, 65.8, 571.3)",
+        "name": "Powerline 1 (Chest)"
+    },
+    {
+        "id": "(765.8, 7.5, 630.5)",
+        "name": "Powerline 1 (Shell)"
+    },
+    {
+        "id": "(667.4, 19.7, 767.2)",
+        "name": "Powerline 2 (Shell)"
+    },
+    {
+        "id": "(755.4, 11.2, 729.5)",
+        "name": "Big ship left (Chest)"
+    },
+    {
+        "id": "(749.8, 13.9, 738.6)",
+        "name": "Big ship right (Chest)"
+    },
+    {
+        "id": "(499.2, 44.8, 940.9)",
+        "name": "Mine upper (Pickaxe)"
+    },
+    {
+        "id": "(515.9, 30.6, 954.5)",
+        "name": "Mine left (Pickaxe)"
+    },
+    {
+        "id": "(505.4, 29.7, 964.5)",
+        "name": "Mine right (Pickaxe)"
+    },
+    {
+        "id": "(455.9, 49.1, 1012.2)",
+        "name": "Powerline 4 (Chest)"
+    },
+    {
+        "id": "(483.7, 10.1, 1027.9)",
+        "name": "Powerline 4 (Shell)"
+    },
+    {
+        "id": "(117.3, 8.7, 1008.9)",
+        "name": "Volleyball (Stick)"
+    },
+    {
+        "id": "(177.4, 184.0, 731.9)",
+        "name": "High above farm (Chest)"
+    },
+    {
+        "id": "(179.9, 191.2, 573.1)",
+        "name": "Hige above farm (Shell)"
+    },
+    {
+        "id": "(260.3, 255.3, 355.1)",
+        "name": "Lookout patio (Gold chest)"
+    },
+    {
+        "id": "(209.2, 149.3, 340.0)",
+        "name": "Above destroyed forest (Feather)"
+    },
+    {
+        "id": "(460.1, 93.6, 240.8)",
+        "name": "Big forest entrance rock (Feather)"
+    },
+    {
+        "id": "(594.7, 143.3, 345.6)",
+        "name": "Top of lighthouse (Gold chest)"
+    },
+    {
+        "id": "(322.4, 135.8, 408.9)",
+        "name": "Big forest waterfall (Shell)"
+    },
+    {
+        "id": "(315.7, 164.8, 444.6)",
+        "name": "Big forest waterfall above (Chest)"
+    },
+    {
+        "id": "(358.3, 102.9, 473.8)",
+        "name": "Big forest waterfall below (Chest)"
+    },
+    {
+        "id": "(476.9, 87.1, 498.1)",
+        "name": "Camper guy x 2"
+    },
+    {
+        "id": "(589.0, 95.6, 621.1)",
+        "name": "Big lake (Shell)"
+    },
+    {
+        "id": "(652.9, 103.1, 552.3)",
+        "name": "Big lake (Chest)"
+    },
+    {
+        "id": "(734.2, 39.0, 445.6)",
+        "name": "Water mine (Chest)"
+    },
+    {
+        "id": "(760.7, 9.6, 488.2)",
+        "name": "Water mine (Shell)"
+    },
+    {
+        "id": "(521.0, 208.7, 691.6)",
+        "name": "Big lake above plant (Feather)"
+    },
+    {
+        "id": "(429.7, 259.3, 602.4)",
+        "name": "Official flower (Chest)"
+    },
+    {
+        "id": "(473.4, 242.8, 648.4)",
+        "name": "Official flower (Bucket)"
+    },
+    {
+        "id": "(213.1, 295.4, 687.8)",
+        "name": "Waterfall source (Chest)"
+    },
+    {
+        "id": "(256.2, 268.1, 567.1)",
+        "name": "Feather reseller guy x ?"
+    },
+    {
+        "id": "(386.7, 319.5, 609.5)",
+        "name": "Above big snow climb (Chest)"
+    },
+    {
+        "id": "(448.8, 354.8, 950.7)",
+        "name": "Snow cliff backside (Chest)"
+    },
+    {
+        "id": "(292.4, 439.9, 834.7)",
+        "name": "Above hot spring (Chest)"
+    },
+    {
+        "id": "(266.3, 13.3, 1396.9)",
+        "name": "Orange islands (Bucket)"
+    },
+    {
+        "id": "(111.8, 16.6, 1305.4)",
+        "name": "Orange islands (Chest)"
     }
 ]
