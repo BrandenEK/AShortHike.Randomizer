@@ -11,6 +11,32 @@ namespace AShortHike.Randomizer
 
         public readonly Dictionary<string, ItemLocation> allLocations = new();
 
+        public readonly string[] tempAllItems = new string[]
+        {
+            "Bait",
+            "BoatKey",
+            "Bucket",
+            "CampingPermit",
+            "Cellphone",
+            "Coin",
+            "Compass",
+            "FishingRod",
+            "GoldenFeather",
+            "Headband",
+            "Pickaxe",
+            "RunningShoes",
+            "Shell",
+            "ShellNecklace",
+            "Shovel",
+            "SilverFeather",
+            "Stick",
+            "ToyShovel",
+            "Trash",
+            "TreasureMap",
+            "WalkieTalkie",
+            "Watch",
+        };
+
         public void LoadData()
         {
             string locationsPath = dataPath + "item-locations.json";

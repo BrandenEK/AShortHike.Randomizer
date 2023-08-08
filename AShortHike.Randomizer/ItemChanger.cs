@@ -47,7 +47,7 @@ namespace AShortHike.Randomizer
             chest.GetComponent<GameObjectID>().id = locationId;
 
             // Give it a random item
-            GameObject randomItem = Main.ItemLoader.GetRandomItemObject();
+            GameObject randomItem = Main.ItemLoader.GetItemObject(GetItemAtLocation(locationId));
             chest.GetComponent<Chest>().prefabsInside = new GameObject[] { randomItem };
             chest.SetActive(true);
 
@@ -57,6 +57,11 @@ namespace AShortHike.Randomizer
         public bool IsRandomized(string locationId)
         {
             return Main.DataStorage.allLocations.ContainsKey(locationId);
+        }
+
+        public string GetItemAtLocation(string locationId)
+        {
+            return Main.DataStorage.tempAllItems[Random.RandomRangeInt(0, Main.DataStorage.tempAllItems.Length - 1)];
         }
     }
 }

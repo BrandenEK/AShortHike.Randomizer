@@ -47,21 +47,5 @@ namespace AShortHike.Randomizer
 
             throw new System.Exception($"Item '{item}' was not loaded");
         }
-
-        // This is temporary
-        public GameObject GetRandomItemObject()
-        {
-            int num = Random.RandomRangeInt(0, 4);
-            string item = num switch
-            {
-                0 => "RunningShoes",
-                1 => "Stick",
-                2 => "GoldenFeather",
-                3 => "Shell",
-                4 => "Bucket",
-                _ => "Pickaxe",
-            };
-            return GetItemObject(item);
-        }
     }
 }
