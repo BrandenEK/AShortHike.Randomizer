@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 
-namespace AShortHike.Randomizer
+namespace AShortHike.Randomizer.Extensions
 {
     public static class TransformExtensions
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace AShortHike.Randomizer
+namespace AShortHike.Randomizer.Items
 {
     public class ItemLocation
     {

@@ -8,9 +8,7 @@ namespace AShortHike.Randomizer
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Main : BaseUnityPlugin
     {
-        public static ItemLoader ItemLoader { get; private set; }
-        public static ItemChanger ItemChanger { get; private set; }
-        public static DataStorage DataStorage { get; private set; }
+        public static Randomizer Randomizer { get; private set; }
 
         public static Transform TransformHolder => _instance.transform;
 
@@ -19,13 +17,10 @@ namespace AShortHike.Randomizer
         private void Awake()
         {
             _instance ??= this;
-            ItemLoader = new ItemLoader();
-            ItemChanger = new ItemChanger();
-            DataStorage = new DataStorage();
+            Randomizer = new Randomizer();
 
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
-            DataStorage.LoadData();
         }
 
         private void OnDisable()
@@ -38,9 +33,13 @@ namespace AShortHike.Randomizer
             LogWarning("Scene loaded: " + scene.name);
             if (scene.name == "GameScene")
             {
-                ItemLoader.LoadItems();
-                ItemChanger.ChangeItems();
+                Randomizer.OnSceneLoaded();
             }
+        }
+
+        private void Update()
+        {
+            Randomizer.Update();
         }
 
         public static void Log(object message) => _instance.Logger.LogMessage(message);

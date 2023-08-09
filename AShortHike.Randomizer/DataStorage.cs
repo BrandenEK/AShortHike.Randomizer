@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AShortHike.Randomizer.Items;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace AShortHike.Randomizer
             "Watch",
         };
 
-        public void LoadData()
+        public DataStorage()
         {
             string locationsPath = dataPath + "item-locations.json";
             if (!File.Exists(locationsPath))
@@ -45,6 +46,8 @@ namespace AShortHike.Randomizer
                 Main.LogError("Data file was not present!");
                 return;
             }
+
+            // Try using newtonsoft now!
 
             string json = File.ReadAllText(locationsPath);
             string[] jsonObjects = json.Substring(1, json.Length - 2).Replace("},", "}~").Split('~');

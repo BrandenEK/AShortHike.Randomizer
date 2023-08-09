@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace AShortHike.Randomizer
+namespace AShortHike.Randomizer.Items
 {
     [HarmonyPatch(typeof(CollectOnInteract), nameof(CollectOnInteract.Collect))]
     class Interactable_Collect_Patch
@@ -49,7 +49,7 @@ namespace AShortHike.Randomizer
                 string locationId = context.originalSpeaker.position.ToString();
                 Main.LogWarning("Giving item from conversation: " + locationId);
 
-                args = new string[] { Main.ItemChanger.GetItemAtLocation(locationId), "1" };
+                args = new string[] { Main.Randomizer.Items.GetItemAtLocation(locationId), "1" };
             }
         }
     }
