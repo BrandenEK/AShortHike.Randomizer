@@ -1,5 +1,5 @@
 # A Short Hike Randomizer
 
-To create a new short hike mod:
-
-```dotnet new bepinex5plugin -n ExampleMod -T netstandard2.0 -U 2019.4.29```
+### Installation
+1. Download and install the modding tools from https://github.com/BrandenEK/AShortHike.ModdingTools.
+1. Download the 'Randomizer.zip' from the [Releases](https://github.com/BrandenEK/AShortHike.Randomizer/releases) page, and then extract it into the modding folder.

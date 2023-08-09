@@ -1,5 +1,8 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using System;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +19,7 @@ namespace AShortHike.Randomizer
 
         private void Awake()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             _instance ??= this;
             Randomizer = new Randomizer();
 
@@ -47,5 +51,12 @@ namespace AShortHike.Randomizer
         public static void LogWarning(object message) => _instance.Logger.LogWarning(message);
 
         public static void LogError(object message) => _instance.Logger.LogError(message);
+
+        private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
+        {
+            string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name.Substring(0, args.Name.IndexOf(","))}.dll");
+            LogWarning("Loading missing assembly from " + assemblyPath);
+            return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
+        }
     }
 }
