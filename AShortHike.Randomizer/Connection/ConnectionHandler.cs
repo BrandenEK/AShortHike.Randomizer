@@ -89,7 +89,7 @@ namespace AShortHike.Randomizer.Connection
             }
 
             Main.Log($"Sending location: {locationId} ({location.apId})");
-            _session.Locations.CompleteLocationChecks(location.apId);
+            _session.Locations.CompleteLocationChecks(81000 + location.apId);
         }
 
         // Receiving (Temp - move to receiver class)
