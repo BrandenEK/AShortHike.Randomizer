@@ -1,4 +1,5 @@
 ﻿using AShortHike.Randomizer.Items;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,11 +60,9 @@ namespace AShortHike.Randomizer
         private void LoadLocationsList(string path)
         {
             string json = File.ReadAllText(path);
-            string[] jsonObjects = json.Substring(1, json.Length - 2).Replace("},", "}~").Split('~');
 
-            foreach (string str in jsonObjects)
+            foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
             {
-                ItemLocation location = JsonUtility.FromJson<ItemLocation>(str);
                 allLocations.Add(location.gameId, location);
             }
 
@@ -85,28 +84,6 @@ namespace AShortHike.Randomizer
             _apImage = Sprite.Create(tex, rect, pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
 
             Main.Log("Loaded ap item image!");
-        }
-
-
-
-
-
-
-
-
-        public void ExportSprite(Sprite sprite)
-        {
-            // Create texture
-            var output = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
-            Rect rect = sprite.textureRect;
-            Color[] pixels = sprite.texture.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
-            output.SetPixels(pixels);
-            output.Apply();
-            output.name = sprite.name;
-
-            // Save to file
-            string exportPath = $"{Environment.CurrentDirectory}\\{output.name}.png";
-            File.WriteAllBytes(exportPath, output.EncodeToPNG());
         }
     }
 }
