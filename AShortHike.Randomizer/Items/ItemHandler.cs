@@ -9,13 +9,11 @@ namespace AShortHike.Randomizer.Items
         private GameObject _chestObject;
         private bool _loaded;
 
-        private readonly Dictionary<string, CollectableItem> _allItems = new();
-
         // Item mapping
 
         public void GiveItem(string itemName)
         {
-            if (_allItems.TryGetValue(itemName, out CollectableItem item))
+            if (Main.Randomizer.Data.allItems.TryGetValue(itemName, out CollectableItem item))
                 Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
 
@@ -55,14 +53,6 @@ namespace AShortHike.Randomizer.Items
             _chestObject.name = "RandoChest";
             _chestObject.transform.SetParent(Main.TransformHolder);
             Main.LogWarning("Loaded chest object");
-
-            foreach (CollectableItem item in Resources.LoadAll<CollectableItem>("Items/"))
-            {
-                string itemName = item.readableName.Substring(0, item.readableName.IndexOf('#'));
-                Main.LogWarning("Loading item: " + itemName);
-                item.showPrompt = CollectableItem.PickUpPrompt.Always;
-                _allItems[itemName] = item;
-            }
 
             _loaded = true;
         }
