@@ -86,7 +86,7 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(holdable.gameObject);
             }
 
-            Main.Log($"Replaced {numObjects} in the world with random chests");
+            Main.Log($"Replaced {numObjects} objects in the world with random chests");
 
             void ReplaceObjectWithRandomChest(GameObject obj)
             {
