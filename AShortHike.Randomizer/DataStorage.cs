@@ -11,38 +11,35 @@ namespace AShortHike.Randomizer
     {
         private readonly string dataPath = Environment.CurrentDirectory + "\\Modding\\data\\Randomizer\\";
 
-        public readonly Dictionary<string, ItemLocation> allLocations = new();
+        private readonly Dictionary<string, ItemLocation> allLocations = new();
 
-        public readonly Dictionary<string, CollectableItem> allItems = new();
+        private readonly Dictionary<string, CollectableItem> allItems = new();
 
         private Sprite _apImage;
         public Sprite ApImage => _apImage;
 
-        public readonly string[] tempAllItems = new string[]
+        public ItemLocation GetLocationFromId(string locationId)
         {
-            "Bait",
-            "BoatKey",
-            "Bucket",
-            "CampingPermit",
-            "Cellphone",
-            "Coin",
-            "Compass",
-            "FishingRod",
-            "GoldenFeather",
-            "Headband",
-            "Pickaxe",
-            "RunningShoes",
-            "Shell",
-            "ShellNecklace",
-            "Shovel",
-            "SilverFeather",
-            "Stick",
-            "ToyShovel",
-            "Trash",
-            "TreasureMap",
-            "WalkieTalkie",
-            "Watch",
-        };
+            return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
+        }
+
+        public CollectableItem GetItemFromName(string itemName, out int amount)
+        {
+            if (allItems.TryGetValue(itemName, out CollectableItem item))
+            {
+                amount = 1;
+                return item;
+            }
+
+            if (itemName.EndsWith("Coins"))
+            {
+                amount = int.Parse(itemName.Substring(0, itemName.IndexOf(' ')));
+                return allItems.TryGetValue("Coins", out item) ? item : null;
+            }
+
+            amount = 0;
+            return null;
+        }
 
         public DataStorage()
         {

@@ -11,12 +11,6 @@ namespace AShortHike.Randomizer.Items
 
         // Item mapping
 
-        public void GiveItem(string itemName)
-        {
-            if (Main.Randomizer.Data.allItems.TryGetValue(itemName, out CollectableItem item))
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
-        }
-
         public void DisplayApItem()
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
@@ -29,7 +23,7 @@ namespace AShortHike.Randomizer.Items
 
         public bool IsLocationRandomized(string locationId)
         {
-            return Main.Randomizer.Data.allLocations.ContainsKey(locationId);
+            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
         }
 
         public void ResetShuffledItems()
