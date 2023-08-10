@@ -6,15 +6,24 @@ namespace AShortHike.Randomizer.Items
     public class ItemHandler
     {
         private readonly Dictionary<string, string> _mappedItems = new();
-        private readonly Dictionary<string, GameObject> _pickupObjects = new();
         private GameObject _chestObject;
         private bool _loaded;
 
         // Item mapping
 
-        public string GetItemAtLocation(string locationId)
+        public void DisplayApItem()
         {
-            return _mappedItems.TryGetValue(locationId, out string item) ? item : null;
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "AP";
+            item.readableName = "Master Sword for Link";
+            item.icon = Main.Randomizer.Data.ApImage;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
+        }
+
+        public bool IsLocationRandomized(string locationId)
+        {
+            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
         }
 
         public void ResetShuffledItems()
@@ -39,17 +48,6 @@ namespace AShortHike.Randomizer.Items
             _chestObject.transform.SetParent(Main.TransformHolder);
             Main.LogWarning("Loaded chest object");
 
-            foreach (CollectableItem item in Resources.LoadAll<CollectableItem>("Items/"))
-            {
-                Main.LogWarning("Loading item: " + item.name);
-                item.showPrompt = CollectableItem.PickUpPrompt.Always;
-                var obj = new GameObject(item.name);
-                obj.AddComponent<CollectFromChest>().item = item;
-                obj.SetActive(false);
-                obj.transform.SetParent(Main.TransformHolder);
-                _pickupObjects.Add(item.name, obj);
-            }
-
             _loaded = true;
         }
 
@@ -58,20 +56,12 @@ namespace AShortHike.Randomizer.Items
             return _chestObject;
         }
 
-        public GameObject GetItemObject(string item)
-        {
-            if (_pickupObjects.TryGetValue(item, out GameObject pickup))
-            {
-                return pickup;
-            }
-
-            throw new System.Exception($"Item '{item}' was not loaded");
-        }
-
         // Item changing
 
         public void ReplaceWorldObjectsWithChests()
         {
+            int numObjects = 0;
+
             // Change all items for interactable pickups
             foreach (CollectOnInteract interact in Object.FindObjectsOfType<CollectOnInteract>())
             {
@@ -96,11 +86,12 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(holdable.gameObject);
             }
 
+            Main.Log($"Replaced {numObjects} in the world with random chests");
+
             void ReplaceObjectWithRandomChest(GameObject obj)
             {
                 string locationId = obj.transform.position.ToString();
-                string item = Main.Randomizer.Items.GetItemAtLocation(locationId);
-                if (item is null)
+                if (!IsLocationRandomized(locationId))
                     return;
 
                 Transform parent = obj.transform.parent;
@@ -108,16 +99,13 @@ namespace AShortHike.Randomizer.Items
 
                 Object.Destroy(obj.gameObject);
 
-                // Create chest at this position with same id
+                // Create chest at this position with same id and no items
                 GameObject chest = Object.Instantiate(GetChestObject(), position, Quaternion.identity, parent);
                 chest.GetComponent<GameObjectID>().id = locationId;
-
-                // Give it a random item
-                GameObject randomItem = GetItemObject(item);
-                chest.GetComponent<Chest>().prefabsInside = new GameObject[] { randomItem };
+                chest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
                 chest.SetActive(true);
 
-                Main.Log($"Replaced object {locationId} with {randomItem.name}");
+                numObjects++;
             }
         }
     }
