@@ -24,7 +24,7 @@ namespace AShortHike.Randomizer.Items
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "AP";
             item.readableName = "Master Sword for Link";
-            item.icon = null;
+            item.icon = Main.Randomizer.Data.ApImage;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
