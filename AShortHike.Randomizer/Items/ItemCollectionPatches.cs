@@ -28,6 +28,7 @@ namespace AShortHike.Randomizer.Items
             Main.LogWarning("Collecting chest: " + __instance.transform.position);
 
             string locationId = __instance.transform.position.ToString();
+            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
             Main.Randomizer.Connection.SendLocation(locationId);
         }
     }
