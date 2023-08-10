@@ -26,6 +26,9 @@ namespace AShortHike.Randomizer.Items
         public static void Postfix(Chest __instance)
         {
             Main.LogWarning("Collecting chest: " + __instance.transform.position);
+
+            string locationId = __instance.transform.position.ToString();
+            Main.Randomizer.Connection.SendLocation(locationId);
         }
     }
 
@@ -47,19 +50,23 @@ namespace AShortHike.Randomizer.Items
             if (args.Length < 2 || int.TryParse(args[1], out int amount) && amount > 0)
             {
                 string locationId = context.originalSpeaker.position.ToString();
-                Main.LogWarning("Giving item from conversation: " + locationId);
+                if (!Main.Randomizer.Items.IsLocationRandomized(locationId))
+                    return;
 
-                args = new string[] { Main.Randomizer.Items.GetItemAtLocation(locationId), "1" };
+                Main.LogWarning("Giving item from conversation: " + locationId);
+                Main.Randomizer.Connection.SendLocation(locationId);
+
+                args = new string[] { "Stick", "0", "false" };
             }
         }
     }
 
-    [HarmonyPatch(typeof(Chest), nameof(Chest.SpawnRewards))]
-    class Chest_SpawnTime_Patch
+    [HarmonyPatch(typeof(GlobalData.GameData), nameof(GlobalData.GameData.AddCollected))]
+    class GameData_AddItem_Patch
     {
-        public static void Prefix(ref float autoCollectTime)
+        public static bool Prefix(CollectableItem item)
         {
-            autoCollectTime = 0.3f;
+            return item.name != "AP";
         }
     }
 

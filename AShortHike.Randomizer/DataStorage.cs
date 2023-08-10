@@ -55,7 +55,7 @@ namespace AShortHike.Randomizer
             foreach (string str in jsonObjects)
             {
                 ItemLocation location = JsonUtility.FromJson<ItemLocation>(str);
-                allLocations.Add(location.id, location);
+                allLocations.Add(location.gameId, location);
             }
 
             Main.Log($"Loaded {allLocations.Count} item locations!");
