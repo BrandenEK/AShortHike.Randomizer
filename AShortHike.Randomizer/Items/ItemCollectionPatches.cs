@@ -115,8 +115,6 @@ namespace AShortHike.Randomizer.Items
                         {
                             if (itemId == "RunningShoes")
                                 return locationId + "[0]";
-                            else if (itemId == "Headband")
-                                return locationId + "[1]";
                             break;
                         }
                     case "RaceOpponent": // Parkour racer
