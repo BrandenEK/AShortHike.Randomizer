@@ -23,45 +23,31 @@ namespace AShortHike.Randomizer.Settings
 
         public void OpenTextMenu()
         {
+            // Get title and value
+            string title, value;
+            switch (_currentSetting)
+            {
+                case SettingType.Server:
+                    title = "Enter server ipPort:";
+                    value = server;
+                    break;
+                case SettingType.Name:
+                    title = "Enter player name:";
+                    value = name;
+                    break;
+                case SettingType.Password:
+                    title = "Enter room password:";
+                    value = password;
+                    break;
+                default:
+                    title = "Unknown setting:";
+                    value = "unknown";
+                    break;
+            }
+
             // Create menu
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
-            LinearMenu submenu = null;
-            submenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0]);
-                //new string[]
-                //{
-                //    "Confirm",
-                //},
-                //new System.Action[]
-                //{
-                //    delegate ()
-                //    {
-                //        string input = submenu.GetComponentInChildren<TextInputItem>().FinalInput;
-                //        switch (type)
-                //        {
-                //            case SettingType.Server: server = input; break;
-                //            case SettingType.Name: name = input; break;
-                //            case SettingType.Password: password = input; break;
-                //        }
-                //        submenu.Kill();
-                //        Main.Randomizer.Settings.RefreshSettingsMenu();
-                //    },
-                //});
-
-            string title = _currentSetting switch
-            {
-                SettingType.Server => "Enter server ipPort:",
-                SettingType.Name => "Enter player name:",
-                SettingType.Password => "Enter room password:",
-                _ => "Unknown setting:"
-            };
-
-            string value = _currentSetting switch
-            {
-                SettingType.Server => server,
-                SettingType.Name => name,
-                SettingType.Password => password,
-                _ => "unknown"
-            };
+            LinearMenu submenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0]);
 
             // Create setting text
             GameObject valueObject = ui.CreateTextMenuItem(value);
@@ -99,6 +85,7 @@ namespace AShortHike.Randomizer.Settings
 
         public void OpenSettingsMenu()
         {
+            // Create menu
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
             LinearMenu submenu = null;
             submenu = ui.CreateSimpleMenu(
@@ -137,9 +124,12 @@ namespace AShortHike.Randomizer.Settings
                     },
                 });
 
-            GameObject gameObject = ui.CreateTextMenuItem("Enter multiworld connection details");
-            gameObject.transform.SetParent(submenu.transform, false);
-            gameObject.transform.SetAsFirstSibling();
+            // Create title text
+            GameObject titleObject = ui.CreateTextMenuItem("Enter multiworld connection details");
+            titleObject.transform.SetParent(submenu.transform, false);
+            titleObject.transform.SetAsFirstSibling();
+
+            // Finish menu
             LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
             (submenu.transform as RectTransform).CenterWithinParent();
             _settingsMenu = submenu;
