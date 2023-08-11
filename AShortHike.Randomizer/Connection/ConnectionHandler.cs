@@ -12,6 +12,11 @@ namespace AShortHike.Randomizer.Connection
 
         public bool Connected { get; private set; }
 
+        //public bool ConnectFromTitleScreen()
+        //{
+        //    return Connect(Main.Randomizer.Settings.Server, Main.Randomizer.Settings.Name, Main.Randomizer.Settings.Password);
+        //}
+
         public bool Connect(string server, string player, string password)
         {
             // Create login

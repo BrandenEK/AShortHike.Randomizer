@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using HarmonyLib;
 
 namespace AShortHike.Randomizer.Settings
 {
@@ -19,6 +18,17 @@ namespace AShortHike.Randomizer.Settings
         public void SetupInputUI()
         {
 
+        }
+
+        //public string Server => server;
+        //public string Name => name;
+        //public string Password => password;
+
+        public void ClearSettings()
+        {
+            server = null;
+            name = null;
+            password = null;
         }
 
         public void OpenTextMenu()
@@ -117,6 +127,7 @@ namespace AShortHike.Randomizer.Settings
                     delegate ()
                     {
                         submenu.Kill();
+                        Main.Randomizer.Connection.Connect(server, name, password);
                     },
                     delegate ()
                     {
@@ -143,16 +154,6 @@ namespace AShortHike.Randomizer.Settings
             _settingsMenu.Kill();
             OpenSettingsMenu();
             _settingsMenu.selectedIndex = (int)_currentSetting;
-        }
-    }
-
-    [HarmonyPatch(typeof(TitleScreen), "BeginLoadingNewGame")]
-    class TitleScreen_NewGame_Patch
-    {
-        public static bool Prefix()
-        {
-            Main.Randomizer.Settings.OpenSettingsMenu();
-            return false;
         }
     }
 }
