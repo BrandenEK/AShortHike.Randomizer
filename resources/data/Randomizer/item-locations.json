@@ -119,71 +119,124 @@
     },
     {
         "gameId": "(322.4, 135.8, 408.9)",
-        "apId": 201,
-        "name": "???",
+        "apId": 127,
+        "name": "Good Creek Path Seashell",
         "oldName": "Big forest waterfall (Shell)"
     },
     {
         "gameId": "(589.0, 95.6, 621.1)",
-        "apId": 202,
-        "name": "???",
+        "apId": 126,
+        "name": "Meteor Lake Seashell",
         "oldName": "Big lake (Shell)"
     },
     {
-        "gameId": "a1",
+        "gameId": "CampRangerNPC[0]",
         "apId": 21,
         "name": "Visitor's Center Shop Golden Feather 1"
     },
     {
-        "gameId": "a2",
+        "gameId": "CampRangerNPC[2]",
         "apId": 22,
         "name": "Visitor's Center Shop Golden Feather 2"
     },
     {
-        "gameId": "a3",
+        "gameId": "CampRangerNPC[9]",
         "apId": 23,
         "name": "Visitor's Center Shop Hat"
     },
     {
-        "gameId": "(256.2, 268.1, 567.1)",
+        "gameId": "ToughBirdNPC (1)[0]",
         "apId": 24,
-        "name": "Tough Bird Salesman Golden Feather 1",
-        "oldName": "Feather reseller guy x ?"
+        "name": "Tough Bird Salesman Golden Feather 1"
     },
     {
-        "gameId": "b2",
+        "gameId": "ToughBirdNPC (1)[1]",
         "apId": 25,
         "name": "Tough Bird Salesman Golden Feather 2"
     },
     {
-        "gameId": "b3",
+        "gameId": "ToughBirdNPC (1)[2]",
         "apId": 26,
         "name": "Tough Bird Salesman Golden Feather 3"
     },
     {
-        "gameId": "b4",
+        "gameId": "ToughBirdNPC (1)[3]",
         "apId": 27,
         "name": "Tough Bird Salesman Golden Feather 4"
     },
     {
-        "gameId": "b5",
+        "gameId": "ToughBirdNPC (1)[9]",
         "apId": 28,
         "name": "Tough Bird Salesman (400 Coins)"
     },
     {
-        "gameId": "c1",
+        "gameId": "VolleyballOpponent[0]",
         "apId": 29,
         "name": "Beachstickball (10 Hits)"
     },
     {
-        "gameId": "c2",
+        "gameId": "VolleyballOpponent[1]",
         "apId": 30,
         "name": "Beachstickball (20 Hits)"
     },
     {
-        "gameId": "c3",
+        "gameId": "VolleyballOpponent[2]",
         "apId": 31,
         "name": "Beachstickball (30 Hits)"
+    },
+    {
+        "gameId": "Frog_StandingNPC[0]",
+        "apId": 32,
+        "name": "Shovel Kid Trade"
+    },
+    {
+        "gameId": "Fox_WalkingNPC[0]",
+        "apId": 33,
+        "name": "Compass Guy"
+    },
+    {
+        "gameId": "(473.4, 242.8, 648.4)",
+        "apId": 34,
+        "name": "Hawk Peak Bucket Rock",
+        "oldName": "Official flower (Bucket)"
+    },
+    {
+        "gameId": "(266.3, 13.3, 1396.9)",
+        "apId": 35,
+        "name": "Orange Islands Bucket Rock",
+        "oldName": "Orange islands (Bucket)"
+    },
+    {
+        "gameId": "SittingNPC (1)[0]",
+        "apId": 36,
+        "name": "Bill the Walrus Fisherman"
+    },
+    {
+        "gameId": "FishBuyer[0]",
+        "apId": 37,
+        "name": "Catch 3 Fish Reward"
+    },
+    {
+        "gameId": "FishBuyer[1]",
+        "apId": 38,
+        "name": "Catch All Fish Reward"
+    },
+    {
+        "gameId": "CamperNPC[0]",
+        "apId": 39,
+        "name": "Permit Guy Bribe"
+    },
+    {
+        "gameId": "CamperNPC[1]",
+        "apId": 301,
+        "name": "???",
+        "oldName": "Return camping permit to camper"
+    },
+    {
+        "gameId": "Player[0]",
+        "apId": 304,
+        "name": "???",
+        "oldName": "Get camping permit from fish"
     },
     {
         "gameId": "(515.8, 31.1, 954.4)",
@@ -202,6 +255,32 @@
         "apId": 42,
         "name": "Blocked Mine Pickaxe 3",
         "oldName": "Mine upper (Pickaxe)"
+    },
+    {
+        "gameId": "(204.3, 108.9, 277.4)",
+        "apId": 43,
+        "name": "Blackwood Trail Lookout Toy Shovel"
+    },
+    {
+        "gameId": "(27.0, 8.4, 254.3)",
+        "apId": 44,
+        "name": "Shirley's Point Beach Toy Shovel"
+    },
+    {
+        "gameId": "(54.4, 8.4, 129.5)",
+        "apId": 45,
+        "name": "Visitor's Center Rock Toy Shovel"
+    },
+    {
+        "gameId": "(364.0, 85.1, 268.2)",
+        "apId": 46,
+        "name": "Blackwood Trail Rock Toy Shovel"
+    },
+    {
+        "gameId": "(422.3, 38.2, 175.1)",
+        "apId": 305,
+        "name": "???",
+        "oldName": "5th toy shovel to the east of visitor center"
     },
     {
         "gameId": "(776.3, 9.2, 140.7)",
@@ -249,14 +328,45 @@
         "oldName": "Umbrellas (Stick)"
     },
     {
-        "gameId": "e1",
+        "gameId": "DadDeer[0]",
         "apId": 55,
         "name": "Boat Rental"
     },
     {
-        "gameId": "e2",
+        "gameId": "DeerKidBoat[0]",
         "apId": 56,
         "name": "Boat Challenge Reward"
+    },
+    {
+        "gameId": "Dog_WalkingNPC_BlueEyed[0]",
+        "apId": 57,
+        "name": "Outlook Point Dog Gift"
+    },
+    {
+        "gameId": "LittleKidNPCVariant (1)[0]",
+        "apId": 58,
+        "name": "Collect 15 Seashells"
+    },
+    {
+        "gameId": "Turtle_WalkingNPC[0]",
+        "apId": 59,
+        "name": "Taylor the Turtle Headband Gift"
+    },
+    {
+        "gameId": "Bunny_WalkingNPC (1)[0]",
+        "apId": 60,
+        "name": "Sue the Rabbit Shoes Reward"
+    },
+    {
+        "gameId": "Bunny_WalkingNPC (1)[1]",
+        "apId": 302,
+        "name": "???",
+        "oldName": "Get headband back from bunny"
+    },
+    {
+        "gameId": "SittingNPC[0]",
+        "apId": 61,
+        "name": "Purchase Sunhat"
     },
     {
         "gameId": "(460.1, 93.6, 240.8)",
@@ -265,17 +375,17 @@
         "oldName": "Big forest entrance rock (Feather)"
     },
     {
-        "gameId": "f1",
+        "gameId": "AuntMayNPC[0]",
         "apId": 63,
         "name": "Ranger May Shell Necklace Golden Feather"
     },
     {
-        "gameId": "f2",
+        "gameId": "(376.7, 14.0, 51.7)",
         "apId": 64,
         "name": "Sand Castle Golden Feather"
     },
     {
-        "gameId": "f3",
+        "gameId": "StandingNPC[0]",
         "apId": 65,
         "name": "Artist Golden Feather"
     },
@@ -303,7 +413,7 @@
         "name": "Secret Island Peak"
     },
     {
-        "gameId": "g1",
+        "gameId": "Goat_StandingNPC[0]",
         "apId": 70,
         "name": "Wristwatch Trade"
     },
@@ -331,18 +441,6 @@
         "name": "North Cliff Golden Chest"
     },
     {
-        "gameId": "(473.4, 242.8, 648.4)",
-        "apId": 211,
-        "name": "???",
-        "oldName": "Official flower (Bucket)"
-    },
-    {
-        "gameId": "(266.3, 13.3, 1396.9)",
-        "apId": 212,
-        "name": "???",
-        "oldName": "Orange islands (Bucket)"
-    },
-    {
         "gameId": "(416.0, 57.9, 203.0)",
         "apId": 75,
         "name": "Blackwood Cliff Chest",
@@ -362,175 +460,191 @@
     },
     {
         "gameId": "(261.6, 32.1, 41.0)",
-        "apId": 78,
+        "apId": 79,
         "name": "Sid Beach Cliff Chest",
         "oldName": "Above rock wall (Chest)"
     },
     {
         "gameId": "(165.7, 31.1, 137.8)",
-        "apId": 79,
+        "apId": 81,
         "name": "Visitor's Center Hidden Chest",
         "oldName": "Behind ranger cabin (Chest)"
     },
     {
         "gameId": "(40.2, 46.4, 61.9)",
-        "apId": 80,
+        "apId": 82,
         "name": "Shirley's Point Chest",
         "oldName": "Above painter (Chest)"
     },
     {
         "gameId": "(206.3, 48.8, 185.6)",
-        "apId": 81,
+        "apId": 83,
         "name": "Caravan Cliff Chest",
         "oldName": "Bridge pond (Chest)"
     },
     {
         "gameId": "(293.6, 37.5, 206.5)",
-        "apId": 82,
+        "apId": 84,
         "name": "Caravan Arch Chest",
         "oldName": "Camper ravine (Chest)"
     },
     {
         "gameId": "(315.7, 164.8, 444.6)",
-        "apId": 83,
+        "apId": 87,
         "name": "Good Creek Path West Chest",
         "oldName": "Big forest waterfall above (Chest)"
     },
     {
         "gameId": "(358.3, 102.9, 473.8)",
-        "apId": 84,
+        "apId": 88,
         "name": "Good Creek Path East Chest",
         "oldName": "Big forest waterfall below (Chest)"
     },
     {
-        "gameId": "h1",
-        "apId": 85,
+        "gameId": "(-5.3, 10.4, 495.1)",
+        "apId": 89,
         "name": "West Waterfall Chest"
     },
     {
         "gameId": "(177.4, 184.0, 731.9)",
-        "apId": 86,
+        "apId": 90,
         "name": "Stone Tower West Cliff Chest",
         "oldName": "High above farm (Chest)"
     },
     {
         "gameId": "(429.7, 259.3, 602.4)",
-        "apId": 87,
+        "apId": 91,
         "name": "Bucket Path Chest",
         "oldName": "Official flower (Chest)"
     },
     {
         "gameId": "(386.7, 319.5, 609.5)",
-        "apId": 88,
+        "apId": 92,
         "name": "Bucket Cliff Chest",
         "oldName": "Above big snow climb (Chest)"
     },
     {
         "gameId": "(652.9, 103.1, 552.3)",
-        "apId": 89,
+        "apId": 95,
         "name": "Meteor Lake Chest",
         "oldName": "Big lake (Chest)"
     },
     {
         "gameId": "(734.2, 39.0, 445.6)",
-        "apId": 90,
+        "apId": 96,
         "name": "House North Beach Chest",
         "oldName": "Water mine (Chest)"
     },
     {
         "gameId": "(768.5, 65.8, 571.3)",
-        "apId": 91,
+        "apId": 97,
         "name": "East Coast Chest",
         "oldName": "Powerline 1 (Chest)"
     },
     {
         "gameId": "(755.4, 11.2, 729.5)",
-        "apId": 92,
+        "apId": 99,
         "name": "Fisherman's Boat Chest 1",
         "oldName": "Big ship left (Chest)"
     },
     {
         "gameId": "(749.8, 13.9, 738.6)",
-        "apId": 93,
+        "apId": 100,
         "name": "Fisherman's Boat Chest 2",
         "oldName": "Big ship right (Chest)"
     },
     {
         "gameId": "(832.6, 20.6, 422.2)",
-        "apId": 94,
+        "apId": 101,
         "name": "Airstream Island Chest",
         "oldName": "Toucan island far (Chest)"
     },
     {
         "gameId": "(213.1, 295.4, 687.8)",
-        "apId": 95,
+        "apId": 102,
         "name": "West River Waterfall Head Chest",
         "oldName": "Waterfall source (Chest)"
     },
     {
         "gameId": "(139.9, 133.9, 715.4)",
-        "apId": 96,
+        "apId": 103,
         "name": "Old Building Chest"
     },
     {
         "gameId": "(25.8, 64.7, 700.8)",
-        "apId": 97,
+        "apId": 104,
         "name": "Old Building West Chest",
         "oldName": "Farm lower ridge (Chest)"
     },
     {
         "gameId": "(53.6, 185.8, 540.4)",
-        "apId": 98,
+        "apId": 105,
         "name": "Old Building East Chest",
         "oldName": "Farm upper ridge (Chest)"
     },
     {
         "gameId": "(292.4, 439.9, 834.7)",
-        "apId": 99,
+        "apId": 106,
         "name": "Hawk Peak West Chest",
         "oldName": "Above hot spring (Chest)"
     },
     {
-        "gameId": "h2",
-        "apId": 100,
-        "name": "Hawk Peak East Chest"
-    },
-    {
         "gameId": "(448.8, 354.8, 950.7)",
-        "apId": 101,
+        "apId": 108,
         "name": "Hawk Peak Northeast Chest",
         "oldName": "Snow cliff backside (Chest)"
     },
     {
-        "gameId": "h3",
-        "apId": 102,
+        "gameId": "(527.5, 93.4, 885.1)",
+        "apId": 109,
         "name": "Northern East Coast Chest"
     },
     {
         "gameId": "(455.9, 49.1, 1012.2)",
-        "apId": 103,
+        "apId": 110,
         "name": "North Coast Chest",
         "oldName": "Powerline 4 (Chest)"
     },
     {
         "gameId": "(816.0, 33.1, 141.3)",
-        "apId": 104,
+        "apId": 113,
         "name": "Secret Island Bottom Chest"
     },
     {
         "gameId": "(832.1, 95.1, 66.1)",
-        "apId": 105,
+        "apId": 114,
         "name": "Secret Island Middle Chest"
     },
     {
         "gameId": "(111.8, 16.6, 1305.4)",
-        "apId": 106,
+        "apId": 117,
         "name": "Orange Islands West Chest",
         "oldName": "Orange islands (Chest)"
     },
     {
         "gameId": "(441.9, 12.3, 1250.2)",
-        "apId": 107,
+        "apId": 119,
         "name": "Orange Islands East Chest"
+    },
+    {
+        "gameId": "RaceOpponent[0]",
+        "apId": 123,
+        "name": "Lighthouse Race Reward"
+    },
+    {
+        "gameId": "RaceOpponent[1]",
+        "apId": 124,
+        "name": "Old Building Race Reward"
+    },
+    {
+        "gameId": "RaceOpponent[2]",
+        "apId": 125,
+        "name": "Hawk Peak Race Reward"
+    },
+    {
+        "gameId": "RaceOpponent[9]",
+        "apId": 303,
+        "name": "???",
+        "oldName": "Lose to the parkour racer"
     }
 ]
