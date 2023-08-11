@@ -63,6 +63,7 @@ namespace AShortHike.Randomizer.Connection
         {
             if (Connected)
             {
+                Main.LogWarning("Disconnected from multiworld");
                 _session.Socket.DisconnectAsync();
                 Connected = false;
                 _session = null;

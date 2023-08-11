@@ -64,4 +64,13 @@ namespace AShortHike.Randomizer.Settings
             return true;
         }
     }
+
+    [HarmonyPatch(typeof(LevelController), nameof(LevelController.SaveAndQuit))]
+    class LevelController_SaveQuit_Patch
+    {
+        public static void Prefix()
+        {
+            Main.Randomizer.Connection.Disconnect();
+        }
+    }
 }
