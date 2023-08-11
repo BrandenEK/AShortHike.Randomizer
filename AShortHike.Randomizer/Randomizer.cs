@@ -12,6 +12,8 @@ namespace AShortHike.Randomizer
         private readonly DataStorage _data = new();
         private readonly SettingsHandler _settings = new();
 
+        private string _currentScene;
+
         public ConnectionHandler Connection => _connection;
         public ItemHandler Items => _items;
         public DataStorage Data => _data;
@@ -28,6 +30,8 @@ namespace AShortHike.Randomizer
             {
                 _settings.SetupInputUI();
             }
+
+            _currentScene = scene;
         }
 
         public void Update()
@@ -38,6 +42,11 @@ namespace AShortHike.Randomizer
             //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
             //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
             //}
+
+            if (_currentScene == "GameScene")
+            {
+                _connection.UpdateReceivers();
+            }
         }
     }
 }

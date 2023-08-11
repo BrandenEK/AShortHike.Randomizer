@@ -92,7 +92,7 @@ namespace AShortHike.Randomizer
             allItems.Add("Compass", CollectableItem.Load("Compass"));
             allItems.Add("Medal", CollectableItem.Load("Medal"));
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
-            allItems.Add("Motorboard Key", CollectableItem.Load("BoatKey"));
+            allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
             allItems.Add("Treasure Map", CollectableItem.Load("TreasureMap"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 

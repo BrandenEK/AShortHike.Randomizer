@@ -1,6 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Helpers;
+using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using System;
 
@@ -9,6 +9,8 @@ namespace AShortHike.Randomizer.Connection
     public class ConnectionHandler
     {
         private ArchipelagoSession _session;
+
+        private readonly ItemReceiver _itemReceiver = new();
 
         public bool Connected { get; private set; }
 
@@ -22,7 +24,7 @@ namespace AShortHike.Randomizer.Connection
             try
             {
                 _session = ArchipelagoSessionFactory.CreateSession(server);
-                _session.Items.ItemReceived += OnReceiveItem;
+                _session.Items.ItemReceived += _itemReceiver.OnReceiveItem;
                 //_session.Socket.PacketReceived += messageReceiver.OnReceiveMessage;
                 _session.Socket.SocketClosed += OnDisconnect;
                 result = _session.TryConnectAndLogin("A Short Hike", player, ItemsHandlingFlags.AllItems, new Version(0, 4, 2), null, null, password);
@@ -81,6 +83,18 @@ namespace AShortHike.Randomizer.Connection
             _session = null;
         }
 
+        // Receivers
+
+        public void UpdateReceivers()
+        {
+            _itemReceiver.Update();
+        }
+
+        public void ClearReceivers()
+        {
+            _itemReceiver.ClearItemQueue();
+        }
+
         // Sending
 
         public void SendLocation(string locationId)
@@ -102,24 +116,11 @@ namespace AShortHike.Randomizer.Connection
             _session.Locations.CompleteLocationChecks(81000 + location.apId);
         }
 
-        // Receiving (Temp - move to receiver class)
+        // Helpers
 
-        private void OnReceiveItem(ReceivedItemsHelper helper)
+        public string GetPlayerNameFromSlot(int slot)
         {
-            int itemIndex = helper.Index;
-            string itemName = helper.PeekItemName();
-            helper.DequeueItem();
-
-            int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
-            Main.LogWarning($"Receiving item: {itemName} at index {itemIndex} with {itemsReceived} items received");
-
-            if (itemIndex > itemsReceived)
-            {
-                // Queue this until in game and grounded
-                Singleton<GlobalData>.instance.gameData.tags.SetInt("ITEMS_RECEIVED", itemsReceived + 1);
-                CollectableItem item = Main.Randomizer.Data.GetItemFromName(itemName, out int amount);
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(amount));
-            }
+            return _session.Players.GetPlayerName(slot) ?? "Server";
         }
     }
 }
