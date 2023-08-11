@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using AShortHike.Randomizer.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,14 +41,12 @@ namespace AShortHike.Randomizer.Settings
                 {
                     delegate ()
                     {
+                        string input = submenu.GetComponentInChildren<TextInputItem>().FinalInput;
                         switch (type)
                         {
-                            case SettingType.Server:
-                                server = "archipelago.gg:24242"; break;
-                            case SettingType.Name:
-                                name = "Damocles"; break;
-                            case SettingType.Password:
-                                password = "12345678"; break;
+                            case SettingType.Server: server = input; break;
+                            case SettingType.Name: name = input; break;
+                            case SettingType.Password: password = input; break;
                         }
                         submenu.Kill();
                         Main.Randomizer.Settings.RefreshSettingsMenu();
@@ -73,9 +71,10 @@ namespace AShortHike.Randomizer.Settings
 
             // Create setting text
             GameObject valueObject = ui.CreateTextMenuItem(value);
-            valueObject.GetComponentInChildren<TMP_Text>().color = Color.red;
             valueObject.transform.SetParent(submenu.transform, false);
             valueObject.transform.SetAsFirstSibling();
+            valueObject.GetComponentInChildren<TMP_Text>().color = Color.red;
+            valueObject.AddComponent<TextInputItem>();
 
             // Create title text
             GameObject titleObject = ui.CreateTextMenuItem(title);
@@ -94,9 +93,9 @@ namespace AShortHike.Randomizer.Settings
             submenu = ui.CreateSimpleMenu(
                 new string[]
                 {
-                    $"Server: <color=#EE0000>{server}</color>",
-                    $"Name: <color=#EE0000>{name}</color>",
-                    $"Password: <color=#EE0000>{password}</color>",
+                    $"Server: <color=#EE0000>{server.DisplayAsDashIfNull()}</color>",
+                    $"Name: <color=#EE0000>{name.DisplayAsDashIfNull()}</color>",
+                    $"Password: <color=#EE0000>{password.DisplayAsDashIfNull()}</color>",
                     "Confirm",
                     "Back",
                 },
