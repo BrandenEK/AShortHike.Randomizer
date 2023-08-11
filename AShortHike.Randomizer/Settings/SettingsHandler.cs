@@ -13,6 +13,7 @@ namespace AShortHike.Randomizer.Settings
         private string password = null;
 
         private LinearMenu _settingsMenu;
+        private SettingType _lastSetting;
 
         public void SetupInputUI()
         {
@@ -68,6 +69,8 @@ namespace AShortHike.Randomizer.Settings
                 SettingType.Password => password,
                 _ => "unknown"
             };
+
+            _lastSetting = type;
 
             // Create setting text
             GameObject valueObject = ui.CreateTextMenuItem(value);
@@ -147,6 +150,7 @@ namespace AShortHike.Randomizer.Settings
 
             _settingsMenu.Kill();
             OpenSettingsMenu();
+            _settingsMenu.selectedIndex = (int)_lastSetting;
         }
     }
 

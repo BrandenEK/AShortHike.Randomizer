@@ -3,8 +3,8 @@ namespace AShortHike.Randomizer.Settings
 {
     public enum SettingType
     {
-        Server,
-        Name,
-        Password,
+        Server = 0,
+        Name = 1,
+        Password = 2,
     }
 }
