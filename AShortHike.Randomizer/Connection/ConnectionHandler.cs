@@ -49,6 +49,7 @@ namespace AShortHike.Randomizer.Connection
                     resultMessage += "Reason unknown.";
 
                 Main.LogError(resultMessage);
+                Main.Randomizer.Settings.DisplayFailure(resultMessage);//$"Failed to connect to '{server}' as '{player}' with password '{password}'");
                 return false;
             }
 

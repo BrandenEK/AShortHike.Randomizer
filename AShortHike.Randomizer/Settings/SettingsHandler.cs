@@ -1,4 +1,5 @@
 ﻿using AShortHike.Randomizer.Extensions;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,35 @@ namespace AShortHike.Randomizer.Settings
             server = null;
             name = null;
             password = null;
+        }
+
+        public void DisplayFailure(string message)
+        {
+            UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
+            GameObject obj = ui.CreateTextMenuItem(message);
+            ui.AddUI(obj, true);
+
+            // Set text
+            TMP_Text text = obj.GetComponentInChildren<TMP_Text>();
+            text.color = new Color(0.55f, 0f, 0f);
+            text.alignment = TextAlignmentOptions.Center;
+            text.enableWordWrapping = true;
+
+            // Set position
+            RectTransform rect = obj.transform as RectTransform;
+            rect.CenterWithinParent();
+            rect.sizeDelta = new Vector2((rect.parent as RectTransform).rect.size.x, rect.sizeDelta.y);
+            //rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 5, (rect.parent as RectTransform).rect.size.x);
+            //rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 5, rect.rect.size.y);
+            //rect.localScale = new Vector3(0.25f, 0.25f);
+            //(text.transform as RectTransform).CenterWithinParent();
+            ui.StartCoroutine(DestroyFailedText());
+
+            IEnumerator DestroyFailedText()
+            {
+                yield return new WaitForSeconds(4f);
+                Object.Destroy(text);
+            }
         }
 
         public void OpenTextMenu()
