@@ -1,7 +1,6 @@
 ﻿using AShortHike.Randomizer.Extensions;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 namespace AShortHike.Randomizer.Settings
 {
@@ -15,9 +14,6 @@ namespace AShortHike.Randomizer.Settings
         {
             get
             {
-                if (input == null)
-                    return input;
-
                 string trimmed = input.Trim();
                 return trimmed.Length > 0 ? trimmed : null;
             }
@@ -26,17 +22,27 @@ namespace AShortHike.Randomizer.Settings
         private void Start()
         {
             _textField = GetComponentInChildren<TMP_Text>();
-            input = _textField.text;
+            input = _textField.text ?? string.Empty;
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.O))
-                input = "localhost";
-            else if (Input.GetKeyDown(KeyCode.I))
-                input = "archipelago.gg:24242";
-            else if (Input.GetKeyDown(KeyCode.U))
-                input = "";
+            foreach (char c in Input.inputString)
+            {
+                if (c == '\b') // Backspace
+                {
+                    if (input.Length > 0)
+                        input = input.Substring(0, input.Length - 1);
+                }
+                else if (c == '\n' || c == '\r') // Confirm
+                {
+                    Main.Randomizer.Settings.CloseTextMenu();
+                }
+                else // Regular character
+                {
+                    input += c;
+                }
+            }
 
             _textField.text = input.DisplayAsDashIfNull();
         }

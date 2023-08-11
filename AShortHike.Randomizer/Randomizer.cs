@@ -36,12 +36,12 @@ namespace AShortHike.Randomizer
             {
                 _connection.Connect("localhost", "Player", null);
             }
-            else if (Input.GetKeyDown(KeyCode.P))
-            {
-                Main.Log("Giving cheat items!");
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
-            }
+            //else if (Input.GetKeyDown(KeyCode.P))
+            //{
+            //    Main.Log("Giving cheat items!");
+            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
+            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
+            //}
         }
     }
 }

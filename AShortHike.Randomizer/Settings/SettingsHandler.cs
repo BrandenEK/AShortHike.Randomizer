@@ -8,69 +8,60 @@ namespace AShortHike.Randomizer.Settings
 {
     public class SettingsHandler
     {
-        private string server = "localhost";
-        private string name = "Player";
+        private string server = null;
+        private string name = null;
         private string password = null;
 
         private LinearMenu _settingsMenu;
-        private SettingType _lastSetting;
+        private LinearMenu _textMenu;
+        private SettingType _currentSetting;
 
         public void SetupInputUI()
         {
-            TextInput text = Object.FindObjectOfType<TextInput>();
-            if (text != null)
-            {
-                Main.LogWarning(text.name);
-            }
-            else
-            {
-                Main.LogError("Couldnt find text");
-            }
+
         }
 
-        public void OpenTextMenu(SettingType type)
+        public void OpenTextMenu()
         {
             // Create menu
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
             LinearMenu submenu = null;
-            submenu = ui.CreateSimpleMenu(
-                new string[]
-                {
-                    "Confirm",
-                },
-                new System.Action[]
-                {
-                    delegate ()
-                    {
-                        string input = submenu.GetComponentInChildren<TextInputItem>().FinalInput;
-                        switch (type)
-                        {
-                            case SettingType.Server: server = input; break;
-                            case SettingType.Name: name = input; break;
-                            case SettingType.Password: password = input; break;
-                        }
-                        submenu.Kill();
-                        Main.Randomizer.Settings.RefreshSettingsMenu();
-                    },
-                });
+            submenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0]);
+                //new string[]
+                //{
+                //    "Confirm",
+                //},
+                //new System.Action[]
+                //{
+                //    delegate ()
+                //    {
+                //        string input = submenu.GetComponentInChildren<TextInputItem>().FinalInput;
+                //        switch (type)
+                //        {
+                //            case SettingType.Server: server = input; break;
+                //            case SettingType.Name: name = input; break;
+                //            case SettingType.Password: password = input; break;
+                //        }
+                //        submenu.Kill();
+                //        Main.Randomizer.Settings.RefreshSettingsMenu();
+                //    },
+                //});
 
-            string title = type switch
+            string title = _currentSetting switch
             {
-                SettingType.Server => "Server ipPort:",
-                SettingType.Name => "Player name:",
-                SettingType.Password => "Room password:",
+                SettingType.Server => "Enter server ipPort:",
+                SettingType.Name => "Enter player name:",
+                SettingType.Password => "Enter room password:",
                 _ => "Unknown setting:"
             };
 
-            string value = type switch
+            string value = _currentSetting switch
             {
                 SettingType.Server => server,
                 SettingType.Name => name,
                 SettingType.Password => password,
                 _ => "unknown"
             };
-
-            _lastSetting = type;
 
             // Create setting text
             GameObject valueObject = ui.CreateTextMenuItem(value);
@@ -87,6 +78,23 @@ namespace AShortHike.Randomizer.Settings
             // Finish menu
             LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
             (submenu.transform as RectTransform).CenterWithinParent();
+            _textMenu = submenu;
+        }
+
+        public void CloseTextMenu()
+        {
+            if (_textMenu == null)
+                return;
+
+            string input = _textMenu.GetComponentInChildren<TextInputItem>().FinalInput;
+            switch (_currentSetting)
+            {
+                case SettingType.Server: server = input; break;
+                case SettingType.Name: name = input; break;
+                case SettingType.Password: password = input; break;
+            }
+            _textMenu.Kill();
+            CloseSettingsMenu();
         }
 
         public void OpenSettingsMenu()
@@ -106,18 +114,18 @@ namespace AShortHike.Randomizer.Settings
                 {
                     delegate ()
                     {
-                        //submenu.Kill();
-                        Main.Randomizer.Settings.OpenTextMenu(SettingType.Server);
+                        _currentSetting = SettingType.Server;
+                        Main.Randomizer.Settings.OpenTextMenu();
                     },
                     delegate ()
                     {
-                        //submenu.Kill();
-                        Main.Randomizer.Settings.OpenTextMenu(SettingType.Name);
+                        _currentSetting = SettingType.Name;
+                        Main.Randomizer.Settings.OpenTextMenu();
                     },
                     delegate ()
                     {
-                        //submenu.Kill();
-                        Main.Randomizer.Settings.OpenTextMenu(SettingType.Password);
+                        _currentSetting = SettingType.Password;
+                        Main.Randomizer.Settings.OpenTextMenu();
                     },
                     delegate ()
                     {
@@ -129,13 +137,7 @@ namespace AShortHike.Randomizer.Settings
                     },
                 });
 
-            //foreach (GameObject item in submenu.GetMenuObjects())
-            //{
-            //    Main.LogWarning("Use rich text: " + item.GetComponentInChildren<TMP_Text>().richText);
-            //    item.GetComponentInChildren<TMP_Text>().richText = true; // Is this necessary
-            //}
-
-            GameObject gameObject = ui.CreateTextMenuItem("Confirm multiworld connection details");
+            GameObject gameObject = ui.CreateTextMenuItem("Enter multiworld connection details");
             gameObject.transform.SetParent(submenu.transform, false);
             gameObject.transform.SetAsFirstSibling();
             LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
@@ -143,14 +145,14 @@ namespace AShortHike.Randomizer.Settings
             _settingsMenu = submenu;
         }
 
-        public void RefreshSettingsMenu()
+        public void CloseSettingsMenu()
         {
             if (_settingsMenu == null)
                 return;
 
             _settingsMenu.Kill();
             OpenSettingsMenu();
-            _settingsMenu.selectedIndex = (int)_lastSetting;
+            _settingsMenu.selectedIndex = (int)_currentSetting;
         }
     }
 
