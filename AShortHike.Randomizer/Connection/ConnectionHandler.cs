@@ -12,12 +12,7 @@ namespace AShortHike.Randomizer.Connection
 
         public bool Connected { get; private set; }
 
-        //public bool ConnectFromTitleScreen()
-        //{
-        //    return Connect(Main.Randomizer.Settings.Server, Main.Randomizer.Settings.Name, Main.Randomizer.Settings.Password);
-        //}
-
-        public bool Connect(string server, string player, string password)
+        public bool Connect(string server, string player, string password, bool isContinue)
         {
             // Create login
             LoginResult result;
@@ -49,7 +44,7 @@ namespace AShortHike.Randomizer.Connection
                     resultMessage += "Reason unknown.";
 
                 Main.LogError(resultMessage);
-                Main.Randomizer.Settings.DisplayFailure(resultMessage);//$"Failed to connect to '{server}' as '{player}' with password '{password}'");
+                Main.Randomizer.Settings.DisplayFailure(resultMessage);
                 return false;
             }
 
@@ -58,13 +53,20 @@ namespace AShortHike.Randomizer.Connection
             Main.LogWarning("Multiworld connection successful");
             LoginSuccessful login = result as LoginSuccessful;
 
-            OnConnect();
+            OnConnect(); // remove
+
+            Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
             return true;
         }
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            if (Connected)
+            {
+                _session.Socket.DisconnectAsync();
+                Connected = false;
+                _session = null;
+            }
         }
 
         private void OnConnect()
@@ -74,7 +76,8 @@ namespace AShortHike.Randomizer.Connection
 
         private void OnDisconnect(string reason)
         {
-
+            Connected = false;
+            _session = null;
         }
 
         // Sending

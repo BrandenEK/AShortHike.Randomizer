@@ -32,11 +32,7 @@ namespace AShortHike.Randomizer
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Backslash))
-            {
-                _connection.Connect("localhost", "Player", null);
-            }
-            //else if (Input.GetKeyDown(KeyCode.P))
+            //if (Input.GetKeyDown(KeyCode.P))
             //{
             //    Main.Log("Giving cheat items!");
             //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);

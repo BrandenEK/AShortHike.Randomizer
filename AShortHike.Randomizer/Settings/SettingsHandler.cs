@@ -21,15 +21,26 @@ namespace AShortHike.Randomizer.Settings
 
         }
 
-        //public string Server => server;
-        //public string Name => name;
-        //public string Password => password;
-
         public void ClearSettings()
         {
             server = null;
             name = null;
             password = null;
+        }
+
+        public void BeginGameOnceConnected(bool isContinue)
+        {
+            TitleScreen title = Object.FindObjectOfType<TitleScreen>();
+            if (title == null)
+            {
+                Main.Randomizer.Connection.Disconnect();
+                return;
+            }
+
+            if (isContinue)
+                title.ContinueGame();
+            else
+                title.StartNewGame();
         }
 
         public void DisplayFailure(string message)
@@ -48,10 +59,7 @@ namespace AShortHike.Randomizer.Settings
             RectTransform rect = obj.transform as RectTransform;
             rect.CenterWithinParent();
             rect.sizeDelta = new Vector2((rect.parent as RectTransform).rect.size.x, rect.sizeDelta.y);
-            //rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 5, (rect.parent as RectTransform).rect.size.x);
-            //rect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 5, rect.rect.size.y);
-            //rect.localScale = new Vector3(0.25f, 0.25f);
-            //(text.transform as RectTransform).CenterWithinParent();
+
             ui.StartCoroutine(DestroyFailedText());
 
             IEnumerator DestroyFailedText()
@@ -157,7 +165,7 @@ namespace AShortHike.Randomizer.Settings
                     delegate ()
                     {
                         submenu.Kill();
-                        Main.Randomizer.Connection.Connect(server, name, password);
+                        Main.Randomizer.Connection.Connect(server, name, password, false);
                     },
                     delegate ()
                     {
