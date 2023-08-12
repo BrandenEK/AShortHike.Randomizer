@@ -16,9 +16,11 @@ namespace AShortHike.Randomizer.Settings
         private LinearMenu _textMenu;
         private SettingType _currentSetting;
 
+        public SettingsInfo SettingsConfig { get; private set; }
+
         public void SetupInputUI()
         {
-
+            SettingsConfig = Main.Randomizer.Data.LoadConfig();
         }
 
         public void ClearSettings()
