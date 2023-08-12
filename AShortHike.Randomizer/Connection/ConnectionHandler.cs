@@ -69,6 +69,7 @@ namespace AShortHike.Randomizer.Connection
             {
                 Main.LogWarning("Disconnected from multiworld");
                 _session.Socket.DisconnectAsync();
+                OnDisconnect(null); // In case the actual event handler isnt called
             }
         }
 
