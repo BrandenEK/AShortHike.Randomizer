@@ -533,13 +533,13 @@
         "oldName": "Powerline 1 (Chest)"
     },
     {
-        "gameId": "(755.4, 11.2, 729.5)",
+        "gameId": "(755.3, 13.2, 729.6)",
         "apId": 99,
         "name": "Fisherman's Boat Chest 1",
         "oldName": "Big ship left (Chest)"
     },
     {
-        "gameId": "(749.8, 13.9, 738.6)",
+        "gameId": "(749.7, 13.0, 738.7)",
         "apId": 100,
         "name": "Fisherman's Boat Chest 2",
         "oldName": "Big ship right (Chest)"

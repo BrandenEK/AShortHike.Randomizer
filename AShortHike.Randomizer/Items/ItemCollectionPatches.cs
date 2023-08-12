@@ -25,9 +25,8 @@ namespace AShortHike.Randomizer.Items
     {
         public static void Postfix(Chest __instance)
         {
-            Main.LogWarning("Collecting chest: " + __instance.transform.position);
-
-            string locationId = __instance.transform.position.ToString();
+            string locationId = __instance.GetComponent<GameObjectID>().id;
+            Main.LogWarning("Opening chest: " + locationId);
             Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
             Main.Randomizer.Connection.SendLocation(locationId);
         }
