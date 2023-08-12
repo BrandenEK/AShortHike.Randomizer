@@ -25,6 +25,7 @@ namespace AShortHike.Randomizer
             {
                 _items.LoadItemObjects();
                 _items.ReplaceWorldObjectsWithChests();
+                _connection.SendAllLocations();
             }
             else if (scene == "TitleScene")
             {
@@ -47,6 +48,14 @@ namespace AShortHike.Randomizer
             {
                 _connection.UpdateReceivers();
             }
+        }
+
+        public void OnConnect()
+        {
+        }
+
+        public void OnDisconnect()
+        {
         }
     }
 }

@@ -56,6 +56,7 @@ namespace AShortHike.Randomizer.Items
                     return;
 
                 args = new string[] { "Stick", "0", "false" };
+                Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
                 Main.Randomizer.Connection.SendLocation(locationId);
             }
 

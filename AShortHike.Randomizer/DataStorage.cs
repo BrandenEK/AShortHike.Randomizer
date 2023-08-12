@@ -23,6 +23,11 @@ namespace AShortHike.Randomizer
             return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
         }
 
+        public IEnumerable<ItemLocation> GetAllLocations()
+        {
+            return allLocations.Values;
+        }
+
         public CollectableItem GetItemFromName(string itemName, out int amount)
         {
             if (allItems.TryGetValue(itemName, out CollectableItem item))

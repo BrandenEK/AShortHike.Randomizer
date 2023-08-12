@@ -3,6 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using System;
+using System.Collections.Generic;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -58,6 +59,7 @@ namespace AShortHike.Randomizer.Connection
             OnConnect(); // remove
 
             Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
+            Main.Randomizer.OnConnect();
             return true;
         }
 
@@ -67,8 +69,6 @@ namespace AShortHike.Randomizer.Connection
             {
                 Main.LogWarning("Disconnected from multiworld");
                 _session.Socket.DisconnectAsync();
-                Connected = false;
-                _session = null;
             }
         }
 
@@ -81,6 +81,9 @@ namespace AShortHike.Randomizer.Connection
         {
             Connected = false;
             _session = null;
+            ClearReceivers();
+            Main.Randomizer.OnDisconnect();
+            Main.LogWarning("OnDisconnect called");
         }
 
         // Receivers
@@ -113,7 +116,25 @@ namespace AShortHike.Randomizer.Connection
             }
 
             Main.Log($"Sending location: {locationId} ({location.apId})");
-            _session.Locations.CompleteLocationChecks(81000 + location.apId);
+            _session.Locations.CompleteLocationChecksAsync(81000 + location.apId);
+        }
+
+        public void SendAllLocations()
+        {
+            if (!Connected)
+                return;
+
+            var checkedLocations = new List<long>();
+            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+            foreach (ItemLocation location in Main.Randomizer.Data.GetAllLocations())
+            {
+                if (tags.GetBool("Opened_" + location.gameId))
+                    checkedLocations.Add(81000 + location.apId);
+            }
+
+            Main.Log($"Sending all {checkedLocations.Count} locations");
+            _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
         }
 
         // Helpers
