@@ -228,15 +228,13 @@
     },
     {
         "gameId": "CamperNPC[1]",
-        "apId": 301,
-        "name": "???",
-        "oldName": "Return camping permit to camper"
+        "apId": 130,
+        "name": "Return Camping Permit"
     },
     {
         "gameId": "Player[0]",
-        "apId": 304,
-        "name": "???",
-        "oldName": "Get camping permit from fish"
+        "apId": 129,
+        "name": "Catch Fish with Permit"
     },
     {
         "gameId": "(515.8, 31.1, 954.4)",
@@ -262,12 +260,12 @@
         "name": "Blackwood Trail Lookout Toy Shovel"
     },
     {
-        "gameId": "(27.0, 8.4, 254.3)",
+        "gameId": "(54.4, 8.4, 129.5)",
         "apId": 44,
         "name": "Shirley's Point Beach Toy Shovel"
     },
     {
-        "gameId": "(54.4, 8.4, 129.5)",
+        "gameId": "(27.0, 8.4, 254.3)",
         "apId": 45,
         "name": "Visitor's Center Rock Toy Shovel"
     },
@@ -278,9 +276,8 @@
     },
     {
         "gameId": "(422.3, 38.2, 175.1)",
-        "apId": 305,
-        "name": "???",
-        "oldName": "5th toy shovel to the east of visitor center"
+        "apId": 128,
+        "name": "Beach Hut Cliff Toy Shovel"
     },
     {
         "gameId": "(776.3, 9.2, 140.7)",
@@ -288,10 +285,21 @@
         "name": "Secret Island Beach Trail Stick"
     },
     {
+        "gameId": "(566.2, 74.5, 325.2)",
+        "apId": 48,
+        "name": "Below Lighthouse Walkway Stick"
+    },
+    {
         "gameId": "(510.9, 10.4, 191.0)",
         "apId": 49,
         "name": "Beach Hut Rocky Pool Sand Stick",
         "oldName": "First beach (Stick)"
+    },
+    {
+        "gameId": "(84.4, 112.9, 464.1)",
+        "apId": 50,
+        "name": "Cliff Overlooking West River Waterfall Stick",
+        "oldName": "Above destroyed forest (Stick)"
     },
     {
         "gameId": "(268.6, 265.9, 535.0)",
@@ -345,12 +353,6 @@
         "gameId": "Bunny_WalkingNPC (1)[0]",
         "apId": 60,
         "name": "Sue the Rabbit Shoes Reward"
-    },
-    {
-        "gameId": "Bunny_WalkingNPC (1)[1]",
-        "apId": 302,
-        "name": "???",
-        "oldName": "Get headband back from bunny"
     },
     {
         "gameId": "SittingNPC[0]",
@@ -495,7 +497,7 @@
         "name": "West Waterfall Chest"
     },
     {
-        "gameId": "(177.4, 184.0, 731.9)",
+        "gameId": "(53.6, 185.8, 540.4)",
         "apId": 90,
         "name": "Stone Tower West Cliff Chest",
         "oldName": "High above farm (Chest)"
@@ -566,7 +568,7 @@
         "oldName": "Farm lower ridge (Chest)"
     },
     {
-        "gameId": "(53.6, 185.8, 540.4)",
+        "gameId": "(177.4, 184.0, 731.9)",
         "apId": 105,
         "name": "Old Building East Chest",
         "oldName": "Farm upper ridge (Chest)"
@@ -632,8 +634,7 @@
     },
     {
         "gameId": "RaceOpponent[9]",
-        "apId": 303,
-        "name": "???",
-        "oldName": "Lose to the parkour racer"
+        "apId": 131,
+        "name": "Lose Race Gift"
     }
 ]

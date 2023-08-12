@@ -107,6 +107,7 @@ namespace AShortHike.Randomizer
             allItems.Add("Medal", CollectableItem.Load("Medal"));
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
             allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
+            allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
             allItems.Add("Treasure Map", CollectableItem.Load("TreasureMap"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
