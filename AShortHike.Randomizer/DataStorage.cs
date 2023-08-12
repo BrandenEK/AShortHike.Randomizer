@@ -152,7 +152,7 @@ namespace AShortHike.Randomizer
             }
             else
             {
-                var settings = new SettingsInfo();
+                var settings = new SettingsInfo(null, null, null);
                 File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
                 return settings;
             }

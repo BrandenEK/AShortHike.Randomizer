@@ -9,6 +9,13 @@ namespace AShortHike.Randomizer.Settings
         public ConnectionInfo saveSlotOne;
         public ConnectionInfo saveSlotTwo;
         public ConnectionInfo saveSlotThree;
+
+        public SettingsInfo(ConnectionInfo saveSlotOne, ConnectionInfo saveSlotTwo, ConnectionInfo saveSlotThree)
+        {
+            this.saveSlotOne = saveSlotOne ?? new ConnectionInfo();
+            this.saveSlotTwo = saveSlotTwo ?? new ConnectionInfo();
+            this.saveSlotThree = saveSlotThree ?? new ConnectionInfo();
+        }
     }
 
     [Serializable]
@@ -23,6 +30,13 @@ namespace AShortHike.Randomizer.Settings
             this.server = server;
             this.player = player;
             this.password = password;
+        }
+
+        public ConnectionInfo()
+        {
+            server = null;
+            player = null;
+            password = null;
         }
     }
 }

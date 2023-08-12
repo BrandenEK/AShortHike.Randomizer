@@ -20,6 +20,7 @@ namespace AShortHike.Randomizer.Settings
 
         public void SetupInputUI()
         {
+            // Load config from file
             SettingsConfig = Main.Randomizer.Data.LoadConfig();
         }
 
@@ -39,6 +40,18 @@ namespace AShortHike.Randomizer.Settings
                 return;
             }
 
+            // Save connection info
+            string save = GlobalData.currentSaveFile;
+            var settings = new ConnectionInfo(server, name, password);
+            if (save.Contains("2"))
+                SettingsConfig.saveSlotThree = settings;
+            else if (save.Contains("1"))
+                SettingsConfig.saveSlotTwo = settings;
+            else
+                SettingsConfig.saveSlotOne = settings;
+            Main.Randomizer.Data.SaveConfig(SettingsConfig);
+
+            // Load game scene
             if (isContinue)
                 title.ContinueGame();
             else
