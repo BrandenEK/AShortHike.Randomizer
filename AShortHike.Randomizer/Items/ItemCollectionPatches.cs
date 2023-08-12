@@ -56,6 +56,7 @@ namespace AShortHike.Randomizer.Items
                     return;
 
                 args = new string[] { "Stick", "0", "false" };
+                Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
                 Main.Randomizer.Connection.SendLocation(locationId);
             }
 
@@ -115,8 +116,6 @@ namespace AShortHike.Randomizer.Items
                         {
                             if (itemId == "RunningShoes")
                                 return locationId + "[0]";
-                            else if (itemId == "Headband")
-                                return locationId + "[1]";
                             break;
                         }
                     case "RaceOpponent": // Parkour racer

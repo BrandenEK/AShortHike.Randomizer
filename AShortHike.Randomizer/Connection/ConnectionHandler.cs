@@ -1,8 +1,9 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Helpers;
+using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using System;
+using System.Collections.Generic;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -10,9 +11,11 @@ namespace AShortHike.Randomizer.Connection
     {
         private ArchipelagoSession _session;
 
+        private readonly ItemReceiver _itemReceiver = new();
+
         public bool Connected { get; private set; }
 
-        public bool Connect(string server, string player, string password)
+        public bool Connect(string server, string player, string password, bool isContinue)
         {
             // Create login
             LoginResult result;
@@ -22,7 +25,7 @@ namespace AShortHike.Randomizer.Connection
             try
             {
                 _session = ArchipelagoSessionFactory.CreateSession(server);
-                _session.Items.ItemReceived += OnReceiveItem;
+                _session.Items.ItemReceived += _itemReceiver.OnReceiveItem;
                 //_session.Socket.PacketReceived += messageReceiver.OnReceiveMessage;
                 _session.Socket.SocketClosed += OnDisconnect;
                 result = _session.TryConnectAndLogin("A Short Hike", player, ItemsHandlingFlags.AllItems, new Version(0, 4, 2), null, null, password);
@@ -44,6 +47,7 @@ namespace AShortHike.Randomizer.Connection
                     resultMessage += "Reason unknown.";
 
                 Main.LogError(resultMessage);
+                Main.Randomizer.Settings.DisplayFailure(resultMessage);
                 return false;
             }
 
@@ -52,13 +56,21 @@ namespace AShortHike.Randomizer.Connection
             Main.LogWarning("Multiworld connection successful");
             LoginSuccessful login = result as LoginSuccessful;
 
-            OnConnect();
+            OnConnect(); // remove
+
+            Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
+            Main.Randomizer.OnConnect();
             return true;
         }
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            if (Connected)
+            {
+                Main.LogWarning("Disconnected from multiworld");
+                _session.Socket.DisconnectAsync();
+                OnDisconnect(null); // In case the actual event handler isnt called
+            }
         }
 
         private void OnConnect()
@@ -68,7 +80,23 @@ namespace AShortHike.Randomizer.Connection
 
         private void OnDisconnect(string reason)
         {
+            Connected = false;
+            _session = null;
+            ClearReceivers();
+            Main.Randomizer.OnDisconnect();
+            Main.LogWarning("OnDisconnect called");
+        }
 
+        // Receivers
+
+        public void UpdateReceivers()
+        {
+            _itemReceiver.Update();
+        }
+
+        public void ClearReceivers()
+        {
+            _itemReceiver.ClearItemQueue();
         }
 
         // Sending
@@ -89,27 +117,32 @@ namespace AShortHike.Randomizer.Connection
             }
 
             Main.Log($"Sending location: {locationId} ({location.apId})");
-            _session.Locations.CompleteLocationChecks(81000 + location.apId);
+            _session.Locations.CompleteLocationChecksAsync(81000 + location.apId);
         }
 
-        // Receiving (Temp - move to receiver class)
-
-        private void OnReceiveItem(ReceivedItemsHelper helper)
+        public void SendAllLocations()
         {
-            int itemIndex = helper.Index;
-            string itemName = helper.PeekItemName();
-            helper.DequeueItem();
+            if (!Connected)
+                return;
 
-            int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
-            Main.LogWarning($"Receiving item: {itemName} at index {itemIndex} with {itemsReceived} items received");
+            var checkedLocations = new List<long>();
+            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            if (itemIndex > itemsReceived)
+            foreach (ItemLocation location in Main.Randomizer.Data.GetAllLocations())
             {
-                // Queue this until in game and grounded
-                Singleton<GlobalData>.instance.gameData.tags.SetInt("ITEMS_RECEIVED", itemsReceived + 1);
-                CollectableItem item = Main.Randomizer.Data.GetItemFromName(itemName, out int amount);
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(amount));
+                if (tags.GetBool("Opened_" + location.gameId))
+                    checkedLocations.Add(81000 + location.apId);
             }
+
+            Main.Log($"Sending all {checkedLocations.Count} locations");
+            _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
+        }
+
+        // Helpers
+
+        public string GetPlayerNameFromSlot(int slot)
+        {
+            return _session.Players.GetPlayerName(slot) ?? "Server";
         }
     }
 }

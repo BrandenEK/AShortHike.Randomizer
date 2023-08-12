@@ -1,5 +1,6 @@
 ﻿using AShortHike.Randomizer.Connection;
 using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Settings;
 using UnityEngine;
 
 namespace AShortHike.Randomizer
@@ -9,29 +10,52 @@ namespace AShortHike.Randomizer
         private readonly ConnectionHandler _connection = new();
         private readonly ItemHandler _items = new();
         private readonly DataStorage _data = new();
+        private readonly SettingsHandler _settings = new();
+
+        private string _currentScene;
 
         public ConnectionHandler Connection => _connection;
         public ItemHandler Items => _items;
         public DataStorage Data => _data;
+        public SettingsHandler Settings => _settings;
 
-        public void OnSceneLoaded()
+        public void OnSceneLoaded(string scene)
         {
-            _items.LoadItemObjects();
-            _items.ReplaceWorldObjectsWithChests();
+            if (scene == "GameScene")
+            {
+                _items.LoadItemObjects();
+                _items.ReplaceWorldObjectsWithChests();
+                _connection.SendAllLocations();
+            }
+            else if (scene == "TitleScene")
+            {
+                _settings.SetupInputUI();
+            }
+
+            _currentScene = scene;
         }
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Backslash))
+            //if (Input.GetKeyDown(KeyCode.P))
+            //{
+            //    Main.Log("Giving cheat items!");
+            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
+            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
+            //}
+
+            if (_currentScene == "GameScene")
             {
-                _connection.Connect("localhost", "Player", null);
+                _connection.UpdateReceivers();
             }
-            else if (Input.GetKeyDown(KeyCode.P))
-            {
-                Main.Log("Giving cheat items!");
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
-            }
+        }
+
+        public void OnConnect()
+        {
+        }
+
+        public void OnDisconnect()
+        {
         }
     }
 }

@@ -35,10 +35,7 @@ namespace AShortHike.Randomizer
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             LogWarning("Scene loaded: " + scene.name);
-            if (scene.name == "GameScene")
-            {
-                Randomizer.OnSceneLoaded();
-            }
+            Randomizer.OnSceneLoaded(scene.name);
         }
 
         private void Update()

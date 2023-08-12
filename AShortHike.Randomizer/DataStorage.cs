@@ -1,4 +1,5 @@
 ﻿using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace AShortHike.Randomizer
     public class DataStorage
     {
         private readonly string dataPath = Environment.CurrentDirectory + "\\Modding\\data\\Randomizer\\";
+        private readonly string configPath = Environment.CurrentDirectory + "\\Modding\\config\\Randomizer.cfg";
 
         private readonly Dictionary<string, ItemLocation> allLocations = new();
 
@@ -21,6 +23,11 @@ namespace AShortHike.Randomizer
         public ItemLocation GetLocationFromId(string locationId)
         {
             return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
+        }
+
+        public IEnumerable<ItemLocation> GetAllLocations()
+        {
+            return allLocations.Values;
         }
 
         public CollectableItem GetItemFromName(string itemName, out int amount)
@@ -43,6 +50,10 @@ namespace AShortHike.Randomizer
 
         public DataStorage()
         {
+            // Create all directories before loading anything
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\data");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\config");
+
             LoadItemsList();
 
             string locationsPath = dataPath + "item-locations.json";
@@ -92,7 +103,7 @@ namespace AShortHike.Randomizer
             allItems.Add("Compass", CollectableItem.Load("Compass"));
             allItems.Add("Medal", CollectableItem.Load("Medal"));
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
-            allItems.Add("Motorboard Key", CollectableItem.Load("BoatKey"));
+            allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
             allItems.Add("Treasure Map", CollectableItem.Load("TreasureMap"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
@@ -129,6 +140,27 @@ namespace AShortHike.Randomizer
             _apImage = Sprite.Create(tex, rect, pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
 
             Main.Log("Loaded ap item image!");
+        }
+
+        // Config
+
+        public SettingsInfo LoadConfig()
+        {
+            if (File.Exists(configPath))
+            {
+                return JsonConvert.DeserializeObject<SettingsInfo>(File.ReadAllText(configPath));
+            }
+            else
+            {
+                var settings = new SettingsInfo(null, null, null);
+                File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
+                return settings;
+            }
+        }
+
+        public void SaveConfig(SettingsInfo settings)
+        {
+            File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
         }
     }
 }
