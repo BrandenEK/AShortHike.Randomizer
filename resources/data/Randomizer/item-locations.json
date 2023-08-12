@@ -288,21 +288,10 @@
         "name": "Secret Island Beach Trail Stick"
     },
     {
-        "gameId": "(84.4, 112.9, 464.1)",
-        "apId": 48,
-        "name": "Below Lighthouse Walkway Stick",
-        "oldName": "Above destroyed forest (Stick)"
-    },
-    {
         "gameId": "(510.9, 10.4, 191.0)",
         "apId": 49,
         "name": "Beach Hut Rocky Pool Sand Stick",
         "oldName": "First beach (Stick)"
-    },
-    {
-        "gameId": "d1",
-        "apId": 50,
-        "name": "Cliff Overlooking East River Waterfall Stick"
     },
     {
         "gameId": "(268.6, 265.9, 535.0)",

@@ -34,7 +34,10 @@ namespace AShortHike.Randomizer
         {
             if (allItems.TryGetValue(itemName, out CollectableItem item))
             {
-                amount = 1;
+                if (itemName == "Bait")
+                    amount = 5;
+                else
+                    amount = 1;
                 return item;
             }
 
