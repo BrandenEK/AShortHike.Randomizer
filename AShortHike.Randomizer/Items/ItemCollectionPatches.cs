@@ -62,23 +62,22 @@ namespace AShortHike.Randomizer.Items
 
             string CalculateNewLocationId(string locationId, string itemId)
             {
-                float currentLevel;
                 switch (locationId)
                 {
                     case "CampRangerNPC": // Visitor's center shop salesman
                         {
-                            currentLevel = Singleton<GlobalData>.instance.gameData.tags.GetFloat("$FeathersSold");
+                            int visitorFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$FeathersSold");
                             if (itemId == "GoldenFeather")
-                                return locationId + $"[{currentLevel}]";
+                                return locationId + $"[{visitorFeathers - 1}]";
                             else if (itemId == "ParkHat")
                                 return locationId + "[9]";
                             break;
                         }
                     case "ToughBirdNPC (1)": // Tough bird salesman
                         {
-                            currentLevel = Singleton<GlobalData>.instance.gameData.tags.GetFloat("$ToughBirdSales");
+                            int toughBirdFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$ToughBirdSales");
                             if (itemId == "GoldenFeather")
-                                return locationId + $"[{currentLevel}]";
+                                return locationId + $"[{toughBirdFeathers - 1}]";
                             else if (itemId == "Watch")
                                 return locationId + "[9]";
                             break;
@@ -92,12 +91,6 @@ namespace AShortHike.Randomizer.Items
                             else if (itemId == "KidHat")
                                 return locationId + "[2]";
                             break;
-                            //int current = 0;
-                            //if (Singleton<GlobalData>.instance.gameData.tags.GetBool("$GotVolleyPrize2"))
-                            //    current = 2;
-                            //else if (Singleton<GlobalData>.instance.gameData.tags.GetBool("$GotVolleyPrize"))
-                            //    current = 1;
-                            //return locationId + $"[{current}]";
                         }
                     case "FishBuyer": // Fisherman
                         {
@@ -120,10 +113,10 @@ namespace AShortHike.Randomizer.Items
                         }
                     case "RaceOpponent": // Parkour racer
                         {
-                            string race = "???"; // Get current race
-                            currentLevel = race == "peak" ? 2 : (race == "old build" ? 1 : 0);
+                            string race = "unknown"; // Get current race
+                            int raceLevel = race == "peak" ? 2 : (race == "old build" ? 1 : 0);
                             if (itemId == "Medal")
-                                return locationId + $"[{currentLevel}]";
+                                return locationId + $"[{raceLevel}]";
                             else if (itemId == "WalkieTalkie")
                                 return locationId + "[9]";
                             break;

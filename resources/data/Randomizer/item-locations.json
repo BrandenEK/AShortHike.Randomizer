@@ -135,7 +135,7 @@
         "name": "Visitor's Center Shop Golden Feather 1"
     },
     {
-        "gameId": "CampRangerNPC[2]",
+        "gameId": "CampRangerNPC[1]",
         "apId": 22,
         "name": "Visitor's Center Shop Golden Feather 2"
     },
@@ -415,7 +415,7 @@
         "oldName": "Top of lighthouse (Gold chest)"
     },
     {
-        "gameId": "(260.3, 255.3, 355.1)",
+        "gameId": "(260.3, 251.8, 355.1)",
         "apId": 72,
         "name": "Outlook Golden Chest",
         "oldName": "Lookout patio (Gold chest)"
