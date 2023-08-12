@@ -49,6 +49,20 @@ namespace AShortHike.Randomizer.Connection.Receivers
                             continue;
                         }
 
+                        if (collectable.name == "TreasureMap")
+                        {
+                            // Maps also need to set a specific flag
+                            int num = item.name switch
+                            {
+                                "A Stormy View Map" => 1,
+                                "In Her Shadow Map" => 2,
+                                "The King Map" => 3,
+                                "The Treasure of Sid Beach Map" => 4,
+                                _ => 0
+                            };
+                            Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
+                        }
+
                         Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(amount));
                     }
                 }

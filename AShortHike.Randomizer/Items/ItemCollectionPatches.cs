@@ -112,8 +112,8 @@ namespace AShortHike.Randomizer.Items
                         }
                     case "RaceOpponent": // Parkour racer
                         {
-                            string race = "unknown"; // Get current race
-                            int raceLevel = race == "peak" ? 2 : (race == "old build" ? 1 : 0);
+                            string race = Singleton<GlobalData>.instance.gameData.tags.GetString("RaceId");
+                            int raceLevel = race == "MountainTopRace" ? 2 : (race == "OldBuildingRace" ? 1 : 0);
                             if (itemId == "Medal")
                                 return locationId + $"[{raceLevel}]";
                             else if (itemId == "WalkieTalkie")
