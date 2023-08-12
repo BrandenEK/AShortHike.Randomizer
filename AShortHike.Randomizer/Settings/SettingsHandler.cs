@@ -8,13 +8,15 @@ namespace AShortHike.Randomizer.Settings
 {
     public class SettingsHandler
     {
-        private string server = null;
-        private string name = null;
-        private string password = null;
-
         private LinearMenu _settingsMenu;
         private LinearMenu _textMenu;
+
+        // These settings only persist while menuing and should be reset before that
         private SettingType _currentSetting;
+        private bool _currentIsContinue;
+        private string _currentServer;
+        private string _currentPlayer;
+        private string _currentPassword;
 
         public SettingsInfo SettingsConfig { get; private set; }
 
@@ -24,11 +26,36 @@ namespace AShortHike.Randomizer.Settings
             SettingsConfig = Main.Randomizer.Data.LoadConfig();
         }
 
-        public void ClearSettings()
+        public void RestoreMenuSettings(ConnectionInfo settings, bool isContinue)
         {
-            server = null;
-            name = null;
-            password = null;
+            _currentServer = settings.server;
+            _currentPlayer = settings.player;
+            _currentPassword = settings.password;
+            _currentIsContinue = isContinue;
+        }
+
+        public ConnectionInfo SettingsForCurrentSave
+        {
+            get
+            {
+                string save = GlobalData.currentSaveFile;
+                if (save.Contains("2"))
+                    return SettingsConfig.saveSlotThree;
+                else if (save.Contains("1"))
+                    return SettingsConfig.saveSlotTwo;
+                else
+                    return SettingsConfig.saveSlotOne;
+            }
+            set
+            {
+                string save = GlobalData.currentSaveFile;
+                if (save.Contains("2"))
+                    SettingsConfig.saveSlotThree = value;
+                else if (save.Contains("1"))
+                    SettingsConfig.saveSlotTwo = value;
+                else
+                    SettingsConfig.saveSlotOne = value;
+            }
         }
 
         public void BeginGameOnceConnected(bool isContinue)
@@ -41,14 +68,7 @@ namespace AShortHike.Randomizer.Settings
             }
 
             // Save connection info
-            string save = GlobalData.currentSaveFile;
-            var settings = new ConnectionInfo(server, name, password);
-            if (save.Contains("2"))
-                SettingsConfig.saveSlotThree = settings;
-            else if (save.Contains("1"))
-                SettingsConfig.saveSlotTwo = settings;
-            else
-                SettingsConfig.saveSlotOne = settings;
+            SettingsForCurrentSave = new ConnectionInfo(_currentServer, _currentPlayer, _currentPassword);
             Main.Randomizer.Data.SaveConfig(SettingsConfig);
 
             // Load game scene
@@ -92,15 +112,15 @@ namespace AShortHike.Randomizer.Settings
             {
                 case SettingType.Server:
                     title = "Enter server ipPort:";
-                    value = server;
+                    value = _currentServer;
                     break;
                 case SettingType.Name:
                     title = "Enter player name:";
-                    value = name;
+                    value = _currentPlayer;
                     break;
                 case SettingType.Password:
                     title = "Enter room password:";
-                    value = password;
+                    value = _currentPassword;
                     break;
                 default:
                     title = "Unknown setting:";
@@ -138,26 +158,30 @@ namespace AShortHike.Randomizer.Settings
             string input = _textMenu.GetComponentInChildren<TextInputItem>().FinalInput;
             switch (_currentSetting)
             {
-                case SettingType.Server: server = input; break;
-                case SettingType.Name: name = input; break;
-                case SettingType.Password: password = input; break;
+                case SettingType.Server: _currentServer = input; break;
+                case SettingType.Name: _currentPlayer = input; break;
+                case SettingType.Password: _currentPassword = input; break;
             }
             _textMenu.Kill();
             CloseSettingsMenu();
         }
 
-        public void OpenSettingsMenu()
+        public void OpenSettingsMenu(int index)
         {
+            // Get title and option
+            string title = $"{(_currentIsContinue ? "Confirm" : "Enter")} multiworld connection details";
+            string option = _currentIsContinue ? "Continue game" : "Start game";
+
             // Create menu
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
             LinearMenu submenu = null;
             submenu = ui.CreateSimpleMenu(
                 new string[]
                 {
-                    $"Server: <color=#EE0000>{server.DisplayAsDashIfNull()}</color>",
-                    $"Name: <color=#EE0000>{name.DisplayAsDashIfNull()}</color>",
-                    $"Password: <color=#EE0000>{password.DisplayAsDashIfNull()}</color>",
-                    "Confirm",
+                    $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
+                    $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
+                    $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
+                    option,
                     "Back",
                 },
                 new System.Action[]
@@ -180,7 +204,7 @@ namespace AShortHike.Randomizer.Settings
                     delegate ()
                     {
                         submenu.Kill();
-                        Main.Randomizer.Connection.Connect(server, name, password, false);
+                        Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
                     },
                     delegate ()
                     {
@@ -189,13 +213,14 @@ namespace AShortHike.Randomizer.Settings
                 });
 
             // Create title text
-            GameObject titleObject = ui.CreateTextMenuItem("Enter multiworld connection details");
+            GameObject titleObject = ui.CreateTextMenuItem(title);
             titleObject.transform.SetParent(submenu.transform, false);
             titleObject.transform.SetAsFirstSibling();
 
             // Finish menu
             LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
             (submenu.transform as RectTransform).CenterWithinParent();
+            submenu.selectedIndex = index;
             _settingsMenu = submenu;
         }
 
@@ -205,8 +230,7 @@ namespace AShortHike.Randomizer.Settings
                 return;
 
             _settingsMenu.Kill();
-            OpenSettingsMenu();
-            _settingsMenu.selectedIndex = (int)_currentSetting;
+            OpenSettingsMenu((int)_currentSetting);
         }
     }
 }

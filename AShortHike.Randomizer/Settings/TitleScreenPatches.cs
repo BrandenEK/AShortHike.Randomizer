@@ -16,8 +16,10 @@ namespace AShortHike.Randomizer.Settings
             }
             else
             {
-                Main.Randomizer.Settings.ClearSettings();
-                Main.Randomizer.Settings.OpenSettingsMenu();
+                ConnectionInfo settings = new ConnectionInfo();
+
+                Main.Randomizer.Settings.RestoreMenuSettings(settings, false);
+                Main.Randomizer.Settings.OpenSettingsMenu(0);
                 return false;
             }
         }
@@ -39,12 +41,10 @@ namespace AShortHike.Randomizer.Settings
             }
             else
             {
-                // Load saved connection info from config
-                string server = "localhost";
-                string player = "Player";
-                string password = null;
+                ConnectionInfo settings = Main.Randomizer.Settings.SettingsForCurrentSave;
 
-                Main.Randomizer.Connection.Connect(server, player, password, true);
+                Main.Randomizer.Settings.RestoreMenuSettings(settings, true);
+                Main.Randomizer.Settings.OpenSettingsMenu(3);
                 return false;
             }
         }
