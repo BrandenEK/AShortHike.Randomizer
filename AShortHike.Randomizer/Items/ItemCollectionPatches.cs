@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
 {
@@ -129,6 +130,9 @@ namespace AShortHike.Randomizer.Items
         }
     }
 
+    /// <summary>
+    /// When displaying an ap item, don't actually add its value anywhere
+    /// </summary>
     [HarmonyPatch(typeof(GlobalData.GameData), nameof(GlobalData.GameData.AddCollected))]
     class GameData_AddItem_Patch
     {
@@ -138,39 +142,16 @@ namespace AShortHike.Randomizer.Items
         }
     }
 
-    [HarmonyPatch(typeof(Tags), nameof(Tags.SetBool))]
-    class Tags_SaveBool_Patch
+    /// <summary>
+    /// After the fishing tutorial is finished, stash the fishing rod
+    /// </summary>
+    [HarmonyPatch(typeof(FishingTutorial), "CleanUpTutorial")]
+    class FishingTutorial_StashRod_Patch
     {
-        public static void Postfix(string tag, bool value)
+        public static void Postfix()
         {
-            Main.Log($"Saving bool: {tag} ({value})");
-        }
-    }
-
-    [HarmonyPatch(typeof(Tags), nameof(Tags.SetInt))]
-    class Tags_SaveInt_Patch
-    {
-        public static void Postfix(string tag, int num)
-        {
-            Main.Log($"Saving int: {tag} ({num})");
-        }
-    }
-
-    [HarmonyPatch(typeof(Tags), nameof(Tags.SetString))]
-    class Tags_SaveString_Patch
-    {
-        public static void Postfix(string tag, string value)
-        {
-            Main.Log($"Saving string: {tag} ({value})");
-        }
-    }
-
-    [HarmonyPatch(typeof(Tags), nameof(Tags.SetFloat))]
-    class Tags_SaveFloat_Patch
-    {
-        public static void Postfix(string tag, float number)
-        {
-            Main.Log($"Saving float: {tag} ({number})");
+            Main.Log("Stashing fishing rod after tutorial");
+            Singleton<GameServiceLocator>.instance.levelController.player.StashHeldItem();
         }
     }
 }
