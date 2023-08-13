@@ -131,9 +131,6 @@ namespace AShortHike.Randomizer
             allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
-            foreach (CollectableItem item in allItems.Values)
-                item.showPrompt = CollectableItem.PickUpPrompt.Always;
-
             Main.Log($"Loaded {allItems.Count} items!");
         }
 

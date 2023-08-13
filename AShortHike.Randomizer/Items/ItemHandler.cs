@@ -11,13 +11,42 @@ namespace AShortHike.Randomizer.Items
 
         // Item mapping
 
-        public void DisplayApItem()
+        public bool IsLocationRandomized(string locationId)
         {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = "Master Sword for Link";
-            item.icon = Main.Randomizer.Data.ApImage;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
+        }
+
+        public void CollectLocation(string locationId)
+        {
+            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
+            Main.Randomizer.Connection.SendLocation(locationId);
+
+            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
+            if (apLocation != null)
+                DisplayItem(apLocation);
+        }
+
+        public void DisplayItem(ArchipelagoLocation apLocation)
+        {
+            Main.Log($"Displaying {apLocation.itemName} for {apLocation.playerName}");
+
+            CollectableItem item;
+            if (apLocation.playerName == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            {
+                // The item belongs to this world
+                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(apLocation.itemName, out _);
+                if (localItem == null)
+                {
+                    Main.LogError(apLocation.itemName + " doesn't exist in this world");
+                    return;
+                }
+                item = CreateLocalItem(apLocation.itemName, localItem.icon);
+            }
+            else
+            {
+                // The item goes to another player's world
+                item = CreateExternalItem(apLocation.itemName, apLocation.playerName);
+            }
             Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
 
@@ -39,54 +68,6 @@ namespace AShortHike.Randomizer.Items
             item.icon = icon;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
-        }
-
-        public bool IsLocationRandomized(string locationId)
-        {
-            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
-        }
-
-        public void DisplayItem(string itemName, string playerName)
-        {
-            Main.LogWarning($"Displaying {itemName} for {playerName}");
-            if (playerName == Main.Randomizer.Settings.SettingsForCurrentSave.player)
-            {
-                // The item belongs to this world
-                Sprite icon;
-                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out int amount);
-                if (localItem == null)
-                {
-                    icon = null;
-                    // Actually just return
-                }
-                else
-                {
-                    icon = localItem.icon;
-                }
-                CollectableItem item = CreateLocalItem(itemName, icon);
-                item.PickUpRoutine(1);
-            }
-            else
-            {
-                // This item goes to another player's world
-                CollectableItem item = CreateExternalItem(itemName, playerName);
-                item.PickUpRoutine(1);
-            }
-        }
-
-        public void CollectLocation(string locationId)
-        {
-            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
-            Main.Randomizer.Connection.SendLocation(locationId);
-
-            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
-            if (apLocation != null)
-                DisplayItem(apLocation);
-        }
-
-        public void DisplayItem(ArchipelagoLocation apLocation)
-        {
-            Main.LogWarning($"Displaying {apLocation.itemName} for {apLocation.playerName}");
         }
 
         // Item loading
