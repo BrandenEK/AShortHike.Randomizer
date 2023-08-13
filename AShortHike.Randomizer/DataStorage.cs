@@ -34,7 +34,10 @@ namespace AShortHike.Randomizer
         {
             if (allItems.TryGetValue(itemName, out CollectableItem item))
             {
-                amount = 1;
+                if (itemName == "Bait")
+                    amount = 5;
+                else
+                    amount = 1;
                 return item;
             }
 
@@ -99,12 +102,19 @@ namespace AShortHike.Randomizer
             allItems.Add("Golden Feather", CollectableItem.Load("GoldenFeather"));
             allItems.Add("Silver Feather", CollectableItem.Load("SilverFeather"));
 
+            // Maps
+            CollectableItem map = CollectableItem.Load("TreasureMap");
+            allItems.Add("A Stormy View Map", map);
+            allItems.Add("In Her Shadow Map", map);
+            allItems.Add("The King Map", map);
+            allItems.Add("The Treasure of Sid Beach Map", map);
+
             // Others
             allItems.Add("Compass", CollectableItem.Load("Compass"));
             allItems.Add("Medal", CollectableItem.Load("Medal"));
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
             allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
-            allItems.Add("Treasure Map", CollectableItem.Load("TreasureMap"));
+            allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
             foreach (CollectableItem item in allItems.Values)
