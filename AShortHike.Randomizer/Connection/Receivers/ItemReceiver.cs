@@ -63,7 +63,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                             Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
                         }
 
-                        Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(amount));
+                        //Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(amount));
                     }
                 }
 

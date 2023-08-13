@@ -1,9 +1,12 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -118,6 +121,7 @@ namespace AShortHike.Randomizer.Connection
 
             Main.Log($"Sending location: {locationId} ({location.apId})");
             _session.Locations.CompleteLocationChecksAsync(81000 + location.apId);
+            //CheckItemAtLocation(81000 + location.apId);
         }
 
         public void SendAllLocations()
@@ -138,11 +142,32 @@ namespace AShortHike.Randomizer.Connection
             _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
         }
 
+        //private async Task CheckItemAtLocation(long locationApId)
+        //{
+        //    LocationInfoPacket packet = await _session.Locations.ScoutLocationsAsync(false, locationApId);
+        //    Main.LogWarning("Received scouted packet");
+        //    foreach (NetworkItem item in packet.Locations)
+        //    {
+        //        // This should only ever be one
+        //        Main.Randomizer.Items.DisplayItem(GetItemNameFromId(item.Item), GetPlayerNameFromSlot(item.Player));
+        //    }
+        //}
+
         // Helpers
 
         public string GetPlayerNameFromSlot(int slot)
         {
             return _session.Players.GetPlayerName(slot) ?? "Server";
+        }
+
+        public string GetItemNameFromId(long id)
+        {
+            return _session.Items.GetItemName(id) ?? $"Item[{id}]";
+        }
+
+        public string GetLocationNameFromId(long id)
+        {
+            return _session.Locations.GetLocationNameFromId(id) ?? $"Location[{id}]";
         }
     }
 }

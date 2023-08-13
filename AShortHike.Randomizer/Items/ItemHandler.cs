@@ -5,7 +5,6 @@ namespace AShortHike.Randomizer.Items
 {
     public class ItemHandler
     {
-        private readonly Dictionary<string, string> _mappedItems = new();
         private GameObject _chestObject;
         private bool _loaded;
 
@@ -21,20 +20,57 @@ namespace AShortHike.Randomizer.Items
             Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
 
+        private CollectableItem CreateExternalItem(string itemName, string playerName)
+        {
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "AP";
+            item.readableName = $"{itemName} for {playerName}";
+            item.icon = Main.Randomizer.Data.ApImage;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return item;
+        }
+
+        private CollectableItem CreateLocalItem(string itemName, Sprite icon)
+        {
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "AP";
+            item.readableName = $"{itemName}";
+            item.icon = icon;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return item;
+        }
+
         public bool IsLocationRandomized(string locationId)
         {
             return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
         }
 
-        public void ResetShuffledItems()
+        public void DisplayItem(string itemName, string playerName)
         {
-            _mappedItems.Clear();
-        }
-
-        public void StoreShuffledItems(List<string> items)
-        {
-            ResetShuffledItems();
-            // Loop over items and add key value pairs
+            Main.LogWarning($"Displaying {itemName} for {playerName}");
+            if (playerName == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            {
+                // The item belongs to this world
+                Sprite icon;
+                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out int amount);
+                if (localItem == null)
+                {
+                    icon = null;
+                    // Actually just return
+                }
+                else
+                {
+                    icon = localItem.icon;
+                }
+                CollectableItem item = CreateLocalItem(itemName, icon);
+                item.PickUpRoutine(1);
+            }
+            else
+            {
+                // This item goes to another player's world
+                CollectableItem item = CreateExternalItem(itemName, playerName);
+                item.PickUpRoutine(1);
+            }
         }
 
         // Item loading
