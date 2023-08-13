@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AShortHike.Randomizer.Connection;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
@@ -71,6 +72,21 @@ namespace AShortHike.Randomizer.Items
                 CollectableItem item = CreateExternalItem(itemName, playerName);
                 item.PickUpRoutine(1);
             }
+        }
+
+        public void CollectLocation(string locationId)
+        {
+            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
+            Main.Randomizer.Connection.SendLocation(locationId);
+
+            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
+            if (apLocation != null)
+                DisplayItem(apLocation);
+        }
+
+        public void DisplayItem(ArchipelagoLocation apLocation)
+        {
+            Main.LogWarning($"Displaying {apLocation.itemName} for {apLocation.playerName}");
         }
 
         // Item loading

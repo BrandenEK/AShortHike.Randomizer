@@ -28,8 +28,7 @@ namespace AShortHike.Randomizer.Items
         {
             string locationId = __instance.GetComponent<GameObjectID>().id;
             Main.LogWarning("Opening chest: " + locationId);
-            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
-            Main.Randomizer.Connection.SendLocation(locationId);
+            Main.Randomizer.Items.CollectLocation(locationId);
         }
     }
 
@@ -50,14 +49,13 @@ namespace AShortHike.Randomizer.Items
             // Only give random item if the amount is positive
             if (args.Length < 2 || int.TryParse(args[1], out int amount) && amount > 0)
             {
-                Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + context.originalSpeaker.position.ToString() + ", " + args[0]);
+                Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
                 string locationId = CalculateNewLocationId(context.originalSpeaker.name, args[0]);
                 if (!Main.Randomizer.Items.IsLocationRandomized(locationId))
                     return;
 
                 args = new string[] { "Stick", "0", "false" };
-                Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
-                Main.Randomizer.Connection.SendLocation(locationId);
+                Main.Randomizer.Items.CollectLocation(locationId);
             }
 
             string CalculateNewLocationId(string locationId, string itemId)
