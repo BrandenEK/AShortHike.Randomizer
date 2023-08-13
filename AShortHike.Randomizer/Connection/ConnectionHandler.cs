@@ -61,6 +61,7 @@ namespace AShortHike.Randomizer.Connection
 
             OnConnect(); // remove
 
+            ProcessSlotData(login);
             Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
             Main.Randomizer.OnConnect();
             return true;
@@ -88,6 +89,32 @@ namespace AShortHike.Randomizer.Connection
             ClearReceivers();
             Main.Randomizer.OnDisconnect();
             Main.LogWarning("OnDisconnect called");
+        }
+
+        private void ProcessSlotData(LoginSuccessful login)
+        {
+            //ArchipelagoLocation[] locations = new ArchipelagoLocation[] // Actually get this from slot data
+            //{
+            //    new ArchipelagoLocation(1, "Golden Feather", 1, "Player"),
+            //    new ArchipelagoLocation(40, "Life Upgrade", 1, "BlasPlayer"),
+            //    new ArchipelagoLocation(41, "Tears of Atonement (5000)", 0, "BlasPlayer"),
+            //    new ArchipelagoLocation(42, "Hookshot", 1, "ALTTP Player"),
+            //    new ArchipelagoLocation(99, "10 Rupees", 0, "OOT Player"),
+            //    new ArchipelagoLocation(100, "Silver Feather", 1, "Player"),
+            //};
+
+            var apLocations = new Dictionary<long, ArchipelagoLocation>()
+            {
+                { 1, new ArchipelagoLocation("Golden Feather", 1, "Player") },
+                { 40, new ArchipelagoLocation("Life Upgrade", 1, "BlasPlayer") },
+                { 41, new ArchipelagoLocation("Tears of Atonement (5000)", 0, "BlasPlayer") },
+                { 42, new ArchipelagoLocation("Hookshot", 1, "ALTTP Player") },
+                { 99, new ArchipelagoLocation("10 Rupees", 0, "OOT Player") },
+                { 100, new ArchipelagoLocation("Silver Feather", 1, "Player") },
+            };
+            
+            Main.Randomizer.Data.StoreApLocations(apLocations);
+            Main.Log($"Received {apLocations.Count} locations from slot data");
         }
 
         // Receivers

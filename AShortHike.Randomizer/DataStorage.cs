@@ -1,4 +1,5 @@
-﻿using AShortHike.Randomizer.Items;
+﻿using AShortHike.Randomizer.Connection;
+using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Settings;
 using Newtonsoft.Json;
 using System;
@@ -12,44 +13,6 @@ namespace AShortHike.Randomizer
     {
         private readonly string dataPath = Environment.CurrentDirectory + "\\Modding\\data\\Randomizer\\";
         private readonly string configPath = Environment.CurrentDirectory + "\\Modding\\config\\Randomizer.cfg";
-
-        private readonly Dictionary<string, ItemLocation> allLocations = new();
-
-        private readonly Dictionary<string, CollectableItem> allItems = new();
-
-        private Sprite _apImage;
-        public Sprite ApImage => _apImage;
-
-        public ItemLocation GetLocationFromId(string locationId)
-        {
-            return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
-        }
-
-        public IEnumerable<ItemLocation> GetAllLocations()
-        {
-            return allLocations.Values;
-        }
-
-        public CollectableItem GetItemFromName(string itemName, out int amount)
-        {
-            if (allItems.TryGetValue(itemName, out CollectableItem item))
-            {
-                if (itemName == "Bait")
-                    amount = 5;
-                else
-                    amount = 1;
-                return item;
-            }
-
-            if (itemName.EndsWith("Coins"))
-            {
-                amount = int.Parse(itemName.Substring(0, itemName.IndexOf(' ')));
-                return allItems.TryGetValue("Coins", out item) ? item : null;
-            }
-
-            amount = 0;
-            return null;
-        }
 
         public DataStorage()
         {
@@ -70,6 +33,57 @@ namespace AShortHike.Randomizer
                 LoadItemImage(imagePath);
             else
                 Main.LogError("Failed to load ap image from " + imagePath);
+        }
+
+        // Locations
+
+        private readonly Dictionary<string, ItemLocation> allLocations = new();
+
+        public ItemLocation GetLocationFromId(string locationId)
+        {
+            return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
+        }
+
+        public IEnumerable<ItemLocation> GetAllLocations()
+        {
+            return allLocations.Values;
+        }
+
+        private void LoadLocationsList(string path)
+        {
+            string json = File.ReadAllText(path);
+
+            foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
+            {
+                allLocations.Add(location.gameId, location);
+            }
+
+            Main.Log($"Loaded {allLocations.Count} item locations!");
+        }
+
+        // Items
+
+        private readonly Dictionary<string, CollectableItem> allItems = new();
+
+        public CollectableItem GetItemFromName(string itemName, out int amount)
+        {
+            if (allItems.TryGetValue(itemName, out CollectableItem item))
+            {
+                if (itemName == "Bait")
+                    amount = 5;
+                else
+                    amount = 1;
+                return item;
+            }
+
+            if (itemName.EndsWith("Coins"))
+            {
+                amount = int.Parse(itemName.Substring(0, itemName.IndexOf(' ')));
+                return allItems.TryGetValue("Coins", out item) ? item : null;
+            }
+
+            amount = 0;
+            return null;
         }
 
         private void LoadItemsList()
@@ -123,17 +137,28 @@ namespace AShortHike.Randomizer
             Main.Log($"Loaded {allItems.Count} items!");
         }
 
-        private void LoadLocationsList(string path)
+        // AP data
+
+        private Dictionary<long, ArchipelagoLocation> apLocations = new(); // Set whenever connecting to server
+
+        public void StoreApLocations(Dictionary<long, ArchipelagoLocation> apLocations)
         {
-            string json = File.ReadAllText(path);
-
-            foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
-            {
-                allLocations.Add(location.gameId, location);
-            }
-
-            Main.Log($"Loaded {allLocations.Count} item locations!");
+            this.apLocations = apLocations ?? new Dictionary<long, ArchipelagoLocation>();
         }
+
+        public ArchipelagoLocation GetApDataAtLocation(string locationId)
+        {
+            ItemLocation location = GetLocationFromId(locationId);
+            if (location == null)
+                return null;
+
+            return apLocations.TryGetValue(location.apId, out ArchipelagoLocation apLocation) ? apLocation : null;
+        }
+
+        // Images
+
+        private Sprite _apImage;
+        public Sprite ApImage => _apImage;
 
         private void LoadItemImage(string path)
         {
