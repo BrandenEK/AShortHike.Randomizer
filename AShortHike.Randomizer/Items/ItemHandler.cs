@@ -115,6 +115,26 @@ namespace AShortHike.Randomizer.Items
 
         public void ReplaceWorldObjectsWithChests()
         {
+            foreach (BuriedChest bc in Object.FindObjectsOfType<BuriedChest>())
+            {
+                Main.LogError(bc.chest.transform.position);
+            }
+
+            // Change all items for chests
+            foreach (Chest chest in Object.FindObjectsOfType<Chest>())
+            {
+                GameObject chestObj = ReplaceObjectWithRandomChest(chest.gameObject);
+                if (chestObj == null)
+                    continue;
+
+                BuriedChest buriedChest = chest.GetComponentInParent<BuriedChest>();
+                if (buriedChest == null)
+                    continue;
+
+                buriedChest.chest = chestObj;
+                chestObj.SetActive(buriedChest.GetComponent<GameObjectID>().GetBoolForID("Unearthed_"));
+            }
+
             // Change all items for interactable pickups
             foreach (CollectOnInteract interact in Object.FindObjectsOfType<CollectOnInteract>())
             {
@@ -127,12 +147,6 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(touch.gameObject);
             }
 
-            // Change all items for chests
-            foreach (Chest chest in Object.FindObjectsOfType<Chest>())
-            {
-                ReplaceObjectWithRandomChest(chest.gameObject);
-            }
-
             // Change all items for holdables
             foreach (Holdable holdable in Object.FindObjectsOfType<Holdable>())
             {
@@ -142,11 +156,11 @@ namespace AShortHike.Randomizer.Items
             Main.Log($"Replaced objects in the world with random chests");
         }
 
-        private void ReplaceObjectWithRandomChest(GameObject obj)
+        private GameObject ReplaceObjectWithRandomChest(GameObject obj, bool ignoreIsRandomized = false)
         {
             string locationId = obj.transform.position.ToString();
-            if (!IsLocationRandomized(locationId))
-                return;
+            if (!IsLocationRandomized(locationId) && !ignoreIsRandomized)
+                return null;
 
             Transform parent = obj.transform.parent;
             Vector3 position = obj.transform.position;
@@ -161,6 +175,7 @@ namespace AShortHike.Randomizer.Items
             GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
             chest.GetComponent<GameObjectID>().id = locationId;
             chest.SetActive(true);
+            return chest;
         }
 
     }

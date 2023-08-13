@@ -636,5 +636,75 @@
         "gameId": "RaceOpponent[9]",
         "apId": 131,
         "name": "Lose Race Gift"
+    },
+    {
+        "gameId": "(274.2, 10.0, 30.4)",
+        "apId": 78,
+        "name": "Sid Beach Buried Treasure Chest"
+    },
+    {
+        "gameId": "(233.6, 47.2, 58.1)",
+        "apId": 80,
+        "name": "Visitor's Center Buried Chest"
+    },
+    {
+        "gameId": "(138.3, 96.0, 298.3)",
+        "apId": 85,
+        "name": "King Buried Treasure Chest"
+    },
+    {
+        "gameId": "(292.8, 165.4, 327.3)",
+        "apId": 86,
+        "name": "Good Creek Path Buried Chest"
+    },
+    {
+        "gameId": "(590.3, 123.6, 410.7)",
+        "apId": 93,
+        "name": "In Her Shadow Buried Treasure Chest"
+    },
+    {
+        "gameId": "(583.9, 102.9, 545.5)",
+        "apId": 94,
+        "name": "Meteor Lake Buried Chest"
+    },
+    {
+        "gameId": "(512.9, 371.9, 763.2)",
+        "apId": 107,
+        "name": "Hawk Peak East Buried Chest"
+    },
+    {
+        "gameId": "(441.2, 28.3, 1070.3)",
+        "apId": 111,
+        "name": "North Coast Buried Chest"
+    },
+    {
+        "gameId": "(643.7, 20.1, 36.3)",
+        "apId": 112,
+        "name": "Small South Island Buried Chest"
+    },
+    {
+        "gameId": "(972.8, 27.2, 984.0)",
+        "apId": 115,
+        "name": "Sunhat Island Buried Chest"
+    },
+    {
+        "gameId": "(79.2, 19.7, 1150.5)",
+        "apId": 116,
+        "name": "Orange Islands South Buried Chest"
+    },
+    {
+        "gameId": "(88.4, 29.8, 1417.9)",
+        "apId": 118,
+        "name": "Orange Islands North Buried Chest"
+    },
+    {
+        "gameId": "(319.5, 8.9, 1314.1)",
+        "apId": 121,
+        "name": "A Stormy View Buried Treasure Chest"
+    },
+    {
+        "gameId": "(406.6, 46.3, 1311.0)",
+        "apId": 122,
+        "name": "Orange Islands Ruins Buried Chest"
     }
 ]
