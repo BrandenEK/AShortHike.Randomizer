@@ -8,6 +8,8 @@ namespace AShortHike.Randomizer.Connection
         public readonly int itemType;
         public readonly string playerName;
 
+        public bool ShoudlBeGolden => itemType == 0 || itemType == 3;
+
         public ArchipelagoLocation(string itemName, int itemType, string playerName)
         {
             //this.apId = apId;

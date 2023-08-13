@@ -63,6 +63,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                             Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
                         }
 
+                        // Also display something if received from someone else
                         Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
                     }
                 }

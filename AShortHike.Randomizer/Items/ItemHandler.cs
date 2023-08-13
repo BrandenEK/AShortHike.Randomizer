@@ -1,4 +1,5 @@
 ﻿using AShortHike.Randomizer.Connection;
+using AShortHike.Randomizer.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +7,6 @@ namespace AShortHike.Randomizer.Items
 {
     public class ItemHandler
     {
-        private GameObject _chestObject;
-        private bool _loaded;
-
         // Item mapping
 
         public bool IsLocationRandomized(string locationId)
@@ -72,29 +70,51 @@ namespace AShortHike.Randomizer.Items
 
         // Item loading
 
-        public void LoadItemObjects()
+        private GameObject _regularChest = null;
+        private GameObject _goldenChest = null;
+
+        public void LoadChestObjects()
         {
-            if (_loaded) return;
+            if (_regularChest != null && _goldenChest != null)
+                return;
 
-            _chestObject = Object.FindObjectOfType<Chest>().gameObject.CloneInactive();
-            _chestObject.name = "RandoChest";
-            _chestObject.transform.SetParent(Main.TransformHolder);
-            Main.LogWarning("Loaded chest object");
+            foreach (Chest chest in Object.FindObjectsOfType<Chest>())
+            {
+                if (chest.transform.position.ToString() == "(594.7, 143.3, 345.6)")
+                {
+                    if (_goldenChest != null)
+                        continue;
 
-            _loaded = true;
-        }
+                    _goldenChest = chest.gameObject.CloneInactive();
+                    _goldenChest.name = "GoldenChest";
+                    _goldenChest.transform.SetParent(Main.TransformHolder);
+                    _goldenChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
-        public GameObject GetChestObject()
-        {
-            return _chestObject;
+                    if (_regularChest != null)
+                        return;
+                }
+                else
+                {
+                    if (_regularChest != null)
+                        continue;
+
+                    _regularChest = chest.gameObject.CloneInactive();
+                    _regularChest.name = "RegularChest";
+                    _regularChest.transform.SetParent(Main.TransformHolder);
+                    _regularChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
+
+                    if (_goldenChest != null)
+                        return;
+                }
+            }
+
+            Main.Log("Loaded chest objects");
         }
 
         // Item changing
 
         public void ReplaceWorldObjectsWithChests()
         {
-            int numObjects = 0;
-
             // Change all items for interactable pickups
             foreach (CollectOnInteract interact in Object.FindObjectsOfType<CollectOnInteract>())
             {
@@ -119,27 +139,29 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(holdable.gameObject);
             }
 
-            Main.Log($"Replaced {numObjects} objects in the world with random chests");
-
-            void ReplaceObjectWithRandomChest(GameObject obj)
-            {
-                string locationId = obj.transform.position.ToString();
-                if (!IsLocationRandomized(locationId))
-                    return;
-
-                Transform parent = obj.transform.parent;
-                Vector3 position = obj.transform.position;
-
-                Object.Destroy(obj.gameObject);
-
-                // Create chest at this position with same id and no items
-                GameObject chest = Object.Instantiate(GetChestObject(), position, Quaternion.identity, parent);
-                chest.GetComponent<GameObjectID>().id = locationId;
-                chest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
-                chest.SetActive(true);
-
-                numObjects++;
-            }
+            Main.Log($"Replaced objects in the world with random chests");
         }
+
+        private void ReplaceObjectWithRandomChest(GameObject obj)
+        {
+            string locationId = obj.transform.position.ToString();
+            if (!IsLocationRandomized(locationId))
+                return;
+
+            Transform parent = obj.transform.parent;
+            Vector3 position = obj.transform.position;
+
+            Object.Destroy(obj.gameObject);
+
+            // Determine what type of chest to spawn
+            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
+            bool useGoldenChest = apLocation != null && apLocation.ShoudlBeGolden;
+
+            // Create chest at this position with same id
+            GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
+            chest.GetComponent<GameObjectID>().id = locationId;
+            chest.SetActive(true);
+        }
+
     }
 }

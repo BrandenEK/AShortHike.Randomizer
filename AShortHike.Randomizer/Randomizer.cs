@@ -23,7 +23,7 @@ namespace AShortHike.Randomizer
         {
             if (scene == "GameScene")
             {
-                _items.LoadItemObjects();
+                _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
                 _connection.SendAllLocations();
             }
