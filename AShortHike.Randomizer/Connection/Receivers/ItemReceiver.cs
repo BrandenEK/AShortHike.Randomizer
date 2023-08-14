@@ -7,7 +7,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
 {
     public class ItemReceiver
     {
-        private readonly List<QueuedItem> _itemQueue = new();
+        private readonly Queue<QueuedItem> _itemQueue = new();
 
         private static readonly object itemLock = new();
 
@@ -32,7 +32,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 helper.DequeueItem();
 
                 Main.Log("Queueing item: " + name);
-                _itemQueue.Add(new QueuedItem(name, player, index));
+                _itemQueue.Enqueue(new QueuedItem(name, player, index));
             }
         }
 
@@ -43,48 +43,45 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 if (_itemQueue.Count == 0 || !Input.hasFocus)
                     return;
 
-                // Make sure in game and grounded and not in item display
-                Main.Log("Processing item queue");
+                ProcessItem(_itemQueue.Dequeue());
+            }
+        }
 
-                foreach (QueuedItem item in _itemQueue)
+        private void ProcessItem(QueuedItem item)
+        {
+            int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
+            Main.LogWarning($"Receiving item: {item.name} at index {item.index} with {itemsReceived} items received");
+
+            if (item.index > itemsReceived)
+            {
+                Singleton<GlobalData>.instance.gameData.tags.SetInt("ITEMS_RECEIVED", itemsReceived + 1);
+
+                CollectableItem collectable = Main.Randomizer.Data.GetItemFromName(item.name, out int amount);
+                if (collectable == null)
                 {
-                    int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
-                    Main.LogWarning($"Receiving item: {item.name} at index {item.index} with {itemsReceived} items received");
-
-                    if (item.index > itemsReceived)
-                    {
-                        Singleton<GlobalData>.instance.gameData.tags.SetInt("ITEMS_RECEIVED", itemsReceived + 1);
-
-                        CollectableItem collectable = Main.Randomizer.Data.GetItemFromName(item.name, out int amount);
-                        if (collectable == null)
-                        {
-                            Main.LogError("Received invalid item: " + item.name);
-                            continue;
-                        }
-
-                        if (collectable.name == "TreasureMap")
-                        {
-                            // Maps also need to set a specific flag
-                            int num = item.name switch
-                            {
-                                "A Stormy View Map" => 1,
-                                "In Her Shadow Map" => 2,
-                                "The King Map" => 3,
-                                "The Treasure of Sid Beach Map" => 4,
-                                _ => 0
-                            };
-                            Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
-                        }
-
-                        Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
-                        if (item.player != Main.Randomizer.Settings.SettingsForCurrentSave.player)
-                        {
-                            Main.Randomizer.Items.DisplayReceivedItem(item.name, item.player);
-                        }
-                    }
+                    Main.LogError("Received invalid item: " + item.name);
+                    return;
                 }
 
-                _itemQueue.Clear();
+                if (collectable.name == "TreasureMap")
+                {
+                    // Maps also need to set a specific flag
+                    int num = item.name switch
+                    {
+                        "A Stormy View Map" => 1,
+                        "In Her Shadow Map" => 2,
+                        "The King Map" => 3,
+                        "The Treasure of Sid Beach Map" => 4,
+                        _ => 0
+                    };
+                    Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
+                }
+
+                // If from this player, just add collected
+                // If from other player, add collected and display custom item
+
+                //Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
+                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(1));
             }
         }
 

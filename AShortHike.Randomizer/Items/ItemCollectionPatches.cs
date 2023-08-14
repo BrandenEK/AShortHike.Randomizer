@@ -164,7 +164,7 @@ namespace AShortHike.Randomizer.Items
         public static void Postfix(ItemPrompt __instance, CollectableItem item)
         {
             __instance.beforeName.GetComponent<Text>().text = "Found";
-            __instance.itemName.text = item.readableName + "!";
+            //__instance.itemName.text = item.readableName + "!";
         }
     }
 
