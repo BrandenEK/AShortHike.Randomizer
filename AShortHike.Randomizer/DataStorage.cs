@@ -115,6 +115,7 @@ namespace AShortHike.Randomizer
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
             allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
             allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
+            allItems.Add("Walkie Talkie", CollectableItem.Load("WalkieTalkie"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
             Main.Log($"Loaded {allItems.Count} items!");
