@@ -1,5 +1,4 @@
-﻿using AShortHike.Randomizer.Connection;
-using AShortHike.Randomizer.Items;
+﻿using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Settings;
 using Newtonsoft.Json;
 using System;
