@@ -51,7 +51,8 @@ namespace AShortHike.Randomizer.Items
             {
                 Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
                 string locationId = CalculateNewLocationId(context.originalSpeaker.name, args[0]);
-                if (!Main.Randomizer.Items.IsLocationRandomized(locationId))
+                ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
+                if (location == null)
                     return;
 
                 args = new string[] { "Stick", "0", "false" };
