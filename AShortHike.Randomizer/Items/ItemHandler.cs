@@ -83,7 +83,7 @@ namespace AShortHike.Randomizer.Items
                     _goldenChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
                     if (_regularChest != null)
-                        return;
+                        break;
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace AShortHike.Randomizer.Items
                     _regularChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
                     if (_goldenChest != null)
-                        return;
+                        break;
                 }
             }
 
@@ -147,11 +147,8 @@ namespace AShortHike.Randomizer.Items
 
             Object.Destroy(obj.gameObject);
 
-            // Determine what type of chest to spawn
-            bool useGoldenChest = location != null && location.ShouldBeGolden;
-
             // Create chest at this position with same id
-            GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
+            GameObject chest = Object.Instantiate(location.ShouldBeGolden ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
             chest.GetComponent<GameObjectID>().id = locationId;
             chest.SetActive(true);
         }
