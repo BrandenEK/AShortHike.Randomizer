@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Items
@@ -184,53 +183,15 @@ namespace AShortHike.Randomizer.Items
             if (location.player_name == Main.Randomizer.Settings.SettingsForCurrentSave.player)
             {
                 // The item belongs to this world
-                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(location.item_name, out _);
-                if (localItem == null)
-                {
-                    Main.LogError(location.item_name + " doesn't exist in this world");
-                }
-                __result = CreateLocalItem(location.item_name, localItem?.icon);
+                __result = ItemCreator.CreateLocalItem(location.item_name);
             }
             else
             {
                 // The item goes to another player's world
-                __result = CreateExternalItem(location.item_name, location.player_name);
+                __result = ItemCreator.CreateExternalItem(location.item_name, location.player_name);
             }
 
             return false;
-        }
-
-        private static CollectableItem CreateExternalItem(string itemName, string playerName)
-        {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = FormatItemName(itemName, playerName);
-            item.icon = Main.Randomizer.Data.ApImage;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
-            return item;
-        }
-
-        private static CollectableItem CreateLocalItem(string itemName, Sprite icon)
-        {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = FormatItemName(itemName, null);
-            item.icon = icon;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
-            return item;
-        }
-
-        private static string FormatItemName(string itemName, string playerName)
-        {
-            string truncatedItemName = itemName.Length > 20 ? itemName.Substring(0, 19).Trim() + '.' : itemName;
-            if (playerName == null)
-            {
-                return truncatedItemName;
-            }
-            else
-            {
-                return $"{truncatedItemName} <color=#FFFFFF>for</color> {playerName}";
-            }
         }
     }
 }
