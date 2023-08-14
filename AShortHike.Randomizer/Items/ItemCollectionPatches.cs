@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Items
 {
+    /// <summary>
+    /// These 3 patches just show the location of the object to replace - will be gone soon
+    /// </summary>
     [HarmonyPatch(typeof(CollectOnInteract), nameof(CollectOnInteract.Collect))]
     class Interactable_Collect_Patch
     {
@@ -11,7 +14,6 @@ namespace AShortHike.Randomizer.Items
             Main.LogWarning("Collecting interactable: " + __instance.transform.position);
         }
     }
-
     [HarmonyPatch(typeof(CollectOnTouch), nameof(CollectOnTouch.Collect))]
     class Touchable_Collect_Patch
     {
@@ -20,7 +22,18 @@ namespace AShortHike.Randomizer.Items
             Main.LogWarning("Collecting touchable: " + __instance.transform.position);
         }
     }
+    [HarmonyPatch(typeof(Holdable), nameof(Holdable.Interact))]
+    class Holdable_Collect_Patch
+    {
+        public static void Postfix(Holdable __instance)
+        {
+            Main.LogWarning("Collecting holdable: " + __instance.transform.position);
+        }
+    }
 
+    /// <summary>
+    /// When interacting with a chest, send the location and display the item there
+    /// </summary>
     [HarmonyPatch(typeof(Chest), nameof(Chest.Interact))]
     class Chest_Collect_Patch
     {
@@ -32,15 +45,9 @@ namespace AShortHike.Randomizer.Items
         }
     }
 
-    [HarmonyPatch(typeof(Holdable), nameof(Holdable.Interact))]
-    class Holdable_Collect_Patch
-    {
-        public static void Postfix(Holdable __instance)
-        {
-            Main.LogWarning("Collecting holdable: " + __instance.transform.position);
-        }
-    }
-
+    /// <summary>
+    /// When an npc gives you an item through dialog, send the location and display the item there
+    /// </summary>
     [HarmonyPatch(typeof(YarnCommands), nameof(YarnCommands.GiveItem))]
     class Dialog_GiveItem_Patch
     {
@@ -153,7 +160,6 @@ namespace AShortHike.Randomizer.Items
                 __instance.beforeName.GetComponent<Text>().text = "Found";
             else if (item.name == "APR")
                 __instance.beforeName.GetComponent<Text>().text = "Got";
-            //__instance.itemName.text = item.readableName + "!";
         }
     }
 

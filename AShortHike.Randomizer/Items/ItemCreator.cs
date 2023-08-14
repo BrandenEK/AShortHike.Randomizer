@@ -4,6 +4,9 @@ namespace AShortHike.Randomizer.Items
 {
     public static class ItemCreator
     {
+        /// <summary>
+        /// Creates an instance of an item to display when you find an item for another player
+        /// </summary>
         public static CollectableItem CreateExternalItem(string itemName, string playerName)
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
@@ -14,6 +17,9 @@ namespace AShortHike.Randomizer.Items
             return item;
         }
 
+        /// <summary>
+        /// Creates an instance of an item to display when you find an item for yourself
+        /// </summary>
         public static CollectableItem CreateLocalItem(string itemName)
         {
             CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
@@ -26,6 +32,9 @@ namespace AShortHike.Randomizer.Items
             return item;
         }
 
+        /// <summary>
+        /// Creates an instance of an item to display when someone else finds an item for you
+        /// </summary>
         public static CollectableItem CreateReceivedItem(string itemName, string playerName)
         {
             CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
@@ -38,11 +47,17 @@ namespace AShortHike.Randomizer.Items
             return item;
         }
 
+        /// <summary>
+        /// If the string is greater than 20 characters long, it will truncate it and add a point at the end
+        /// </summary>
         private static string TruncateItemName(string itemName)
         {
             return itemName.Length > 20 ? itemName.Substring(0, 19).Trim() + '.' : itemName;
         }
 
+        /// <summary>
+        /// Wraps a message in white color text to appear normal in the item display prompt
+        /// </summary>
         private static string ChangeTextWhite(string text)
         {
             return $"<color=#FFFFFF>{text}</color>";

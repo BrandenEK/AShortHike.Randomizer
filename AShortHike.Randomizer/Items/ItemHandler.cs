@@ -4,8 +4,13 @@ namespace AShortHike.Randomizer.Items
 {
     public class ItemHandler
     {
-        // Item mapping
+        private GameObject _regularChest = null;
+        private GameObject _goldenChest = null;
 
+        /// <summary>
+        /// When a location is "collected" through a chest or npc dialog, set its collected flag and send to the server
+        /// Chests should display the location, while npc dialog handles it itself
+        /// </summary>
         public void CollectLocation(string locationId, bool showDisplay)
         {
             Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
@@ -19,11 +24,9 @@ namespace AShortHike.Randomizer.Items
             }
         }
 
-        // Item loading
-
-        private GameObject _regularChest = null;
-        private GameObject _goldenChest = null;
-
+        /// <summary>
+        /// When the game scene is loaded, find both versions of the chest object and store them for use in the replace method
+        /// </summary>
         public void LoadChestObjects()
         {
             if (_regularChest != null && _goldenChest != null)
@@ -62,8 +65,9 @@ namespace AShortHike.Randomizer.Items
             Main.Log("Loaded chest objects");
         }
 
-        // Item changing
-
+        /// <summary>
+        /// When the game scene is loaded, find every object that should be randomized and replace it with a chest
+        /// </summary>
         public void ReplaceWorldObjectsWithChests()
         {
             // Change all items for buried chests
@@ -107,6 +111,9 @@ namespace AShortHike.Randomizer.Items
             Main.Log($"Replaced objects in the world with random chests");
         }
 
+        /// <summary>
+        /// For every object (Feathers, sticks, etc) in the world that is randomized, replace it with a golden or regular chest
+        /// </summary>
         private GameObject ReplaceObjectWithRandomChest(GameObject obj, bool ignoreIsRandomized = false)
         {
             // Determine whether to randomize this location or not
