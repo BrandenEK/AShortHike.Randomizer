@@ -7,8 +7,8 @@ namespace AShortHike.Randomizer.Items
         public static CollectableItem CreateExternalItem(string itemName, string playerName)
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = $"Found {TruncateItemName(itemName)} for {playerName}";
+            item.name = "APL";
+            item.readableName = $"{TruncateItemName(itemName)} {ChangeTextWhite("for")} {playerName}";
             item.icon = Main.Randomizer.Data.ApImage;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
@@ -19,8 +19,8 @@ namespace AShortHike.Randomizer.Items
             CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
 
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = $"Found {TruncateItemName(itemName)}";
+            item.name = "APL";
+            item.readableName = $"{TruncateItemName(itemName)}";
             item.icon = localItem?.icon;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
@@ -31,8 +31,8 @@ namespace AShortHike.Randomizer.Items
             CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
 
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = $"Got {TruncateItemName(itemName)} from {playerName}";
+            item.name = "APR";
+            item.readableName = $"{TruncateItemName(itemName)} {ChangeTextWhite("from")} {playerName}";
             item.icon = localItem?.icon;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;

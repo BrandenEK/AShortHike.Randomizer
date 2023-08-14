@@ -130,14 +130,30 @@ namespace AShortHike.Randomizer.Items
     }
 
     /// <summary>
-    /// When displaying an ap item, don't actually add its value anywhere
+    /// When displaying a collected item, don't actually add its value anywhere
     /// </summary>
     [HarmonyPatch(typeof(GlobalData.GameData), nameof(GlobalData.GameData.AddCollected))]
     class GameData_AddItem_Patch
     {
         public static bool Prefix(CollectableItem item)
         {
-            return item.name != "AP";
+            return item.name != "APL" && item.name != "APR";
+        }
+    }
+
+    /// <summary>
+    /// When displaying a collected item, change the text that is displayed
+    /// </summary>
+    [HarmonyPatch(typeof(ItemPrompt), nameof(ItemPrompt.Setup))]
+    class ItemPrompt_ChangeText_Patch
+    {
+        public static void Postfix(ItemPrompt __instance, CollectableItem item)
+        {
+            if (item.name == "APL")
+                __instance.beforeName.GetComponent<Text>().text = "Found";
+            else if (item.name == "APR")
+                __instance.beforeName.GetComponent<Text>().text = "Got";
+            //__instance.itemName.text = item.readableName + "!";
         }
     }
 
@@ -151,19 +167,6 @@ namespace AShortHike.Randomizer.Items
         {
             Main.Log("Stashing fishing rod after tutorial");
             Singleton<GameServiceLocator>.instance.levelController.player.StashHeldItem();
-        }
-    }
-
-    /// <summary>
-    /// When displaying a collected item, change the text that is displayed
-    /// </summary>
-    [HarmonyPatch(typeof(ItemPrompt), nameof(ItemPrompt.Setup))]
-    class ItemPrompt_ChangeText_Patch
-    {
-        public static void Postfix(ItemPrompt __instance, CollectableItem item)
-        {
-            __instance.beforeName.GetComponent<Text>().text = "Found";
-            //__instance.itemName.text = item.readableName + "!";
         }
     }
 

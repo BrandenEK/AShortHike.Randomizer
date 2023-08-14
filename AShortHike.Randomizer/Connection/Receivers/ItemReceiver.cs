@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
+using AShortHike.Randomizer.Items;
 using QuickUnityTools.Input;
 using System.Collections.Generic;
 using UnityEngine;
@@ -77,11 +78,15 @@ namespace AShortHike.Randomizer.Connection.Receivers
                     Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
                 }
 
-                // If from this player, just add collected
-                // If from other player, add collected and display custom item
+                // Add the item to the inventory
+                Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
 
-                //Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(1));
+                // If received from another player, display it in an item prompt
+                if (item.player != Main.Randomizer.Settings.SettingsForCurrentSave.player)
+                {
+                    CollectableItem displayCollectable = ItemCreator.CreateReceivedItem(item.name, item.player);
+                    Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(displayCollectable.PickUpRoutine(1));
+                }
             }
         }
 
