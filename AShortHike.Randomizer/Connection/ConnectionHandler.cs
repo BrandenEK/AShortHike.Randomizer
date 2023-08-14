@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -58,6 +59,7 @@ namespace AShortHike.Randomizer.Connection
 
             OnConnect(); // remove
 
+            ProcessSlotData(login);
             Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
             Main.Randomizer.OnConnect();
             return true;
@@ -85,6 +87,14 @@ namespace AShortHike.Randomizer.Connection
             ClearReceivers();
             Main.Randomizer.OnDisconnect();
             Main.LogWarning("OnDisconnect called");
+        }
+
+        private void ProcessSlotData(LoginSuccessful login)
+        {
+            var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
+
+            Main.Randomizer.Data.StoreItemLocations(apLocations);
+            Main.Log($"Received {apLocations?.Count} locations from slot data");
         }
 
         // Receivers
@@ -116,8 +126,8 @@ namespace AShortHike.Randomizer.Connection
                 return;
             }
 
-            Main.Log($"Sending location: {locationId} ({location.apId})");
-            _session.Locations.CompleteLocationChecksAsync(81000 + location.apId);
+            Main.Log($"Sending location: {locationId} ({location.ap_id})");
+            _session.Locations.CompleteLocationChecksAsync(location.ap_id);
         }
 
         public void SendAllLocations()
@@ -128,10 +138,10 @@ namespace AShortHike.Randomizer.Connection
             var checkedLocations = new List<long>();
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            foreach (ItemLocation location in Main.Randomizer.Data.GetAllLocations())
+            foreach (KeyValuePair<string, ItemLocation> kvp in Main.Randomizer.Data.GetAllLocations())
             {
-                if (tags.GetBool("Opened_" + location.gameId))
-                    checkedLocations.Add(81000 + location.apId);
+                if (tags.GetBool("Opened_" + kvp.Key))
+                    checkedLocations.Add(kvp.Value.ap_id);
             }
 
             Main.Log($"Sending all {checkedLocations.Count} locations");
@@ -143,6 +153,16 @@ namespace AShortHike.Randomizer.Connection
         public string GetPlayerNameFromSlot(int slot)
         {
             return _session.Players.GetPlayerName(slot) ?? "Server";
+        }
+
+        public string GetItemNameFromId(long id)
+        {
+            return _session.Items.GetItemName(id) ?? $"Item[{id}]";
+        }
+
+        public string GetLocationNameFromId(long id)
+        {
+            return _session.Locations.GetLocationNameFromId(id) ?? $"Location[{id}]";
         }
     }
 }

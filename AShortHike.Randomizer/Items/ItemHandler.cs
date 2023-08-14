@@ -1,67 +1,112 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
 {
     public class ItemHandler
     {
-        private readonly Dictionary<string, string> _mappedItems = new();
-        private GameObject _chestObject;
-        private bool _loaded;
-
         // Item mapping
 
-        public void DisplayApItem()
+        public void CollectLocation(string locationId)
         {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = "Master Sword for Link";
-            item.icon = Main.Randomizer.Data.ApImage;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
+            Main.Randomizer.Connection.SendLocation(locationId);
+
+            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
+            if (location != null)
+                DisplayItem(location);
+        }
+
+        public void DisplayItem(ItemLocation location)
+        {
+            Main.Log($"Displaying {location.item_name} for {location.player_name}");
+
+            CollectableItem item;
+            if (location.player_name == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            {
+                // The item belongs to this world
+                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(location.item_name, out _);
+                if (localItem == null)
+                {
+                    Main.LogError(location.item_name + " doesn't exist in this world");
+                    return;
+                }
+                item = CreateLocalItem(location.item_name, localItem.icon);
+            }
+            else
+            {
+                // The item goes to another player's world
+                item = CreateExternalItem(location.item_name, location.player_name);
+            }
             Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
 
-        public bool IsLocationRandomized(string locationId)
+        private CollectableItem CreateExternalItem(string itemName, string playerName)
         {
-            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "AP";
+            item.readableName = $"{itemName} for {playerName}";
+            item.icon = Main.Randomizer.Data.ApImage;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return item;
         }
 
-        public void ResetShuffledItems()
+        private CollectableItem CreateLocalItem(string itemName, Sprite icon)
         {
-            _mappedItems.Clear();
-        }
-
-        public void StoreShuffledItems(List<string> items)
-        {
-            ResetShuffledItems();
-            // Loop over items and add key value pairs
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "AP";
+            item.readableName = $"{itemName}";
+            item.icon = icon;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return item;
         }
 
         // Item loading
 
-        public void LoadItemObjects()
+        private GameObject _regularChest = null;
+        private GameObject _goldenChest = null;
+
+        public void LoadChestObjects()
         {
-            if (_loaded) return;
+            if (_regularChest != null && _goldenChest != null)
+                return;
 
-            _chestObject = Object.FindObjectOfType<Chest>().gameObject.CloneInactive();
-            _chestObject.name = "RandoChest";
-            _chestObject.transform.SetParent(Main.TransformHolder);
-            Main.LogWarning("Loaded chest object");
+            foreach (Chest chest in Object.FindObjectsOfType<Chest>())
+            {
+                if (chest.transform.position.ToString() == "(594.7, 143.3, 345.6)")
+                {
+                    if (_goldenChest != null)
+                        continue;
 
-            _loaded = true;
-        }
+                    _goldenChest = chest.gameObject.CloneInactive();
+                    _goldenChest.name = "GoldenChest";
+                    _goldenChest.transform.SetParent(Main.TransformHolder);
+                    _goldenChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
-        public GameObject GetChestObject()
-        {
-            return _chestObject;
+                    if (_regularChest != null)
+                        break;
+                }
+                else
+                {
+                    if (_regularChest != null)
+                        continue;
+
+                    _regularChest = chest.gameObject.CloneInactive();
+                    _regularChest.name = "RegularChest";
+                    _regularChest.transform.SetParent(Main.TransformHolder);
+                    _regularChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
+
+                    if (_goldenChest != null)
+                        break;
+                }
+            }
+
+            Main.Log("Loaded chest objects");
         }
 
         // Item changing
 
         public void ReplaceWorldObjectsWithChests()
         {
-            int numObjects = 0;
-
             // Change all items for interactable pickups
             foreach (CollectOnInteract interact in Object.FindObjectsOfType<CollectOnInteract>())
             {
@@ -86,27 +131,26 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(holdable.gameObject);
             }
 
-            Main.Log($"Replaced {numObjects} objects in the world with random chests");
+            Main.Log($"Replaced objects in the world with random chests");
+        }
 
-            void ReplaceObjectWithRandomChest(GameObject obj)
-            {
-                string locationId = obj.transform.position.ToString();
-                if (!IsLocationRandomized(locationId))
-                    return;
+        private void ReplaceObjectWithRandomChest(GameObject obj)
+        {
+            // Determine whether to randomize this location or not
+            string locationId = obj.transform.position.ToString();
+            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
+            if (location == null)
+                return;
 
-                Transform parent = obj.transform.parent;
-                Vector3 position = obj.transform.position;
+            Transform parent = obj.transform.parent;
+            Vector3 position = obj.transform.position;
 
-                Object.Destroy(obj.gameObject);
+            Object.Destroy(obj.gameObject);
 
-                // Create chest at this position with same id and no items
-                GameObject chest = Object.Instantiate(GetChestObject(), position, Quaternion.identity, parent);
-                chest.GetComponent<GameObjectID>().id = locationId;
-                chest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
-                chest.SetActive(true);
-
-                numObjects++;
-            }
+            // Create chest at this position with same id
+            GameObject chest = Object.Instantiate(location.ShouldBeGolden ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
+            chest.GetComponent<GameObjectID>().id = locationId;
+            chest.SetActive(true);
         }
     }
 }

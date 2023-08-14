@@ -13,22 +13,61 @@ namespace AShortHike.Randomizer
         private readonly string dataPath = Environment.CurrentDirectory + "\\Modding\\data\\Randomizer\\";
         private readonly string configPath = Environment.CurrentDirectory + "\\Modding\\config\\Randomizer.cfg";
 
-        private readonly Dictionary<string, ItemLocation> allLocations = new();
+        public DataStorage()
+        {
+            // Create all directories before loading anything
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\data");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\config");
 
-        private readonly Dictionary<string, CollectableItem> allItems = new();
+            LoadItemsList();
 
-        private Sprite _apImage;
-        public Sprite ApImage => _apImage;
+            //string locationsPath = dataPath + "item-locations.json";
+            //if (File.Exists(locationsPath))
+            //    LoadLocationsList(locationsPath);
+            //else
+            //    Main.LogError("Failed to load locations list from " + locationsPath);
+
+            string imagePath = dataPath + "ap-item.png";
+            if (File.Exists(imagePath))
+                LoadItemImage(imagePath);
+            else
+                Main.LogError("Failed to load ap image from " + imagePath);
+        }
+
+        // Locations
+
+        private Dictionary<string, ItemLocation> allLocations = new(); // Set whenever connecting to the server
+
+        public void StoreItemLocations(Dictionary<string, ItemLocation> locations)
+        {
+            allLocations = locations ?? new Dictionary<string, ItemLocation>();
+        }
 
         public ItemLocation GetLocationFromId(string locationId)
         {
             return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
         }
 
-        public IEnumerable<ItemLocation> GetAllLocations()
+        public Dictionary<string, ItemLocation> GetAllLocations()
         {
-            return allLocations.Values;
+            return allLocations;
         }
+
+        //private void LoadLocationsList(string path)
+        //{
+        //    string json = File.ReadAllText(path);
+
+        //    foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
+        //    {
+        //        allLocations.Add(location.gameId, location);
+        //    }
+
+        //    Main.Log($"Loaded {allLocations.Count} item locations!");
+        //}
+
+        // Items
+
+        private readonly Dictionary<string, CollectableItem> allItems = new();
 
         public CollectableItem GetItemFromName(string itemName, out int amount)
         {
@@ -49,27 +88,6 @@ namespace AShortHike.Randomizer
 
             amount = 0;
             return null;
-        }
-
-        public DataStorage()
-        {
-            // Create all directories before loading anything
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\data");
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\config");
-
-            LoadItemsList();
-
-            string locationsPath = dataPath + "item-locations.json";
-            if (File.Exists(locationsPath))
-                LoadLocationsList(locationsPath);
-            else
-                Main.LogError("Failed to load locations list from " + locationsPath);
-
-            string imagePath = dataPath + "ap-item.png";
-            if (File.Exists(imagePath))
-                LoadItemImage(imagePath);
-            else
-                Main.LogError("Failed to load ap image from " + imagePath);
         }
 
         private void LoadItemsList()
@@ -117,23 +135,13 @@ namespace AShortHike.Randomizer
             allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
-            foreach (CollectableItem item in allItems.Values)
-                item.showPrompt = CollectableItem.PickUpPrompt.Always;
-
             Main.Log($"Loaded {allItems.Count} items!");
         }
 
-        private void LoadLocationsList(string path)
-        {
-            string json = File.ReadAllText(path);
+        // Images
 
-            foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
-            {
-                allLocations.Add(location.gameId, location);
-            }
-
-            Main.Log($"Loaded {allLocations.Count} item locations!");
-        }
+        private Sprite _apImage;
+        public Sprite ApImage => _apImage;
 
         private void LoadItemImage(string path)
         {
