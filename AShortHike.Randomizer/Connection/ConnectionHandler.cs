@@ -14,8 +14,14 @@ namespace AShortHike.Randomizer.Connection
 
         private readonly ItemReceiver _itemReceiver = new();
 
+        /// <summary>
+        /// Set whenever the server is connected to or when manually disconnecting
+        /// </summary>
         public bool Connected { get; private set; }
 
+        /// <summary>
+        /// Attempts to connect to the specified server, and on success, will process and store the slot data and begin the game
+        /// </summary>
         public bool Connect(string server, string player, string password, bool isContinue)
         {
             // Create login
@@ -65,6 +71,9 @@ namespace AShortHike.Randomizer.Connection
             return true;
         }
 
+        /// <summary>
+        /// Manually disconnect from the server whenever quitting a save file
+        /// </summary>
         public void Disconnect()
         {
             if (Connected)
@@ -80,6 +89,9 @@ namespace AShortHike.Randomizer.Connection
 
         }
 
+        /// <summary>
+        /// Should be called when the socket is closed, but doesnt happen
+        /// </summary>
         private void OnDisconnect(string reason)
         {
             Connected = false;
@@ -89,6 +101,9 @@ namespace AShortHike.Randomizer.Connection
             Main.LogWarning("OnDisconnect called");
         }
 
+        /// <summary>
+        /// Receives the list of item locations from the server, and stores the necessary data in the data storage
+        /// </summary>
         private void ProcessSlotData(LoginSuccessful login)
         {
             var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
@@ -99,11 +114,17 @@ namespace AShortHike.Randomizer.Connection
 
         // Receivers
 
+        /// <summary>
+        /// Every frame, update all receivers
+        /// </summary>
         public void UpdateReceivers()
         {
             _itemReceiver.Update();
         }
 
+        /// <summary>
+        /// When disconnecting from the server, clear all receivers
+        /// </summary>
         public void ClearReceivers()
         {
             _itemReceiver.ClearItemQueue();
@@ -111,6 +132,9 @@ namespace AShortHike.Randomizer.Connection
 
         // Sending
 
+        /// <summary>
+        /// When collecting a location in the game, send its id to the server
+        /// </summary>
         public void SendLocation(string locationId)
         {
             if (!Connected)
@@ -130,6 +154,9 @@ namespace AShortHike.Randomizer.Connection
             _session.Locations.CompleteLocationChecksAsync(location.ap_id);
         }
 
+        /// <summary>
+        /// When first loading the game after connecting, send all collected locations by checking the "Opened_" flag
+        /// </summary>
         public void SendAllLocations()
         {
             if (!Connected)

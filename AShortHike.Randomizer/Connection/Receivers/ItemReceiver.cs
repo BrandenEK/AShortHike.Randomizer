@@ -23,6 +23,9 @@ namespace AShortHike.Randomizer.Connection.Receivers
             }
         }
 
+        /// <summary>
+        /// When an item is received from the server, queue its data to be processed when in game
+        /// </summary>
         public void OnReceiveItem(ReceivedItemsHelper helper)
         {
             lock (itemLock)
@@ -37,6 +40,9 @@ namespace AShortHike.Randomizer.Connection.Receivers
             }
         }
 
+        /// <summary>
+        /// Every frame, check if an item can be processed, and if so, dequeue it one at a time
+        /// </summary>
         public void Update()
         {
             lock (itemLock)
@@ -48,6 +54,9 @@ namespace AShortHike.Randomizer.Connection.Receivers
             }
         }
 
+        /// <summary>
+        /// One at a time once the scene is loaded and not in dialog etc, each item will be added and potentially displayed
+        /// </summary>
         private void ProcessItem(QueuedItem item)
         {
             int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
@@ -90,6 +99,9 @@ namespace AShortHike.Randomizer.Connection.Receivers
             }
         }
 
+        /// <summary>
+        /// When disconnecting from the server, clear the item queue
+        /// </summary>
         public void ClearItemQueue()
         {
             lock (itemLock)
