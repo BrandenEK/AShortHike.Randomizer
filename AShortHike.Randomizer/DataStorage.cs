@@ -1,5 +1,4 @@
-﻿using AShortHike.Randomizer.Connection;
-using AShortHike.Randomizer.Items;
+﻿using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Settings;
 using Newtonsoft.Json;
 using System;
@@ -22,11 +21,11 @@ namespace AShortHike.Randomizer
 
             LoadItemsList();
 
-            string locationsPath = dataPath + "item-locations.json";
-            if (File.Exists(locationsPath))
-                LoadLocationsList(locationsPath);
-            else
-                Main.LogError("Failed to load locations list from " + locationsPath);
+            //string locationsPath = dataPath + "item-locations.json";
+            //if (File.Exists(locationsPath))
+            //    LoadLocationsList(locationsPath);
+            //else
+            //    Main.LogError("Failed to load locations list from " + locationsPath);
 
             string imagePath = dataPath + "ap-item.png";
             if (File.Exists(imagePath))
@@ -37,29 +36,34 @@ namespace AShortHike.Randomizer
 
         // Locations
 
-        private readonly Dictionary<string, ItemLocation> allLocations = new();
+        private Dictionary<string, ItemLocation> allLocations = new(); // Set whenever connecting to the server
+
+        public void StoreItemLocations(Dictionary<string, ItemLocation> locations)
+        {
+            allLocations = locations ?? new Dictionary<string, ItemLocation>();
+        }
 
         public ItemLocation GetLocationFromId(string locationId)
         {
             return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
         }
 
-        public IEnumerable<ItemLocation> GetAllLocations()
+        public Dictionary<string, ItemLocation> GetAllLocations()
         {
-            return allLocations.Values;
+            return allLocations;
         }
 
-        private void LoadLocationsList(string path)
-        {
-            string json = File.ReadAllText(path);
+        //private void LoadLocationsList(string path)
+        //{
+        //    string json = File.ReadAllText(path);
 
-            foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
-            {
-                allLocations.Add(location.gameId, location);
-            }
+        //    foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
+        //    {
+        //        allLocations.Add(location.gameId, location);
+        //    }
 
-            Main.Log($"Loaded {allLocations.Count} item locations!");
-        }
+        //    Main.Log($"Loaded {allLocations.Count} item locations!");
+        //}
 
         // Items
 
@@ -132,24 +136,6 @@ namespace AShortHike.Randomizer
             allItems.Add("Coins", CollectableItem.Load("Coin"));
 
             Main.Log($"Loaded {allItems.Count} items!");
-        }
-
-        // AP data
-
-        private Dictionary<long, ArchipelagoLocation> apLocations = new(); // Set whenever connecting to server
-
-        public void StoreApLocations(Dictionary<long, ArchipelagoLocation> apLocations)
-        {
-            this.apLocations = apLocations ?? new Dictionary<long, ArchipelagoLocation>();
-        }
-
-        public ArchipelagoLocation GetApDataAtLocation(string locationId)
-        {
-            ItemLocation location = GetLocationFromId(locationId);
-            if (location == null)
-                return null;
-
-            return apLocations.TryGetValue(location.apId, out ArchipelagoLocation apLocation) ? apLocation : null;
         }
 
         // Images

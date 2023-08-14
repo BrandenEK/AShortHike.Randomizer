@@ -1,7 +1,4 @@
-﻿using AShortHike.Randomizer.Connection;
-using AShortHike.Randomizer.Extensions;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
 {
@@ -9,41 +6,36 @@ namespace AShortHike.Randomizer.Items
     {
         // Item mapping
 
-        public bool IsLocationRandomized(string locationId)
-        {
-            return Main.Randomizer.Data.GetLocationFromId(locationId) != null;
-        }
-
         public void CollectLocation(string locationId)
         {
             Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
             Main.Randomizer.Connection.SendLocation(locationId);
 
-            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
-            if (apLocation != null)
-                DisplayItem(apLocation);
+            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
+            if (location != null)
+                DisplayItem(location);
         }
 
-        public void DisplayItem(ArchipelagoLocation apLocation)
+        public void DisplayItem(ItemLocation location)
         {
-            Main.Log($"Displaying {apLocation.itemName} for {apLocation.playerName}");
+            Main.Log($"Displaying {location.item_name} for {location.player_name}");
 
             CollectableItem item;
-            if (apLocation.playerName == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            if (location.player_name == Main.Randomizer.Settings.SettingsForCurrentSave.player)
             {
                 // The item belongs to this world
-                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(apLocation.itemName, out _);
+                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(location.item_name, out _);
                 if (localItem == null)
                 {
-                    Main.LogError(apLocation.itemName + " doesn't exist in this world");
+                    Main.LogError(location.item_name + " doesn't exist in this world");
                     return;
                 }
-                item = CreateLocalItem(apLocation.itemName, localItem.icon);
+                item = CreateLocalItem(location.item_name, localItem.icon);
             }
             else
             {
                 // The item goes to another player's world
-                item = CreateExternalItem(apLocation.itemName, apLocation.playerName);
+                item = CreateExternalItem(location.item_name, location.player_name);
             }
             Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
         }
@@ -91,7 +83,7 @@ namespace AShortHike.Randomizer.Items
                     _goldenChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
                     if (_regularChest != null)
-                        return;
+                        break;
                 }
                 else
                 {
@@ -104,7 +96,7 @@ namespace AShortHike.Randomizer.Items
                     _regularChest.GetComponent<Chest>().prefabsInside = System.Array.Empty<GameObject>();
 
                     if (_goldenChest != null)
-                        return;
+                        break;
                 }
             }
 
@@ -158,8 +150,10 @@ namespace AShortHike.Randomizer.Items
 
         private GameObject ReplaceObjectWithRandomChest(GameObject obj, bool ignoreIsRandomized = false)
         {
+            // Determine whether to randomize this location or not
             string locationId = obj.transform.position.ToString();
-            if (!IsLocationRandomized(locationId) && !ignoreIsRandomized)
+            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
+            if (location == null)
                 return null;
 
             Transform parent = obj.transform.parent;
@@ -167,16 +161,11 @@ namespace AShortHike.Randomizer.Items
 
             Object.Destroy(obj.gameObject);
 
-            // Determine what type of chest to spawn
-            ArchipelagoLocation apLocation = Main.Randomizer.Data.GetApDataAtLocation(locationId);
-            bool useGoldenChest = apLocation != null && apLocation.ShoudlBeGolden;
-
             // Create chest at this position with same id
-            GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
+            GameObject chest = Object.Instantiate(location.ShouldBeGolden ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
             chest.GetComponent<GameObjectID>().id = locationId;
             chest.SetActive(true);
             return chest;
         }
-
     }
 }

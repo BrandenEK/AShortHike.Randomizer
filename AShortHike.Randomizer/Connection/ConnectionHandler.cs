@@ -1,12 +1,10 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Models;
-using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -93,28 +91,10 @@ namespace AShortHike.Randomizer.Connection
 
         private void ProcessSlotData(LoginSuccessful login)
         {
-            //ArchipelagoLocation[] locations = new ArchipelagoLocation[] // Actually get this from slot data
-            //{
-            //    new ArchipelagoLocation(1, "Golden Feather", 1, "Player"),
-            //    new ArchipelagoLocation(40, "Life Upgrade", 1, "BlasPlayer"),
-            //    new ArchipelagoLocation(41, "Tears of Atonement (5000)", 0, "BlasPlayer"),
-            //    new ArchipelagoLocation(42, "Hookshot", 1, "ALTTP Player"),
-            //    new ArchipelagoLocation(99, "10 Rupees", 0, "OOT Player"),
-            //    new ArchipelagoLocation(100, "Silver Feather", 1, "Player"),
-            //};
+            var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
 
-            var apLocations = new Dictionary<long, ArchipelagoLocation>()
-            {
-                { 1, new ArchipelagoLocation("Golden Feather", 1, "Player") },
-                { 40, new ArchipelagoLocation("Life Upgrade", 1, "BlasPlayer") },
-                { 41, new ArchipelagoLocation("Tears of Atonement (5000)", 0, "BlasPlayer") },
-                { 42, new ArchipelagoLocation("Hookshot", 1, "ALTTP Player") },
-                { 99, new ArchipelagoLocation("10 Rupees", 0, "OOT Player") },
-                { 100, new ArchipelagoLocation("Silver Feather", 1, "Player") },
-            };
-            
-            Main.Randomizer.Data.StoreApLocations(apLocations);
-            Main.Log($"Received {apLocations.Count} locations from slot data");
+            Main.Randomizer.Data.StoreItemLocations(apLocations);
+            Main.Log($"Received {apLocations?.Count} locations from slot data");
         }
 
         // Receivers
@@ -146,9 +126,8 @@ namespace AShortHike.Randomizer.Connection
                 return;
             }
 
-            Main.Log($"Sending location: {locationId} ({location.apId})");
-            _session.Locations.CompleteLocationChecksAsync(81000 + location.apId);
-            //CheckItemAtLocation(81000 + location.apId);
+            Main.Log($"Sending location: {locationId} ({location.ap_id})");
+            _session.Locations.CompleteLocationChecksAsync(location.ap_id);
         }
 
         public void SendAllLocations()
@@ -159,26 +138,15 @@ namespace AShortHike.Randomizer.Connection
             var checkedLocations = new List<long>();
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            foreach (ItemLocation location in Main.Randomizer.Data.GetAllLocations())
+            foreach (KeyValuePair<string, ItemLocation> kvp in Main.Randomizer.Data.GetAllLocations())
             {
-                if (tags.GetBool("Opened_" + location.gameId))
-                    checkedLocations.Add(81000 + location.apId);
+                if (tags.GetBool("Opened_" + kvp.Key))
+                    checkedLocations.Add(kvp.Value.ap_id);
             }
 
             Main.Log($"Sending all {checkedLocations.Count} locations");
             _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
         }
-
-        //private async Task CheckItemAtLocation(long locationApId)
-        //{
-        //    LocationInfoPacket packet = await _session.Locations.ScoutLocationsAsync(false, locationApId);
-        //    Main.LogWarning("Received scouted packet");
-        //    foreach (NetworkItem item in packet.Locations)
-        //    {
-        //        // This should only ever be one
-        //        Main.Randomizer.Items.DisplayItem(GetItemNameFromId(item.Item), GetPlayerNameFromSlot(item.Player));
-        //    }
-        //}
 
         // Helpers
 
