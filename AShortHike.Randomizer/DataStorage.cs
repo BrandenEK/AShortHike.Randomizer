@@ -21,12 +21,6 @@ namespace AShortHike.Randomizer
 
             LoadItemsList();
 
-            //string locationsPath = dataPath + "item-locations.json";
-            //if (File.Exists(locationsPath))
-            //    LoadLocationsList(locationsPath);
-            //else
-            //    Main.LogError("Failed to load locations list from " + locationsPath);
-
             string imagePath = dataPath + "ap-item.png";
             if (File.Exists(imagePath))
                 LoadItemImage(imagePath);
@@ -52,18 +46,6 @@ namespace AShortHike.Randomizer
         {
             return allLocations;
         }
-
-        //private void LoadLocationsList(string path)
-        //{
-        //    string json = File.ReadAllText(path);
-
-        //    foreach (ItemLocation location in JsonConvert.DeserializeObject<ItemLocation[]>(json))
-        //    {
-        //        allLocations.Add(location.gameId, location);
-        //    }
-
-        //    Main.Log($"Loaded {allLocations.Count} item locations!");
-        //}
 
         // Items
 
