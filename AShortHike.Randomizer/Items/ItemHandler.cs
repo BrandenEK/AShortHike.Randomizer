@@ -6,58 +6,17 @@ namespace AShortHike.Randomizer.Items
     {
         // Item mapping
 
-        public void CollectLocation(string locationId)
+        public void CollectLocation(string locationId, bool showDisplay)
         {
             Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
             Main.Randomizer.Connection.SendLocation(locationId);
 
             ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
-            if (location != null)
-                DisplayItem(location);
-        }
-
-        public void DisplayItem(ItemLocation location)
-        {
-            Main.Log($"Displaying {location.item_name} for {location.player_name}");
-
-            CollectableItem item;
-            if (location.player_name == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            if (showDisplay && location != null)
             {
-                // The item belongs to this world
-                CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(location.item_name, out _);
-                if (localItem == null)
-                {
-                    Main.LogError(location.item_name + " doesn't exist in this world");
-                    return;
-                }
-                item = CreateLocalItem(location.item_name, localItem.icon);
+                CollectableItem item = CollectableItem.Load(locationId);
+                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
             }
-            else
-            {
-                // The item goes to another player's world
-                item = CreateExternalItem(location.item_name, location.player_name);
-            }
-            Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
-        }
-
-        private CollectableItem CreateExternalItem(string itemName, string playerName)
-        {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = $"{itemName} for {playerName}";
-            item.icon = Main.Randomizer.Data.ApImage;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
-            return item;
-        }
-
-        private CollectableItem CreateLocalItem(string itemName, Sprite icon)
-        {
-            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
-            item.name = "AP";
-            item.readableName = $"{itemName}";
-            item.icon = icon;
-            item.showPrompt = CollectableItem.PickUpPrompt.Always;
-            return item;
         }
 
         // Item loading
