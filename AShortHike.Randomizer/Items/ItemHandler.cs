@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Items
 {
@@ -17,6 +18,29 @@ namespace AShortHike.Randomizer.Items
                 CollectableItem item = CollectableItem.Load(locationId);
                 Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
             }
+        }
+
+        public void DisplayReceivedItem(string itemName, string playerName)
+        {
+            UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
+            //TextBoxContent text = ui.CreateTextBoxContent($"Received {itemName} from {playerName}");
+            //text.SkipTextAnimation();
+
+            //// Set position
+            //RectTransform rect = text.transform as RectTransform;
+            //rect.CenterWithinParent();
+            //rect.sizeDelta = new Vector2((rect.parent as RectTransform).rect.size.x, rect.sizeDelta.y);
+
+            //GameObject obj = new GameObject("Text", typeof(RectTransform), typeof(Text));
+
+            //RectTransform rect = obj.GetComponent<RectTransform>();
+            //rect.SetParent(ui.transform, false);
+            //rect.CenterWithinParent();
+
+            //Text text = obj.GetComponent<Text>();
+            //text.fontSize = 22;
+            //text.font = (Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font);
+            //text.text = $"Received {itemName} from {playerName}";
         }
 
         // Item loading

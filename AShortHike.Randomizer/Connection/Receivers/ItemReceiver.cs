@@ -1,5 +1,7 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
+using QuickUnityTools.Input;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AShortHike.Randomizer.Connection.Receivers
 {
@@ -8,6 +10,17 @@ namespace AShortHike.Randomizer.Connection.Receivers
         private readonly List<QueuedItem> _itemQueue = new();
 
         private static readonly object itemLock = new();
+
+        private GameUserInput _input;
+        private GameUserInput Input
+        {
+            get
+            {
+                if (_input == null)
+                    _input = Object.FindObjectOfType<GameUserInput>();
+                return _input;
+            }
+        }
 
         public void OnReceiveItem(ReceivedItemsHelper helper)
         {
@@ -27,7 +40,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
         {
             lock (itemLock)
             {
-                if (_itemQueue.Count == 0)
+                if (_itemQueue.Count == 0 || !Input.hasFocus)
                     return;
 
                 // Make sure in game and grounded and not in item display
@@ -63,8 +76,11 @@ namespace AShortHike.Randomizer.Connection.Receivers
                             Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
                         }
 
-                        // Also display something if received from someone else
                         Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
+                        if (item.player != Main.Randomizer.Settings.SettingsForCurrentSave.player)
+                        {
+                            Main.Randomizer.Items.DisplayReceivedItem(item.name, item.player);
+                        }
                     }
                 }
 
