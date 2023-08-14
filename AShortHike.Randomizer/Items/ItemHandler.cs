@@ -107,24 +107,24 @@ namespace AShortHike.Randomizer.Items
 
         public void ReplaceWorldObjectsWithChests()
         {
-            foreach (BuriedChest bc in Object.FindObjectsOfType<BuriedChest>())
+            // Change all items for buried chests
+            foreach (BuriedChest buriedChest in Object.FindObjectsOfType<BuriedChest>())
             {
-                Main.LogError(bc.chest.transform.position);
+                GameObject chestObj = ReplaceObjectWithRandomChest(buriedChest.chest.gameObject);
+                if (chestObj == null)
+                    continue;
+
+                buriedChest.chest = chestObj;
+                chestObj.SetActive(buriedChest.GetComponent<GameObjectID>().GetBoolForID("Unearthed_"));
             }
 
             // Change all items for chests
             foreach (Chest chest in Object.FindObjectsOfType<Chest>())
             {
-                GameObject chestObj = ReplaceObjectWithRandomChest(chest.gameObject);
-                if (chestObj == null)
+                if (chest.GetComponentInParent<BuriedChest>() != null)
                     continue;
 
-                BuriedChest buriedChest = chest.GetComponentInParent<BuriedChest>();
-                if (buriedChest == null)
-                    continue;
-
-                buriedChest.chest = chestObj;
-                chestObj.SetActive(buriedChest.GetComponent<GameObjectID>().GetBoolForID("Unearthed_"));
+                ReplaceObjectWithRandomChest(chest.gameObject);
             }
 
             // Change all items for interactable pickups
