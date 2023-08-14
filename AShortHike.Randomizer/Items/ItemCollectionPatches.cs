@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Items
 {
@@ -155,6 +156,19 @@ namespace AShortHike.Randomizer.Items
     }
 
     /// <summary>
+    /// When displaying a collected item, change the text that is displayed
+    /// </summary>
+    [HarmonyPatch(typeof(ItemPrompt), nameof(ItemPrompt.Setup))]
+    class ItemPrompt_ChangeText_Patch
+    {
+        public static void Postfix(ItemPrompt __instance, CollectableItem item)
+        {
+            __instance.beforeName.GetComponent<Text>().text = "Found";
+            __instance.itemName.text = item.readableName + "!";
+        }
+    }
+
+    /// <summary>
     /// Calling this method with the locationId of a valid location will instead return a new ApItem
     /// </summary>
     [HarmonyPatch(typeof(CollectableItem), nameof(CollectableItem.Load))]
@@ -190,7 +204,7 @@ namespace AShortHike.Randomizer.Items
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "AP";
-            item.readableName = $"{itemName} for {playerName}";
+            item.readableName = FormatItemName(itemName, playerName);
             item.icon = Main.Randomizer.Data.ApImage;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
@@ -200,10 +214,23 @@ namespace AShortHike.Randomizer.Items
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "AP";
-            item.readableName = $"{itemName}";
+            item.readableName = FormatItemName(itemName, null);
             item.icon = icon;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
+        }
+
+        private static string FormatItemName(string itemName, string playerName)
+        {
+            string truncatedItemName = itemName.Length > 20 ? itemName.Substring(0, 19).Trim() + '.' : itemName;
+            if (playerName == null)
+            {
+                return truncatedItemName;
+            }
+            else
+            {
+                return $"{truncatedItemName} <color=#FFFFFF>for</color> {playerName}";
+            }
         }
     }
 }
