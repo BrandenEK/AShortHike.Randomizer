@@ -28,10 +28,20 @@ namespace AShortHike.Randomizer.Items
             Main.LogWarning($"Checking if {itemName.AsString} is greater than {amount.AsNumber}");
             string requiredLocation;
 
-            // If you already have the permit before first talking to the camper guy
             if (itemName.AsString == "CampingPermit")
             {
+                // If you already have the permit before first talking to the camper guy
                 requiredLocation = "CamperNPC[0]";
+            }
+            else if (itemName.AsString == "Compass")
+            {
+                // If you already have the compass before talking to the compass guy
+                requiredLocation = "Fox_WalkingNPC[0]";
+            }
+            else if (itemName.AsString == "WalkieTalkie")
+            {
+                // If you already have the walkie talkie before the parkour races
+                requiredLocation = "RaceOpponent[9]";
             }
             else
             {
@@ -53,20 +63,26 @@ namespace AShortHike.Randomizer.Items
         public static void Postfix(ref bool __result, string tag)
         {
             Main.LogWarning("Checking for the flag: " + tag);
-            string requiredLocation;
+            //string requiredLocation;
 
-            // If you have already returned the permit before catching the lake fish
-            if (tag == "$ReturnedPermit")
-            {
-                requiredLocation = "Player[0]";
-            }
-            else
-            {
-                return;
-            }
+            //// If you have already returned the permit before catching the lake fish
+            //if (tag == "$ReturnedPermit")
+            //{
+            //    requiredLocation = "Player[0]";
+            //MissingPermit
+            //}
+            //else
+            //{
+            //    return;
+            //}
 
-            bool hasCheckedLocation = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_" + requiredLocation);
-            __result = __result && hasCheckedLocation;
+            //$BunnyQuestDone
+            //$BunnyGiftHeadband
+            //BunnyGotHeadband
+
+
+            //bool hasCheckedLocation = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_" + requiredLocation);
+            //__result = __result && hasCheckedLocation;
         }
     }
 }
