@@ -20,12 +20,34 @@ namespace AShortHike.Randomizer.Settings
 
         public SettingsInfo SettingsConfig { get; private set; }
 
+        /// <summary>
+        /// Called whenever the title screen is loaded to perform ui related functions
+        /// </summary>
         public void SetupInputUI()
         {
             // Load config from file
             SettingsConfig = Main.Randomizer.Data.LoadConfig();
+
+            EditTitleText();
         }
 
+        /// <summary>
+        /// When loading the title screen, add randomizer to the title
+        /// </summary>
+        private void EditTitleText()
+        {
+            TitleScreen title = Object.FindObjectOfType<TitleScreen>();
+            if (title == null) return;
+
+            TextMeshProUGUI text = title.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            if (text == null) return;
+
+            text.text = "a short hike randomizer";
+        }
+
+        /// <summary>
+        /// Before opening a begin/continue, always need to reset the settings from last time
+        /// </summary>
         public void RestoreMenuSettings(ConnectionInfo settings, bool isContinue)
         {
             _currentServer = settings.server;
@@ -34,6 +56,9 @@ namespace AShortHike.Randomizer.Settings
             _currentIsContinue = isContinue;
         }
 
+        /// <summary>
+        /// Gets or sets the multiworld connection info for the current save slot
+        /// </summary>
         public ConnectionInfo SettingsForCurrentSave
         {
             get
