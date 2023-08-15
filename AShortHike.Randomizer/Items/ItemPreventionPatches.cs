@@ -16,18 +16,6 @@ namespace AShortHike.Randomizer.Items
         }
     }
 
-
-    [HarmonyPatch(typeof(DialogueController), nameof(DialogueController.StartConversation))]
-    class Dialog_Start_Patch
-    {
-        public static IConversation Conversation { get; private set; }
-
-        public static void Postfix(IConversation __result)
-        {
-            Conversation = __result;
-        }
-    }
-
     /// <summary>
     /// To prevent npcs not giving you the location check if you already have the associated item,
     /// hide what items you have based on if you have the location yet
@@ -35,10 +23,10 @@ namespace AShortHike.Randomizer.Items
     [HarmonyPatch(typeof(YarnFunctions), nameof(YarnFunctions.HasItem))]
     class Dialog_CheckItem_Patch
     {
-        public static void Postfix(ref bool __result, IConversation context, Value itemName, Value amount)
+        public static void Postfix(ref bool __result, IConversation context, Value itemName)
         {
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
-            string person = Dialog_Start_Patch.Conversation.originalSpeaker.name;
+            string person = context.originalSpeaker.name;
             string item = itemName.AsString;
             Main.LogWarning($"{person} is checking for item: {item}");
 
@@ -57,27 +45,10 @@ namespace AShortHike.Randomizer.Items
                 // If you already have the walkie talkie before the parkour races
                 __result = tags.GetBool("Opened_RaceOpponent[9]");
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(YarnToGlobalDataAdapter), nameof(YarnToGlobalDataAdapter.GetValue))]
-    class Dialog_GetValue_Patch
-    {
-        public static void Postfix(ref Value __result, string variableName)
-        {
-            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
-            string person = Dialog_Start_Patch.Conversation.originalSpeaker.name;
-            string flag = variableName;
-            Main.LogWarning($"{person} is checking for flag: {flag}");
-
-            if (flag == "MissingPermit")
+            else if (person == "Turtle_WalkingNPC" && item == "Headband")
             {
-                // If you have already returned the permit before catching the lake fish
-                __result = new Value(tags.GetBool("Opened_CamperNPC[0]") && !tags.GetBool("Opened_Player[0]"));
-            }
-            else if (person == "Turtle_WalkingNPC" && flag == "$BunnyQuestDone")
-            {
-
+                // If you already have the headband before talking to the turtle
+                __result = __result && tags.GetBool("Opened_Turtle_WalkingNPC[0]");
             }
         }
     }
@@ -87,7 +58,7 @@ namespace AShortHike.Randomizer.Items
     /// only show them as true once the location has been checked
     /// </summary>
     [HarmonyPatch(typeof(Tags), nameof(Tags.GetBool))]
-    class Tags_GetFlag_Patch
+    class Tags_CheckFlag_Patch
     {
         public static void Postfix(ref bool __result, string tag)
         {
@@ -99,16 +70,16 @@ namespace AShortHike.Randomizer.Items
                 // If you have already returned the permit before catching the lake fish
                 __result = tags.GetBool("Opened_CamperNPC[0]") && !tags.GetBool("Opened_Player[0]");
             }
-            else if (tag == "$BunnyQuestDone")
+            else if (tag == "$BunnyQuestDone" || tag == "$BunnyGiftHeadband" || tag == "BunnyGotHeadband")
             {
-
+                // If you already returned the headband to the rabbit before talking to the turtle
+                __result = __result && tags.GetBool("Opened_Turtle_WalkingNPC[0]");
             }
-
-            //$BunnyGiftHeadband
-
-            //
-            //$bunnygiftheadband
-            //bunnygotheadband
+            else if (tag == "$RabbitQuest")
+            {
+                // If you already returned the headband to the rabbit before talking to the turtle
+                __result = __result || tags.GetBool("Opened_Bunny_WalkingNPC (1)[0]");
+            }
         }
     }
 }
