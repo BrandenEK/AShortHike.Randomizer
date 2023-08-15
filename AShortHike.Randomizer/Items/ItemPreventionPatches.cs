@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
 using Yarn;
 
 namespace AShortHike.Randomizer.Items
@@ -50,6 +51,11 @@ namespace AShortHike.Randomizer.Items
                 // If you already have the headband before talking to the turtle
                 __result = __result && tags.GetBool("Opened_Turtle_WalkingNPC[0]");
             }
+            else if (person == "LittleKidNPCVariant (1)" && item == "ShellNecklace")
+            {
+                // If you dont have the shell necklace after getting the item from the shell kid
+                __result = !tags.GetBool("Opened_AuntMayNPC[0]");
+            }
         }
     }
 
@@ -82,4 +88,49 @@ namespace AShortHike.Randomizer.Items
             }
         }
     }
+
+
+    //[HarmonyPatch(typeof(DialogueController), nameof(DialogueController.StartConversation))]
+    //class Dialog_Start_Patch
+    //{
+    //    public static IConversation Conversation { get; private set; }
+    //    public static string LastConversation { get; private set; }
+
+    //    public static void Postfix(IConversation __result, string startNode)
+    //    {
+    //        Conversation = __result;
+    //        LastConversation = startNode;
+    //    }
+    //}
+
+
+    //[HarmonyPatch(typeof(LinearMenu), nameof(LinearMenu.selectedIndex), MethodType.Getter)]
+    //class Menu_GetIndex_Patch
+    //{
+    //    public static void Postfix(ref int __result)
+    //    {
+    //        //IConversation conversation = Dialog_Start_Patch.Conversation;
+    //        //if (conversation == null) return;
+
+    //        string conversation = Dialog_Start_Patch.LastConversation;
+    //        Main.LogWarning("Check index last node: " + conversation);
+    //    }
+    //}
+
+    //[HarmonyPatch(typeof(ChoiceBoxContent), nameof(ChoiceBoxContent.SetupChoices))]
+    //class ChoiceBox_Setup_Patch
+    //{
+    //    public static void Prefix(IList<string> options)
+    //    {
+    //        Main.Log("creating choice box");
+    //        foreach (string str in options)
+    //        {
+    //            Main.LogWarning($"'{str}'");
+    //        }
+    //        if (options.Count == 2 && options[0].Trim() == "yeah!" && options[1].Trim() == "...yeah?")
+    //        {
+    //            options.RemoveAt(0);
+    //        }
+    //    }
+    //}
 }

@@ -134,6 +134,23 @@ namespace AShortHike.Randomizer.Items
                             return locationId + "[9]";
                         break;
                     }
+                case "LittleKidNPCVariant (1)": // Shell kid
+                    {
+                        if (itemId == "ShellNecklace")
+                            return locationId + "[0]";
+                        else if (itemId == "Shell")
+                            return locationId + "[1]";
+                        break;
+                    }
+                case "DadDeer": // Boat rental guy
+                    {
+                        if (itemId == "BoatKey")
+                            return locationId + "[0]";
+                        else if (itemId == "BoatManual")
+                            return locationId + "[1]";
+                        break;
+
+                    }
                 default:
                     return locationId + "[0]";
             }

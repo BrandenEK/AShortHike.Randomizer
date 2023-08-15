@@ -98,6 +98,10 @@ namespace AShortHike.Randomizer
             allItems.Add("Seashell", CollectableItem.Load("Shell"));
             allItems.Add("Shell Necklace", CollectableItem.Load("ShellNecklace"));
 
+            // Boating
+            allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
+            allItems.Add("Boating Manual", CollectableItem.Load("BoatManual"));
+
             // Feathers
             allItems.Add("Golden Feather", CollectableItem.Load("GoldenFeather"));
             allItems.Add("Silver Feather", CollectableItem.Load("SilverFeather"));
@@ -113,7 +117,6 @@ namespace AShortHike.Randomizer
             allItems.Add("Compass", CollectableItem.Load("Compass"));
             allItems.Add("Medal", CollectableItem.Load("Medal"));
             allItems.Add("Wristwatch", CollectableItem.Load("Watch"));
-            allItems.Add("Motorboat Key", CollectableItem.Load("BoatKey"));
             allItems.Add("Camping Permit", CollectableItem.Load("CampingPermit"));
             allItems.Add("Walkie Talkie", CollectableItem.Load("WalkieTalkie"));
             allItems.Add("Coins", CollectableItem.Load("Coin"));
