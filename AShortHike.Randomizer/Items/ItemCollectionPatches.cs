@@ -65,6 +65,12 @@ namespace AShortHike.Randomizer.Items
                 args = new string[] { locationId };
                 Main.Randomizer.Items.CollectLocation(locationId, false);
             }
+            else if (args.Length > 1 && args[0] == "FishingRod" && args[1] == "-1")
+            {
+                // If the fisher guy is trying to take away the fishing rod, dont let him
+                Main.LogWarning("Preventing loss of fishing rod!");
+                args = new string[] { "FishingRod", "0" };
+            }
         }
 
         private static string CalculateNewLocationId(string locationId, string itemId)
