@@ -26,30 +26,23 @@ namespace AShortHike.Randomizer.Items
         public static void Postfix(ref bool __result, Value itemName, Value amount)
         {
             Main.LogWarning($"Checking if {itemName.AsString} is greater than {amount.AsNumber}");
-            string requiredLocation;
+            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
             if (itemName.AsString == "CampingPermit")
             {
                 // If you already have the permit before first talking to the camper guy
-                requiredLocation = "CamperNPC[0]";
+                __result = __result && tags.GetBool("Opened_CamperNPC[0]");
             }
             else if (itemName.AsString == "Compass")
             {
                 // If you already have the compass before talking to the compass guy
-                requiredLocation = "Fox_WalkingNPC[0]";
+                __result = tags.GetBool("Opened_Fox_WalkingNPC[0]");
             }
             else if (itemName.AsString == "WalkieTalkie")
             {
                 // If you already have the walkie talkie before the parkour races
-                requiredLocation = "RaceOpponent[9]";
+                __result = tags.GetBool("Opened_RaceOpponent[9]");
             }
-            else
-            {
-                return;
-            }
-
-            bool hasCheckedLocation = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_" + requiredLocation);
-            __result = __result && hasCheckedLocation;
         }
     }
 
@@ -62,27 +55,18 @@ namespace AShortHike.Randomizer.Items
     {
         public static void Postfix(ref bool __result, string tag)
         {
-            Main.LogWarning("Checking for the flag: " + tag);
-            //string requiredLocation;
+            Main.LogWarning("Checking for flag: " + tag);
+            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            //// If you have already returned the permit before catching the lake fish
-            //if (tag == "$ReturnedPermit")
-            //{
-            //    requiredLocation = "Player[0]";
-            //MissingPermit
-            //}
-            //else
-            //{
-            //    return;
-            //}
+            if (tag == "MissingPermit")
+            {
+                // If you have already returned the permit before catching the lake fish
+                __result = tags.GetBool("Opened_CamperNPC[0]") && !tags.GetBool("Opened_Player[0]");
+            }
 
-            //$BunnyQuestDone
-            //$BunnyGiftHeadband
-            //BunnyGotHeadband
-
-
-            //bool hasCheckedLocation = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_" + requiredLocation);
-            //__result = __result && hasCheckedLocation;
+            //$bunnyquestdone
+            //$bunnygiftheadband
+            //bunnygotheadband
         }
     }
 }
