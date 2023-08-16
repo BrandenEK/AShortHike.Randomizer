@@ -6,14 +6,6 @@ namespace AShortHike.Randomizer
     /// <summary>
     /// Display the key and value whenever something is being saved
     /// </summary>
-    [HarmonyPatch(typeof(Tags), nameof(Tags.SetBool))]
-    class Tags_SaveBool_Patch
-    {
-        public static void Postfix(string tag, bool value)
-        {
-            Main.Log($"Saving bool: {tag} ({value})");
-        }
-    }
     [HarmonyPatch(typeof(Tags), nameof(Tags.SetInt))]
     class Tags_SaveInt_Patch
     {

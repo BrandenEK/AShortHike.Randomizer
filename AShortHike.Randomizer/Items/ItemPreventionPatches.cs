@@ -114,7 +114,7 @@ namespace AShortHike.Randomizer.Items
             }
             else if (person == "StandingNPC (1)" && flag == "$RentedBoat")
             {
-                // Allow the kid to go on the boat once you have the key (Not working - checks something else first)
+                // Allow the kid to go on the boat once you have the key
                 __result = Singleton<GlobalData>.instance.gameData.GetCollected(CollectableItem.Load("BoatKey")) > 0;
             }
         }
@@ -127,5 +127,24 @@ namespace AShortHike.Randomizer.Items
     class Tags_HasFlag_Patch
     {
         public static void Postfix(ref bool __result) => __result = true;
+    }
+
+
+    [HarmonyPatch(typeof(Tags), nameof(Tags.SetBool))]
+    class Tags_SetFlag_Patch
+    {
+        public static bool Prefix(string tag, bool value)
+        {
+            string person = Dialog_Start_Patch.CurrentConversation;
+
+            if (person == "Dog_WalkingNPC_BlueEyed" && tag == "TMap4")
+            {
+                // If the outlook dog is setting the map flag, prevent that
+                return false;
+            }
+
+            Main.Log($"Setting flag: {tag} ({value})");
+            return true;
+        }
     }
 }
