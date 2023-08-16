@@ -108,10 +108,7 @@ namespace AShortHike.Randomizer.Connection
         private void ProcessSlotData(LoginSuccessful login)
         {
             var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
-            //var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>();
-
-            //temp
-            var settings = new MultiworldSettings();
+            var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>() ?? new MultiworldSettings();
 
             Main.Randomizer.Data.StoreItemLocations(apLocations);
             Main.Randomizer.MultiworldSettings = settings;
