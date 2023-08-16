@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using UnityEngine;
 
 namespace AShortHike.Randomizer.Settings
 {
@@ -84,41 +83,6 @@ namespace AShortHike.Randomizer.Settings
         public static void Prefix()
         {
             Main.Randomizer.Connection.Disconnect();
-        }
-    }
-
-    /// <summary>
-    /// When starting the intro conversation, skip it if the setting is enabled
-    /// </summary>
-    [HarmonyPatch(typeof(DialogueController), nameof(DialogueController.StartConversation))]
-    class DialogueController_SkipStart_Patch
-    {
-        public static bool Prefix(string startNode, ref IConversation __result)
-        {
-            if (startNode == "TitleScreenIntroStart" && Main.Randomizer.MultiworldSettings.skipCutscenes)
-            {
-                // If starting the intro cutscene, set conversation to null and skip start
-                __result = null;
-                return false;
-            }
-
-            return true;
-        }
-    }
-    [HarmonyPatch(typeof(Cutscene), nameof(Cutscene.Start))]
-    class Cutscene_Start_Patch
-    {
-        public static bool Prefix(Cutscene __instance)
-        {
-            if (Main.Randomizer.MultiworldSettings.skipCutscenes)
-            {
-                // If starting the intro cutscene, set give the phone and skip
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("Cellphone"), 1, false);
-                Object.Destroy(__instance.gameObject);
-                return false;
-            }
-
-            return true;
         }
     }
 }
