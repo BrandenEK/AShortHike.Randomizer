@@ -65,6 +65,12 @@ namespace AShortHike.Randomizer.Items
                 args = new string[] { locationId };
                 Main.Randomizer.Items.CollectLocation(locationId, false);
             }
+            else if (args.Length > 1 && args[0] == "FishingRod" && args[1] == "-1")
+            {
+                // If the fisher guy is trying to take away the fishing rod, dont let him
+                Main.LogWarning("Preventing loss of fishing rod!");
+                args = new string[] { "FishingRod", "0" };
+            }
         }
 
         private static string CalculateNewLocationId(string locationId, string itemId)
@@ -109,8 +115,8 @@ namespace AShortHike.Randomizer.Items
                     }
                 case "CamperNPC": // Camper bribe
                     {
-                        // Need to do something with (missingpermit)
-                        return locationId + "[5]";
+                        bool gotBribe = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_CamperNPC[0]");
+                        return locationId + (gotBribe ? "[1]" : "[0]");
                     }
                 case "Bunny_WalkingNPC (1)": // Racing bunny
                     {
@@ -127,6 +133,23 @@ namespace AShortHike.Randomizer.Items
                         else if (itemId == "WalkieTalkie")
                             return locationId + "[9]";
                         break;
+                    }
+                case "LittleKidNPCVariant (1)": // Shell kid
+                    {
+                        if (itemId == "ShellNecklace")
+                            return locationId + "[0]";
+                        else if (itemId == "Shell")
+                            return locationId + "[1]";
+                        break;
+                    }
+                case "DadDeer": // Boat rental guy
+                    {
+                        if (itemId == "BoatKey")
+                            return locationId + "[0]";
+                        else if (itemId == "BoatManual")
+                            return locationId + "[1]";
+                        break;
+
                     }
                 default:
                     return locationId + "[0]";
@@ -160,19 +183,6 @@ namespace AShortHike.Randomizer.Items
                 __instance.beforeName.GetComponent<Text>().text = "Found";
             else if (item.name == "APR")
                 __instance.beforeName.GetComponent<Text>().text = "Got";
-        }
-    }
-
-    /// <summary>
-    /// After the fishing tutorial is finished, stash the fishing rod
-    /// </summary>
-    [HarmonyPatch(typeof(FishingTutorial), "CleanUpTutorial")]
-    class FishingTutorial_StashRod_Patch
-    {
-        public static void Postfix()
-        {
-            Main.Log("Stashing fishing rod after tutorial");
-            Singleton<GameServiceLocator>.instance.levelController.player.StashHeldItem();
         }
     }
 

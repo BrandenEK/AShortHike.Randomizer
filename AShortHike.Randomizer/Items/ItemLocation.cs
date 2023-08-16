@@ -8,7 +8,7 @@ namespace AShortHike.Randomizer.Items
         public readonly string player_name;
         public readonly int type;
 
-        public bool ShouldBeGolden => (type & 0x01) > 0 || (type & 0x04) > 0;
+        public bool ShouldBeGolden => type == 1 || type == 4;
 
         public ItemLocation(long ap_id, string item_name, string player_name, int type)
         {
