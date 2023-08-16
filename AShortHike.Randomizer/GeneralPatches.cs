@@ -52,4 +52,10 @@ namespace AShortHike.Randomizer
             return false;
         }
     }
+
+    //[HarmonyPatch(typeof(ItemMenuScroller), "Update")]
+    //class MenuScroll_Update_Patch
+    //{
+    //    public static bool Prefix(LinearMenu ___menu) => ___menu.GetMenuObjects().Count > 0;
+    //}
 }
