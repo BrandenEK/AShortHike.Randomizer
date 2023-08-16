@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using Newtonsoft.Json.Linq;
@@ -102,13 +103,15 @@ namespace AShortHike.Randomizer.Connection
         }
 
         /// <summary>
-        /// Receives the list of item locations from the server, and stores the necessary data in the data storage
+        /// Receives the list of item locations and settings from the server, and stores the necessary data in the data storage
         /// </summary>
         private void ProcessSlotData(LoginSuccessful login)
         {
             var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
+            var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>() ?? new MultiworldSettings();
 
             Main.Randomizer.Data.StoreItemLocations(apLocations);
+            Main.Randomizer.MultiworldSettings = settings;
             Main.Log($"Received {apLocations?.Count} locations from slot data");
         }
 
@@ -173,6 +176,20 @@ namespace AShortHike.Randomizer.Connection
 
             Main.Log($"Sending all {checkedLocations.Count} locations");
             _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
+        }
+
+        /// <summary>
+        /// When something happens that would trigger a goal send, check if it exceeds the player's goal and send it to server
+        /// </summary>
+        public void SendGoal(GoalType goal)
+        {
+            Main.LogWarning("Obtained goal completion?: " + goal);
+            if (goal != Main.Randomizer.MultiworldSettings.goal)
+                return;
+
+            var statusUpdatePacket = new StatusUpdatePacket();
+            statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
+            _session.Socket.SendPacket(statusUpdatePacket);
         }
 
         // Helpers
