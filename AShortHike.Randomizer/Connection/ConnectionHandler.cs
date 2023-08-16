@@ -102,13 +102,18 @@ namespace AShortHike.Randomizer.Connection
         }
 
         /// <summary>
-        /// Receives the list of item locations from the server, and stores the necessary data in the data storage
+        /// Receives the list of item locations and settings from the server, and stores the necessary data in the data storage
         /// </summary>
         private void ProcessSlotData(LoginSuccessful login)
         {
             var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
+            //var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>();
+
+            //temp
+            var settings = new MultiworldSettings(MultiworldSettings.GoalType.Nap, true, true);
 
             Main.Randomizer.Data.StoreItemLocations(apLocations);
+            Main.Randomizer.MultiworldSettings = settings;
             Main.Log($"Received {apLocations?.Count} locations from slot data");
         }
 
