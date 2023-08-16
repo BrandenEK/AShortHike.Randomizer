@@ -18,7 +18,7 @@ namespace AShortHike.Randomizer
         public MultiworldSettings()
         {
             goal = GoalType.Nap;
-            showGoldenChests = false;
+            showGoldenChests = true;
             skipCutscenes = true;
         }
 

@@ -2,6 +2,9 @@
 
 namespace AShortHike.Randomizer.Settings
 {
+    /// <summary>
+    /// When starting a new game, either show the connection menu, or return normally if connected
+    /// </summary>
     [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.StartNewGame))]
     class TitleScreen_NewGame_Patch
     {
@@ -30,6 +33,9 @@ namespace AShortHike.Randomizer.Settings
         }
     }
 
+    /// <summary>
+    /// When loading a game, either show the connection menu, or return normally if connected
+    /// </summary>
     [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.ContinueGame))]
     class TitleScreen_ContinueGame_Patch
     {
@@ -50,6 +56,9 @@ namespace AShortHike.Randomizer.Settings
         }
     }
 
+    /// <summary>
+    /// When starting a new game, skip the "This will overwrite save" message
+    /// </summary>
     [HarmonyPatch(typeof(CrossPlatform), nameof(CrossPlatform.DoesSaveExist))]
     class TitleScreen_SaveBypass_Patch
     {
@@ -65,12 +74,34 @@ namespace AShortHike.Randomizer.Settings
         }
     }
 
+    /// <summary>
+    /// When exiting the game, also disconnect from the server
+    /// </summary>
     [HarmonyPatch(typeof(LevelController), nameof(LevelController.SaveAndQuit))]
     class LevelController_SaveQuit_Patch
     {
         public static void Prefix()
         {
             Main.Randomizer.Connection.Disconnect();
+        }
+    }
+
+    /// <summary>
+    /// When starting the intro conversation, skip it if the setting is enabled
+    /// </summary>
+    [HarmonyPatch(typeof(DialogueController), nameof(DialogueController.StartConversation))]
+    class DialogueController_SkipStart_Patch
+    {
+        public static bool Prefix(string startNode, ref IConversation __result)
+        {
+            if (startNode == "TitleScreenIntroStart" && Main.Randomizer.MultiworldSettings.skipCutscenes)
+            {
+                // If starting the intro cutscene, set conversation to null and skip start
+                __result = null;
+                return false;
+            }
+
+            return true;
         }
     }
 }
