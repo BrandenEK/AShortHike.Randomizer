@@ -21,11 +21,11 @@ namespace AShortHike.Randomizer
             showGoldenChests = true;
             skipCutscenes = true;
         }
+    }
 
-        public enum GoalType
-        {
-            Nap = 0,
-            Photo = 1,
-        }
+    public enum GoalType
+    {
+        Nap = 0,
+        Photo = 1,
     }
 }

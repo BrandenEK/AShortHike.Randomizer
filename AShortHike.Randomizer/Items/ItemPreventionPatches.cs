@@ -142,6 +142,11 @@ namespace AShortHike.Randomizer.Items
                 // If the outlook dog is setting the map flag, prevent that
                 return false;
             }
+            else if (tag == "WonGameNiceJob")
+            {
+                // If setting this flag, you got the regular ending
+                Main.Randomizer.Connection.SendGoal(GoalType.Nap);
+            }
 
             Main.Log($"Setting flag: {tag} ({value})");
             return true;

@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using Newtonsoft.Json.Linq;
@@ -178,6 +179,20 @@ namespace AShortHike.Randomizer.Connection
 
             Main.Log($"Sending all {checkedLocations.Count} locations");
             _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
+        }
+
+        /// <summary>
+        /// When something happens that would trigger a goal send, check if it exceeds the player's goal and send it to server
+        /// </summary>
+        public void SendGoal(GoalType goal)
+        {
+            Main.LogWarning("Obtained goal completion?: " + goal);
+            if (goal != Main.Randomizer.MultiworldSettings.goal)
+                return;
+
+            var statusUpdatePacket = new StatusUpdatePacket();
+            statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
+            _session.Socket.SendPacket(statusUpdatePacket);
         }
 
         // Helpers
