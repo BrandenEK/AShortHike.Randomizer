@@ -29,7 +29,12 @@ namespace AShortHike.Randomizer
                 _items.ReplaceWorldObjectsWithChests();
                 _connection.SendAllLocations();
             }
-            else if (scene == "TitleScene")
+            else
+            {
+                _connection.Disconnect();
+            }
+            
+            if (scene == "TitleScene")
             {
                 _settings.SetupInputUI();
             }
