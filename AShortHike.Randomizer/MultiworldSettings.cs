@@ -15,6 +15,13 @@ namespace AShortHike.Randomizer
             this.skipCutscenes = skipCutscenes;
         }
 
+        public MultiworldSettings()
+        {
+            goal = GoalType.Nap;
+            showGoldenChests = false;
+            skipCutscenes = true;
+        }
+
         public enum GoalType
         {
             Nap = 0,

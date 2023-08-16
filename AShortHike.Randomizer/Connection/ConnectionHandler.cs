@@ -110,7 +110,7 @@ namespace AShortHike.Randomizer.Connection
             //var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>();
 
             //temp
-            var settings = new MultiworldSettings(MultiworldSettings.GoalType.Nap, true, true);
+            var settings = new MultiworldSettings();
 
             Main.Randomizer.Data.StoreItemLocations(apLocations);
             Main.Randomizer.MultiworldSettings = settings;

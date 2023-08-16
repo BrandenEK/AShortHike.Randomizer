@@ -19,7 +19,7 @@ namespace AShortHike.Randomizer
         public DataStorage Data => _data;
         public SettingsHandler Settings => _settings;
 
-        public MultiworldSettings MultiworldSettings { get; set; }
+        public MultiworldSettings MultiworldSettings { get; set; } = new();
 
         public void OnSceneLoaded(string scene)
         {
