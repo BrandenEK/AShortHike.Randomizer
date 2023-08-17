@@ -124,12 +124,13 @@ namespace AShortHike.Randomizer.Items
 
             Transform parent = obj.transform.parent;
             Vector3 position = obj.transform.position;
+            Quaternion rotation = Quaternion.Euler(0, location.chest_angle, 0);
             bool useGoldenChest = location.ShouldBeGolden && Main.Randomizer.MultiworldSettings.showGoldenChests;
 
             Object.Destroy(obj.gameObject);
 
             // Create chest at this position with same id
-            GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, Quaternion.identity, parent);
+            GameObject chest = Object.Instantiate(useGoldenChest ? _goldenChest : _regularChest, position, rotation, parent);
             chest.GetComponent<GameObjectID>().id = locationId;
             chest.SetActive(true);
             return chest;
