@@ -42,6 +42,9 @@ namespace AShortHike.Randomizer.Items
             string locationId = __instance.GetComponent<GameObjectID>().id;
             Main.LogWarning($"Opening chest: {locationId} at location {__instance.transform.position}");
             Main.Randomizer.Items.CollectLocation(locationId, true);
+
+            // Chest angle testing
+            //Main.Randomizer.lastChest = __instance.transform;
         }
     }
 

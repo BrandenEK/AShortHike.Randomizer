@@ -55,7 +55,29 @@ namespace AShortHike.Randomizer
             {
                 _connection.UpdateReceivers();
             }
+
+            // Chest angle testing
+            //if (lastChest != null)
+            //{
+            //    float currAngle = lastChest.localEulerAngles.y;
+            //    float factor = 10;
+            //    if (Input.GetKeyDown(KeyCode.Equals))
+            //    {
+            //        currAngle = Mathf.Round((currAngle + factor) / factor) * factor;
+            //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
+            //        Main.LogError("New rotation angle: " + currAngle);
+            //    }
+            //    else if (Input.GetKeyDown(KeyCode.Minus))
+            //    {
+            //        currAngle = Mathf.Round((currAngle - factor) / factor) * factor;
+            //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
+            //        Main.LogError("New rotation angle: " + currAngle);
+            //    }
+            //}
         }
+
+        // Chest angle testing
+        public Transform lastChest;
 
         public void OnConnect()
         {
