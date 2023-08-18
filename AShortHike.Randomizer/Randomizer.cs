@@ -52,7 +52,7 @@ namespace AShortHike.Randomizer
                 Main.Log("Giving cheat items!");
                 Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
                 Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
-                _notifications.AddNotification();
+                _notifications.AddNotification("Motorboat Key", "FarisBlas");
             }
 
             if (_currentScene == "GameScene")
