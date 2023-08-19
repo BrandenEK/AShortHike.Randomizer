@@ -42,6 +42,9 @@ namespace AShortHike.Randomizer.Items
             string locationId = __instance.GetComponent<GameObjectID>().id;
             Main.LogWarning($"Opening chest: {locationId} at location {__instance.transform.position}");
             Main.Randomizer.Items.CollectLocation(locationId, true);
+
+            // Chest angle testing
+            //Main.Randomizer.lastChest = __instance.transform;
         }
     }
 
@@ -182,7 +185,7 @@ namespace AShortHike.Randomizer.Items
             if (item.name == "APL")
                 __instance.beforeName.GetComponent<Text>().text = "Found";
             else if (item.name == "APR")
-                __instance.beforeName.GetComponent<Text>().text = "Got";
+                __instance.beforeName.GetComponent<Text>().text = "Received";
         }
     }
 

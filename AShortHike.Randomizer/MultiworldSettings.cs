@@ -1,4 +1,5 @@
-﻿
+﻿using Newtonsoft.Json;
+
 namespace AShortHike.Randomizer
 {
     public class MultiworldSettings
@@ -8,6 +9,7 @@ namespace AShortHike.Randomizer
         public readonly bool showGoldenChests;
         public readonly bool skipCutscenes;
 
+        [JsonConstructor]
         public MultiworldSettings(GoalType goal, bool showGoldenChests, bool skipCutscenes)
         {
             this.goal = goal;
