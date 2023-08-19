@@ -185,7 +185,7 @@ namespace AShortHike.Randomizer.Items
             if (item.name == "APL")
                 __instance.beforeName.GetComponent<Text>().text = "Found";
             else if (item.name == "APR")
-                __instance.beforeName.GetComponent<Text>().text = "Got";
+                __instance.beforeName.GetComponent<Text>().text = "Received";
         }
     }
 

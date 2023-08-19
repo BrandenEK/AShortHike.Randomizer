@@ -93,8 +93,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 // If received from another player, display it in an item prompt
                 if (item.player != Main.Randomizer.Settings.SettingsForCurrentSave.player)
                 {
-                    CollectableItem displayCollectable = ItemCreator.CreateReceivedItem(item.name, item.player);
-                    Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(displayCollectable.PickUpRoutine(1));
+                    Main.Randomizer.Notifications.AddNotification(item.name, item.player);
                 }
             }
         }

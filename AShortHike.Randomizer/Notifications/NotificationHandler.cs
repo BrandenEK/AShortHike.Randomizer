@@ -25,12 +25,9 @@ namespace AShortHike.Randomizer.Notifications
             rect.SetParent(_notificationHolder, false);
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
-            rect.pivot = new Vector2(0.5f, 1);
+            rect.pivot = Vector2.one;
+            rect.anchoredPosition = GetNotificationPosition(rect, _notificationHolder.childCount - 1);
 
-            float xPos = _notificationHolder.rect.width - rect.rect.width;
-            float yPos = _notificationHolder.rect.height / 2 + _notificationHolder.childCount * -20 - 50;
-
-            rect.anchoredPosition = new Vector2(xPos, yPos);
             _messages.Add(new NotificationMessage(rect, Time.realtimeSinceStartup));
             Object.Destroy(prompt);
         }
@@ -48,11 +45,16 @@ namespace AShortHike.Randomizer.Notifications
                 }
                 else
                 {
-                    float xPos = _notificationHolder.rect.width - message.messageObject.rect.width;
-                    float yPos = _notificationHolder.rect.height / 2 + (i + 1) * -20 - 50;
-                    message.messageObject.anchoredPosition = new Vector2(xPos, yPos);
+                    message.messageObject.anchoredPosition = GetNotificationPosition(message.messageObject, i);
                 }
             }
+        }
+
+        private Vector2 GetNotificationPosition(RectTransform rect, int index)
+        {
+            float xPos = _notificationHolder.rect.width - rect.rect.width;
+            float yPos = _notificationHolder.rect.height / 2 + (index + 1) * -20 - 50;
+            return new Vector2(xPos, yPos);
         }
 
         private void SetupNotifications()
