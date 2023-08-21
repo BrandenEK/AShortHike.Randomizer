@@ -95,7 +95,9 @@ namespace AShortHike.Randomizer.Items
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
             string person = Dialog_Start_Patch.CurrentConversation;
             string flag = tag;
-            Main.LogWarning($"{person} is checking for flag: {flag}");
+
+            if (!tag.StartsWith("Opened_") && !tag.StartsWith("COLLECTED_") && !tag.StartsWith("Unearthed_") && !tag.StartsWith("Sapling"))
+                Main.LogWarning($"{person} is checking for flag: {flag}");
 
             if (person == string.Empty && tag == "MissingPermit")
             {
