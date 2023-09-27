@@ -10,14 +10,14 @@ namespace AShortHike.Randomizer
 {
     public class DataStorage
     {
-        private readonly string dataPath = Environment.CurrentDirectory + "\\Modding\\data\\Randomizer\\";
-        private readonly string configPath = Environment.CurrentDirectory + "\\Modding\\config\\Randomizer.cfg";
+        private readonly string dataPath = Environment.CurrentDirectory + "/Modding/data/Randomizer/";
+        private readonly string configPath = Environment.CurrentDirectory + "/Modding/config/Randomizer.cfg";
 
         public DataStorage()
         {
             // Create all directories before loading anything
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\data");
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\Modding\\config");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/Modding/data");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/Modding/config");
 
             LoadItemsList();
 
