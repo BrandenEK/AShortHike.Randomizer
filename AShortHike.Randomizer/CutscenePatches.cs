@@ -53,5 +53,4 @@ namespace AShortHike.Randomizer
             }
         }
     }
-
 }
