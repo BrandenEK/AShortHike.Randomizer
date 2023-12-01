@@ -26,15 +26,20 @@ namespace AShortHike.Randomizer
     {
         public static bool Prefix(Cutscene __instance)
         {
-            if (Main.Randomizer.MultiworldSettings.skipCutscenes)
+            // If starting the intro cutscene, give the phone and skip
+            if (!Main.Randomizer.MultiworldSettings.skipCutscenes)
+                return true;
+
+            var data = Singleton<GlobalData>.instance.gameData;
+
+            if (!data.tags.GetBool("Given_Phone"))
             {
-                // If starting the intro cutscene, set give the phone and skip
-                Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("Cellphone"), 1, false);
-                Object.Destroy(__instance.gameObject);
-                return false;
+                data.AddCollected(CollectableItem.Load("Cellphone"), 1, false);
+                data.tags.SetBool("Given_Phone", true);
             }
 
-            return true;
+            Object.Destroy(__instance.gameObject);
+            return false;
         }
     }
 
