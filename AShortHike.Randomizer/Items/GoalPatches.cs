@@ -55,4 +55,29 @@ namespace AShortHike.Randomizer.Items
             }
         }
     }
+
+    /// <summary>
+    /// Check for goal completion when catching a fish
+    /// </summary>
+    [HarmonyPatch(typeof(GlobalData.CollectionInventory), nameof(GlobalData.CollectionInventory.AddFish))]
+    class Goal_AddFish_Patch
+    {
+        public static void Postfix()
+        {
+            var inventory = Singleton<GlobalData>.instance.gameData.inventory;
+
+            bool hasUncaught = false;
+            foreach (var fish in FishSpecies.LoadAll())
+            {
+                if (inventory.GetCatchCount(fish) == 0)
+                {
+                    hasUncaught = true;
+                    break;
+                }
+            }
+
+            if (!hasUncaught)
+                Main.Randomizer.Connection.SendGoal(GoalType.Fish);
+        }
+    }
 }
