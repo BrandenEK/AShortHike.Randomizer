@@ -29,5 +29,8 @@ namespace AShortHike.Randomizer
     {
         Nap = 0,
         Photo = 1,
+        Race = 2,
+        Help = 3,
+        Fish = 4,
     }
 }

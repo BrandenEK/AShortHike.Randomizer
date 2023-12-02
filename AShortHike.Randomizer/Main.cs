@@ -51,7 +51,7 @@ namespace AShortHike.Randomizer
 
         private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
         {
-            string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name.Substring(0, args.Name.IndexOf(","))}.dll");
+            string assemblyPath = Path.GetFullPath($"Modding/data/{args.Name.Substring(0, args.Name.IndexOf(","))}.dll");
             LogWarning("Loading missing assembly from " + assemblyPath);
             return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
         }

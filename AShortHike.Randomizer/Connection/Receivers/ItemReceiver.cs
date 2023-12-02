@@ -1,5 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
-using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Extensions;
 using QuickUnityTools.Input;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,6 +85,14 @@ namespace AShortHike.Randomizer.Connection.Receivers
                         _ => 0
                     };
                     Singleton<GlobalData>.instance.gameData.tags.SetBool("TMap" + num);
+                }
+
+                if (collectable.name == "FishingRod" && Singleton<GlobalData>.instance.gameData.HasFishingRod())
+                {
+                    // If receiving a second fishing rod remove the first and give golden
+                    Singleton<GlobalData>.instance.gameData.AddCollected(collectable, -1, false);
+                    collectable = Main.Randomizer.Data.GetItemFromName("Golden Fishing Rod", out _);
+                    Main.Log("Changing fishing rod to golden version");
                 }
 
                 // Add the item to the inventory

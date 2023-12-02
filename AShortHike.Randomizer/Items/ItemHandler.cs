@@ -15,6 +15,7 @@ namespace AShortHike.Randomizer.Items
         {
             Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
             Main.Randomizer.Connection.SendLocation(locationId);
+            Main.Randomizer.CheckForHelpGoal();
 
             ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
             if (showDisplay && location != null)

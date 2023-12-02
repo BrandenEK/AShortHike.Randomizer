@@ -42,7 +42,7 @@ namespace AShortHike.Randomizer.Settings
             TextMeshProUGUI text = title.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             if (text == null) return;
 
-            text.text = "a short hike randomizer";
+            text.text = $"a short hike randomizer v{PluginInfo.PLUGIN_VERSION}";
         }
 
         /// <summary>

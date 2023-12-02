@@ -95,7 +95,9 @@ namespace AShortHike.Randomizer.Items
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
             string person = Dialog_Start_Patch.CurrentConversation;
             string flag = tag;
-            Main.LogWarning($"{person} is checking for flag: {flag}");
+
+            if (!tag.StartsWith("Opened_") && !tag.StartsWith("COLLECTED_") && !tag.StartsWith("Unearthed_") && !tag.StartsWith("Sapling"))
+                Main.LogWarning($"{person} is checking for flag: {flag}");
 
             if (person == string.Empty && tag == "MissingPermit")
             {
@@ -129,7 +131,9 @@ namespace AShortHike.Randomizer.Items
         public static void Postfix(ref bool __result) => __result = true;
     }
 
-
+    /// <summary>
+    /// Prevent certain flags from being set
+    /// </summary>
     [HarmonyPatch(typeof(Tags), nameof(Tags.SetBool))]
     class Tags_SetFlag_Patch
     {
@@ -141,11 +145,6 @@ namespace AShortHike.Randomizer.Items
             {
                 // If the outlook dog is setting the map flag, prevent that
                 return false;
-            }
-            else if (tag == "WonGameNiceJob")
-            {
-                // If setting this flag, you got the regular ending
-                Main.Randomizer.Connection.SendGoal(GoalType.Nap);
             }
 
             Main.Log($"Setting flag: {tag} ({value})");
