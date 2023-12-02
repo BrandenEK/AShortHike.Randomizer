@@ -20,11 +20,15 @@ namespace AShortHike.Randomizer.Items
                 // If taking a nap at the house: nap goal
                 case "WonGameNiceJob":
                     Main.Randomizer.Connection.SendGoal(GoalType.Nap);
+                    Main.Randomizer.CheckForHelpGoal();
                     return;
                 // If talking to fox and the climb flag is set: photo goal
                 case "MetIceHiker":
                     if (tags.GetBool("FoxClimbedToTop"))
+                    {
                         Main.Randomizer.Connection.SendGoal(GoalType.Photo);
+                        Main.Randomizer.CheckForHelpGoal();
+                    }
                     return;
 
             }
