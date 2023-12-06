@@ -35,7 +35,7 @@ namespace AShortHike.Randomizer.Items
 
             foreach (Chest chest in Object.FindObjectsOfType<Chest>())
             {
-                if (chest.transform.position.ToString() == "(594.7, 143.3, 345.6)")
+                if (chest.GetLocationId() == "Feathers.0")
                 {
                     if (_goldenChest != null)
                         continue;
@@ -74,7 +74,7 @@ namespace AShortHike.Randomizer.Items
             // Change all items for buried chests
             foreach (BuriedChest buriedChest in Object.FindObjectsOfType<BuriedChest>())
             {
-                GameObject chestObj = ReplaceObjectWithRandomChest(buriedChest.chest.gameObject);
+                GameObject chestObj = ReplaceObjectWithRandomChest(buriedChest.chest.gameObject, buriedChest.GetLocationId());
                 if (chestObj == null)
                     continue;
 
@@ -88,25 +88,25 @@ namespace AShortHike.Randomizer.Items
                 if (chest.GetComponentInParent<BuriedChest>() != null)
                     continue;
 
-                ReplaceObjectWithRandomChest(chest.gameObject);
+                ReplaceObjectWithRandomChest(chest.gameObject, chest.GetLocationId());
             }
 
             // Change all items for interactable pickups
             foreach (CollectOnInteract interact in Object.FindObjectsOfType<CollectOnInteract>())
             {
-                ReplaceObjectWithRandomChest(interact.gameObject);
+                ReplaceObjectWithRandomChest(interact.gameObject, interact.GetLocationId());
             }
 
             // Change all items for touchable pickups
             foreach (CollectOnTouch touch in Object.FindObjectsOfType<CollectOnTouch>())
             {
-                ReplaceObjectWithRandomChest(touch.gameObject);
+                ReplaceObjectWithRandomChest(touch.gameObject, touch.GetLocationId());
             }
 
             // Change all items for holdables
             foreach (Holdable holdable in Object.FindObjectsOfType<Holdable>())
             {
-                ReplaceObjectWithRandomChest(holdable.gameObject);
+                ReplaceObjectWithRandomChest(holdable.gameObject, holdable.GetLocationId());
             }
 
             Main.Log($"Replaced objects in the world with random chests");
@@ -115,10 +115,9 @@ namespace AShortHike.Randomizer.Items
         /// <summary>
         /// For every object (Feathers, sticks, etc) in the world that is randomized, replace it with a golden or regular chest
         /// </summary>
-        private GameObject ReplaceObjectWithRandomChest(GameObject obj, bool ignoreIsRandomized = false)
+        private GameObject ReplaceObjectWithRandomChest(GameObject obj, string locationId)
         {
             // Determine whether to randomize this location or not
-            string locationId = obj.transform.position.ToString();
             ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
             if (location == null)
                 return null;

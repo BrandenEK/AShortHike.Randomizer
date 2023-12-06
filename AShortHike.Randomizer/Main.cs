@@ -13,14 +13,16 @@ namespace AShortHike.Randomizer
     {
         public static Randomizer Randomizer { get; private set; }
 
-        public static Transform TransformHolder => _instance.transform;
+        public static Transform TransformHolder { get; private set; }
 
         private static Main _instance;
 
         private void Awake()
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
-            _instance ??= this;
+            if (_instance == null)
+                _instance = this;
+            TransformHolder = transform;
             Randomizer = new Randomizer();
 
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
