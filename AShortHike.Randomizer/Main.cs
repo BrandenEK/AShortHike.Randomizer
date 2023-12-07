@@ -29,11 +29,6 @@ namespace AShortHike.Randomizer
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             LogWarning("Scene loaded: " + scene.name);
