@@ -96,7 +96,13 @@ namespace AShortHike.Randomizer.Items
                         else if (item == "BoatManual")
                             return speaker + "[1]";
                         break;
-                    }                    
+                    }
+                case "Player": // Talking to yourself
+                    {
+                        if (item == "CampingPermit")
+                            return speaker + "[0]";
+                        return speaker + "[-1]";
+                    }
             }
 
             return speaker + "[0]";
