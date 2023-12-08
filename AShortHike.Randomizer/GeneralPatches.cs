@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using QuickUnityTools.Input;
 using UnityEngine;
 
 namespace AShortHike.Randomizer
@@ -62,9 +63,15 @@ namespace AShortHike.Randomizer
         public static void Postfix() => Main.Randomizer.UpdateGame();
     }
 
-    //[HarmonyPatch(typeof(ItemMenuScroller), "Update")]
-    //class MenuScroll_Update_Patch
-    //{
-    //    public static bool Prefix(LinearMenu ___menu) => ___menu.GetMenuObjects().Count > 0;
-    //}
+    /// <summary>
+    /// Skip through dialog if holding cancel button
+    /// </summary>
+    [HarmonyPatch(typeof(TextBoxConversation), nameof(TextBoxConversation.IsAdvanceDialoguePressed))]
+    class Text_Skip_Patch
+    {
+        public static void Postfix(ref bool __result, GameUserInput ___conversationInput)
+        {
+            __result |= ___conversationInput.GetCancelButton().isPressed;
+        }
+    }
 }
