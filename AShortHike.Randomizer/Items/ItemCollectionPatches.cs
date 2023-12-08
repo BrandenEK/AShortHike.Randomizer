@@ -11,7 +11,7 @@ namespace AShortHike.Randomizer.Items
     {
         public static void Postfix(CollectOnInteract __instance)
         {
-            Main.LogWarning("Collecting interactable: " + __instance.transform.position);
+            Main.LogWarning("Collecting interactable: " + __instance.GetLocationId());
         }
     }
     [HarmonyPatch(typeof(CollectOnTouch), nameof(CollectOnTouch.Collect))]
@@ -19,7 +19,7 @@ namespace AShortHike.Randomizer.Items
     {
         public static void Postfix(CollectOnTouch __instance)
         {
-            Main.LogWarning("Collecting touchable: " + __instance.transform.position);
+            Main.LogWarning("Collecting touchable: " + __instance.GetLocationId());
         }
     }
     [HarmonyPatch(typeof(Holdable), nameof(Holdable.Interact))]
@@ -27,7 +27,7 @@ namespace AShortHike.Randomizer.Items
     {
         public static void Postfix(Holdable __instance)
         {
-            Main.LogWarning("Collecting holdable: " + __instance.transform.position);
+            Main.LogWarning("Collecting holdable: " + __instance.GetLocationId());
         }
     }
 
@@ -60,7 +60,7 @@ namespace AShortHike.Randomizer.Items
             if (args.Length < 2 || int.TryParse(args[1], out int amount) && amount > 0)
             {
                 Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
-                string locationId = CalculateNewLocationId(context.originalSpeaker.name, args[0]);
+                string locationId = context.GetLocationId(args[0]);
                 ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
                 if (location == null)
                     return;
@@ -74,91 +74,6 @@ namespace AShortHike.Randomizer.Items
                 Main.LogWarning("Preventing loss of fishing rod!");
                 args = new string[] { "FishingRod", "0" };
             }
-        }
-
-        private static string CalculateNewLocationId(string locationId, string itemId)
-        {
-            switch (locationId)
-            {
-                case "CampRangerNPC": // Visitor's center shop salesman
-                    {
-                        int visitorFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$FeathersSold");
-                        if (itemId == "GoldenFeather")
-                            return locationId + $"[{visitorFeathers - 1}]";
-                        else if (itemId == "ParkHat")
-                            return locationId + "[9]";
-                        break;
-                    }
-                case "ToughBirdNPC (1)": // Tough bird salesman
-                    {
-                        int toughBirdFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$ToughBirdSales");
-                        if (itemId == "GoldenFeather")
-                            return locationId + $"[{toughBirdFeathers - 1}]";
-                        else if (itemId == "Watch")
-                            return locationId + "[9]";
-                        break;
-                    }
-                case "VolleyballOpponent": // Beachstickball
-                    {
-                        if (itemId == "GoldenFeather")
-                            return locationId + "[0]";
-                        else if (itemId == "Coin")
-                            return locationId + "[1]";
-                        else if (itemId == "KidHat")
-                            return locationId + "[2]";
-                        break;
-                    }
-                case "FishBuyer": // Fisherman
-                    {
-                        if (itemId == "FishEncyclopedia")
-                            return locationId + "[0]";
-                        else if (itemId == "GoldenFishingRod")
-                            return locationId + "[1]";
-                        break;
-                    }
-                case "CamperNPC": // Camper bribe
-                    {
-                        bool gotBribe = Singleton<GlobalData>.instance.gameData.tags.GetBool("Opened_CamperNPC[0]");
-                        return locationId + (gotBribe ? "[1]" : "[0]");
-                    }
-                case "Bunny_WalkingNPC (1)": // Racing bunny
-                    {
-                        if (itemId == "RunningShoes")
-                            return locationId + "[0]";
-                        break;
-                    }
-                case "RaceOpponent": // Parkour racer
-                    {
-                        string race = Singleton<GlobalData>.instance.gameData.tags.GetString("RaceId");
-                        int raceLevel = race == "MountainTopRace" ? 2 : (race == "OldBuildingRace" ? 1 : 0);
-                        if (itemId == "Medal")
-                            return locationId + $"[{raceLevel}]";
-                        else if (itemId == "WalkieTalkie")
-                            return locationId + "[9]";
-                        break;
-                    }
-                case "LittleKidNPCVariant (1)": // Shell kid
-                    {
-                        if (itemId == "ShellNecklace")
-                            return locationId + "[0]";
-                        else if (itemId == "Shell")
-                            return locationId + "[1]";
-                        break;
-                    }
-                case "DadDeer": // Boat rental guy
-                    {
-                        if (itemId == "BoatKey")
-                            return locationId + "[0]";
-                        else if (itemId == "BoatManual")
-                            return locationId + "[1]";
-                        break;
-
-                    }
-                default:
-                    return locationId + "[0]";
-            }
-
-            return locationId;
         }
     }
 
