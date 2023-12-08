@@ -4,19 +4,19 @@ namespace AShortHike.Randomizer.Items
     internal static class LocationIdExtensions
     {
         public static string GetLocationId(this CollectOnInteract interact) =>
-            $"{interact.transform.parent.name}.{interact.transform.GetSiblingIndex()}";
+            $"{interact.transform.parent?.name}.{interact.transform.GetSiblingIndex()}";
 
         public static string GetLocationId(this CollectOnTouch touch) =>
-            $"{touch.transform.parent.name}.{touch.transform.GetSiblingIndex()}";
+            $"{touch.transform.parent?.name}.{touch.transform.GetSiblingIndex()}";
 
         public static string GetLocationId(this Holdable holdable) =>
-            $"{holdable.transform.parent.name}.{holdable.transform.GetSiblingIndex()}";
+            $"{holdable.transform.parent?.name}.{holdable.transform.GetSiblingIndex()}";
 
         public static string GetLocationId(this Chest chest) =>
-            $"{chest.transform.parent.name}.{chest.transform.GetSiblingIndex()}";
+            $"{chest.transform.parent?.name}.{chest.transform.GetSiblingIndex()}";
 
         public static string GetLocationId(this BuriedChest buriedChest) =>
-            $"{buriedChest.transform.parent.name}.{buriedChest.transform.GetSiblingIndex()}";
+            $"{buriedChest.transform.parent?.name}.{buriedChest.transform.GetSiblingIndex()}";
 
         public static string GetLocationId(this IConversation conversation, string item)
         {

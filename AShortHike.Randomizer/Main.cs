@@ -1,10 +1,10 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using HarmonyLib;
 using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace AShortHike.Randomizer
 {
@@ -14,37 +14,23 @@ namespace AShortHike.Randomizer
         public static Randomizer Randomizer { get; private set; }
 
         public static Transform TransformHolder { get; private set; }
-
-        private static Main _instance;
+        private static ManualLogSource MessageLogger { get; set; }
 
         private void Awake()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
-            if (_instance == null)
-                _instance = this;
             TransformHolder = transform;
+            MessageLogger = Logger;
+
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             Randomizer = new Randomizer();
-
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
-            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            LogWarning("Scene loaded: " + scene.name);
-            Randomizer.OnSceneLoaded(scene.name);
-        }
+        public static void Log(object message) => MessageLogger.LogMessage(message);
 
-        private void Update()
-        {
-            Randomizer.Update();
-        }
+        public static void LogWarning(object message) => MessageLogger.LogWarning(message);
 
-        public static void Log(object message) => _instance.Logger.LogMessage(message);
-
-        public static void LogWarning(object message) => _instance.Logger.LogWarning(message);
-
-        public static void LogError(object message) => _instance.Logger.LogError(message);
+        public static void LogError(object message) => MessageLogger.LogError(message);
 
         private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
         {

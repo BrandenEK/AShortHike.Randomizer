@@ -3,6 +3,7 @@ using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AShortHike.Randomizer
 {
@@ -14,8 +15,6 @@ namespace AShortHike.Randomizer
         private readonly SettingsHandler _settings = new();
         private readonly DataStorage _data = new();
 
-        private string _currentScene;
-
         public ConnectionHandler Connection => _connection;
         public ItemHandler Items => _items;
         public NotificationHandler Notifications => _notifications;
@@ -24,9 +23,21 @@ namespace AShortHike.Randomizer
 
         public MultiworldSettings MultiworldSettings { get; set; } = new();
 
-        public void OnSceneLoaded(string scene)
+        public Randomizer()
         {
-            if (scene == "GameScene")
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Main.LogWarning("Scene loaded: " + scene.name);
+
+            if (scene.name == "TitleScene")
+            {
+                _settings.SetupInputUI();
+            }
+
+            if (scene.name == "GameScene")
             {
                 _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
@@ -36,17 +47,13 @@ namespace AShortHike.Randomizer
             {
                 _connection.Disconnect();
             }
-            
-            if (scene == "TitleScene")
-            {
-                _settings.SetupInputUI();
-            }
-
-            _currentScene = scene;
         }
 
-        public void Update()
+        public void UpdateGame()
         {
+            _connection.UpdateReceivers();
+            _notifications.UpdateNotifications();
+
             // Debugging
             //if (Input.GetKeyDown(KeyCode.Backslash))
             //{
@@ -54,12 +61,6 @@ namespace AShortHike.Randomizer
             //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
             //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
             //}
-
-            if (_currentScene == "GameScene")
-            {
-                _connection.UpdateReceivers();
-                _notifications.UpdateNotifications();
-            }
 
             // Chest angle testing
             //if (lastChest != null)

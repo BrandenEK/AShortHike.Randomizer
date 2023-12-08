@@ -53,6 +53,15 @@ namespace AShortHike.Randomizer
         }
     }
 
+    /// <summary>
+    /// Main object is always destroyed so we will update the game through the player in the GameScene
+    /// </summary>
+    [HarmonyPatch(typeof(Player), "Update")]
+    class Player_Update_Patch
+    {
+        public static void Postfix() => Main.Randomizer.UpdateGame();
+    }
+
     //[HarmonyPatch(typeof(ItemMenuScroller), "Update")]
     //class MenuScroll_Update_Patch
     //{
