@@ -24,12 +24,16 @@ namespace AShortHike.Randomizer.Settings
         [JsonProperty] public readonly string server;
         [JsonProperty] public readonly string player;
         [JsonProperty] public readonly string password;
+        [JsonProperty] public readonly bool skipCutscenes;
+        [JsonProperty] public readonly bool fastText;
 
-        public ConnectionInfo(string server, string player, string password)
+        public ConnectionInfo(string server, string player, string password, bool skipCutscenes, bool fastText)
         {
             this.server = server;
             this.player = player;
             this.password = password;
+            this.skipCutscenes = skipCutscenes;
+            this.fastText = fastText;
         }
 
         public ConnectionInfo()
@@ -37,6 +41,8 @@ namespace AShortHike.Randomizer.Settings
             server = null;
             player = null;
             password = null;
+            skipCutscenes = true;
+            fastText = true;
         }
     }
 }

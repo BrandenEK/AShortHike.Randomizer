@@ -17,6 +17,8 @@ namespace AShortHike.Randomizer.Settings
         private string _currentServer;
         private string _currentPlayer;
         private string _currentPassword;
+        private bool _skipCutscenes;
+        private bool _fastText;
 
         public SettingsInfo SettingsConfig { get; private set; }
 
@@ -53,6 +55,8 @@ namespace AShortHike.Randomizer.Settings
             _currentServer = settings.server;
             _currentPlayer = settings.player;
             _currentPassword = settings.password;
+            _skipCutscenes = settings.skipCutscenes;
+            _fastText = settings.fastText;
             _currentIsContinue = isContinue;
         }
 
@@ -93,7 +97,7 @@ namespace AShortHike.Randomizer.Settings
             }
 
             // Save connection info
-            SettingsForCurrentSave = new ConnectionInfo(_currentServer, _currentPlayer, _currentPassword);
+            SettingsForCurrentSave = new ConnectionInfo(_currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText);
             Main.Randomizer.Data.SaveConfig(SettingsConfig);
 
             // Load game scene
@@ -206,6 +210,8 @@ namespace AShortHike.Randomizer.Settings
                     $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
                     $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
                     $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
+                    $"Skip cutscenes: <color=#EE0000>{_skipCutscenes.DisplayONOFF()}</color>",
+                    $"Fast text: <color=#EE0000>{_fastText.DisplayONOFF()}</color>",
                     option,
                     "Back",
                 },
@@ -214,17 +220,29 @@ namespace AShortHike.Randomizer.Settings
                     delegate ()
                     {
                         _currentSetting = SettingType.Server;
-                        Main.Randomizer.Settings.OpenTextMenu();
+                        OpenTextMenu();
                     },
                     delegate ()
                     {
                         _currentSetting = SettingType.Name;
-                        Main.Randomizer.Settings.OpenTextMenu();
+                        OpenTextMenu();
                     },
                     delegate ()
                     {
                         _currentSetting = SettingType.Password;
-                        Main.Randomizer.Settings.OpenTextMenu();
+                        OpenTextMenu();
+                    },
+                    delegate ()
+                    {
+                        _currentSetting = SettingType.Cutscene;
+                        _skipCutscenes = !_skipCutscenes;
+                        CloseSettingsMenu();
+                    },
+                    delegate ()
+                    {
+                        _currentSetting = SettingType.Text;
+                        _fastText = !_fastText;
+                        CloseSettingsMenu();
                     },
                     delegate ()
                     {
