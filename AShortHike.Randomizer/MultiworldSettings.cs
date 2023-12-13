@@ -7,7 +7,7 @@ namespace AShortHike.Randomizer
         public readonly GoalType goal;
 
         [JsonConstructor]
-        public MultiworldSettings(GoalType goal, bool showGoldenChests, bool skipCutscenes)
+        public MultiworldSettings(GoalType goal)
         {
             this.goal = goal;
         }

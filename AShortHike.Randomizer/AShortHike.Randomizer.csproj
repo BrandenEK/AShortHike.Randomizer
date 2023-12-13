@@ -6,7 +6,7 @@
     <Product>Randomizer</Product>
     <Company>Damocles</Company>
     <Description>An item randomizer mod</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     
     <TargetName>Randomizer</TargetName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
