@@ -6,22 +6,15 @@ namespace AShortHike.Randomizer
     {
         public readonly GoalType goal;
 
-        public readonly bool showGoldenChests;
-        public readonly bool skipCutscenes;
-
         [JsonConstructor]
         public MultiworldSettings(GoalType goal, bool showGoldenChests, bool skipCutscenes)
         {
             this.goal = goal;
-            this.showGoldenChests = showGoldenChests;
-            this.skipCutscenes = skipCutscenes;
         }
 
         public MultiworldSettings()
         {
             goal = GoalType.Nap;
-            showGoldenChests = true;
-            skipCutscenes = true;
         }
     }
 

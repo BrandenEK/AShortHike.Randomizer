@@ -19,7 +19,7 @@ namespace AShortHike.Randomizer.Settings
             }
             else
             {
-                ConnectionInfo settings = new ConnectionInfo();
+                var settings = new ConnectionInfo();
 
                 Main.Randomizer.Settings.RestoreMenuSettings(settings, false);
                 Main.Randomizer.Settings.OpenSettingsMenu(0);
@@ -50,7 +50,7 @@ namespace AShortHike.Randomizer.Settings
                 ConnectionInfo settings = Main.Randomizer.Settings.SettingsForCurrentSave;
 
                 Main.Randomizer.Settings.RestoreMenuSettings(settings, true);
-                Main.Randomizer.Settings.OpenSettingsMenu(3);
+                Main.Randomizer.Settings.OpenSettingsMenu(4);
                 return false;
             }
         }

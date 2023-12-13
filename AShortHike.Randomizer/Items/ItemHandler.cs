@@ -125,7 +125,7 @@ namespace AShortHike.Randomizer.Items
             Transform parent = obj.transform.parent;
             Vector3 position = obj.transform.position;
             Quaternion rotation = Quaternion.Euler(0, location.chest_angle, 0);
-            bool useGoldenChest = location.ShouldBeGolden && Main.Randomizer.MultiworldSettings.showGoldenChests;
+            bool useGoldenChest = location.ShouldBeGolden && Main.Randomizer.Settings.SettingsForCurrentSave.goldenChests;
 
             Object.Destroy(obj.gameObject);
 

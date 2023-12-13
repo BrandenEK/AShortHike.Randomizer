@@ -6,7 +6,6 @@ namespace AShortHike.Randomizer.Settings
         Server = 0,
         Name = 1,
         Password = 2,
-        Cutscene = 3,
-        Text = 4,
+        Quality = 3,
     }
 }
