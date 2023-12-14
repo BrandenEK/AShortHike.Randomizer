@@ -108,10 +108,10 @@ namespace AShortHike.Randomizer.Connection
         private void ProcessSlotData(LoginSuccessful login)
         {
             var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
-            var settings = ((JObject)login.SlotData["settings"]).ToObject<MultiworldSettings>() ?? new MultiworldSettings();
+            var settings = ((JObject)login.SlotData["settings"]).ToObject<ServerSettings>() ?? new ServerSettings();
 
             Main.Randomizer.Data.StoreItemLocations(apLocations);
-            Main.Randomizer.MultiworldSettings = settings;
+            Main.Randomizer.ServerSettings = settings;
             Main.Log($"Received {apLocations?.Count} locations from slot data");
         }
 
@@ -184,7 +184,7 @@ namespace AShortHike.Randomizer.Connection
         public void SendGoal(GoalType goal)
         {
             Main.LogWarning("Obtained goal completion?: " + goal);
-            if (goal != Main.Randomizer.MultiworldSettings.goal)
+            if (goal != Main.Randomizer.ServerSettings.goal)
                 return;
 
             var statusUpdatePacket = new StatusUpdatePacket();

@@ -21,7 +21,10 @@ namespace AShortHike.Randomizer
         public SettingsHandler Settings => _settings;
         public DataStorage Data => _data;
 
-        public MultiworldSettings MultiworldSettings { get; set; } = new();
+        // Set right after connecting to server
+        public ServerSettings ServerSettings { get; set; } = new();
+        // Set right before connecting to server
+        public ClientSettings ClientSettings { get; set; } = new();
 
         public Randomizer()
         {
@@ -84,7 +87,7 @@ namespace AShortHike.Randomizer
 
         public void CheckForHelpGoal()
         {
-            if (MultiworldSettings.goal != GoalType.Help)
+            if (ServerSettings.goal != GoalType.Help)
                 return;
 
             var tags = Singleton<GlobalData>.instance.gameData.tags;
