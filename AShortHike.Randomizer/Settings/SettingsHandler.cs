@@ -21,16 +21,11 @@ namespace AShortHike.Randomizer.Settings
         private bool _skipCutscenes;
         private bool _fastText;
 
-        public SettingsInfo SettingsConfig { get; private set; }
-
         /// <summary>
         /// Called whenever the title screen is loaded to perform ui related functions
         /// </summary>
         public void SetupInputUI()
         {
-            // Load config from file
-            SettingsConfig = Main.Randomizer.Data.LoadConfig();
-
             EditTitleText();
         }
 
@@ -51,7 +46,7 @@ namespace AShortHike.Randomizer.Settings
         /// <summary>
         /// Before opening a begin/continue, always need to reset the settings from last time
         /// </summary>
-        public void RestoreMenuSettings(ConnectionInfo settings, bool isContinue)
+        public void RestoreMenuSettings(ClientSettings settings, bool isContinue)
         {
             _currentServer = settings.server;
             _currentPlayer = settings.player;
@@ -63,29 +58,34 @@ namespace AShortHike.Randomizer.Settings
         }
 
         /// <summary>
-        /// Gets or sets the multiworld connection info for the current save slot
+        /// Saves or loads the client settings to/from the actual save file
         /// </summary>
-        public ConnectionInfo SettingsForCurrentSave
+        public ClientSettings SaveFileSettings
         {
             get
             {
-                string save = GlobalData.currentSaveFile;
-                if (save.Contains("2"))
-                    return SettingsConfig.saveSlotThree;
-                else if (save.Contains("1"))
-                    return SettingsConfig.saveSlotTwo;
-                else
-                    return SettingsConfig.saveSlotOne;
+                Main.LogWarning("Loading client settings from save file");
+                Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+                return new ClientSettings(
+                    tags.GetString("AP.server"),
+                    tags.GetString("AP.player"),
+                    tags.GetString("AP.password"),
+                    tags.GetBool("AP.cutscenes"),
+                    tags.GetBool("AP.text"),
+                    tags.GetBool("AP.chests"));
             }
             set
             {
-                string save = GlobalData.currentSaveFile;
-                if (save.Contains("2"))
-                    SettingsConfig.saveSlotThree = value;
-                else if (save.Contains("1"))
-                    SettingsConfig.saveSlotTwo = value;
-                else
-                    SettingsConfig.saveSlotOne = value;
+                Main.LogWarning("Saving client settings to save file");
+                Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+                tags.SetString("AP.server", value.server);
+                tags.SetString("AP.player", value.player);
+                tags.SetString("AP.password", value.password);
+                tags.SetBool("AP.cutscenes", value.skipCutscenes);
+                tags.SetBool("AP.text", value.fastText);
+                tags.SetBool("AP.chests", value.goldenChests);
             }
         }
 
@@ -99,8 +99,8 @@ namespace AShortHike.Randomizer.Settings
             }
 
             // Save connection info
-            SettingsForCurrentSave = new ConnectionInfo(_currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText, _goldenChests);
-            Main.Randomizer.Data.SaveConfig(SettingsConfig);
+            Main.Randomizer.ClientSettings = new ClientSettings(
+                _currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText, _goldenChests); ;
 
             // Load game scene
             if (isContinue)

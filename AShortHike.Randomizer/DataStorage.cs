@@ -148,23 +148,23 @@ namespace AShortHike.Randomizer
 
         // Config
 
-        public SettingsInfo LoadConfig()
-        {
-            if (File.Exists(configPath))
-            {
-                return JsonConvert.DeserializeObject<SettingsInfo>(File.ReadAllText(configPath));
-            }
-            else
-            {
-                var settings = new SettingsInfo(null, null, null);
-                File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
-                return settings;
-            }
-        }
+        //public SettingsInfo LoadConfig()
+        //{
+        //    if (File.Exists(configPath))
+        //    {
+        //        return JsonConvert.DeserializeObject<SettingsInfo>(File.ReadAllText(configPath));
+        //    }
+        //    else
+        //    {
+        //        var settings = new SettingsInfo(null, null, null);
+        //        File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
+        //        return settings;
+        //    }
+        //}
 
-        public void SaveConfig(SettingsInfo settings)
-        {
-            File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
-        }
+        //public void SaveConfig(SettingsInfo settings)
+        //{
+        //    File.WriteAllText(configPath, JsonConvert.SerializeObject(settings, Formatting.Indented));
+        //}
     }
 }

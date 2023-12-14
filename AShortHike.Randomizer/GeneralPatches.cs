@@ -71,7 +71,7 @@ namespace AShortHike.Randomizer
     {
         public static void Postfix(ref bool __result, GameUserInput ___conversationInput)
         {
-            __result |= Main.Randomizer.Settings.SettingsForCurrentSave.fastText
+            __result |= Main.Randomizer.ClientSettings.fastText
                 && ___conversationInput.GetCancelButton().isPressed;
         }
     }
