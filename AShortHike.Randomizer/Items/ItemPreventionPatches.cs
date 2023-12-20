@@ -73,7 +73,7 @@ namespace AShortHike.Randomizer.Items
             else if (person == "Turtle_WalkingNPC" && item == "Headband")
             {
                 // If you already have the headband before talking to the turtle
-                __result = __result && tags.GetBool("Opened_Turtle_WalkingNPC[0]");
+                __result = tags.GetBool("Opened_Turtle_WalkingNPC[0]");
             }
             else if (person == "LittleKidNPCVariant (1)" && item == "ShellNecklace")
             {
