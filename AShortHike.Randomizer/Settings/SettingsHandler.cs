@@ -2,7 +2,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Settings
 {
@@ -10,6 +9,7 @@ namespace AShortHike.Randomizer.Settings
     {
         private LinearMenu _settingsMenu;
         private LinearMenu _textMenu;
+        private LinearMenu _qualityMenu;
 
         // These settings only persist while menuing and should be reset before that
         private SettingType _currentSetting;
@@ -17,17 +17,15 @@ namespace AShortHike.Randomizer.Settings
         private string _currentServer;
         private string _currentPlayer;
         private string _currentPassword;
-
-        public SettingsInfo SettingsConfig { get; private set; }
+        private bool _goldenChests;
+        private bool _skipCutscenes;
+        private bool _fastText;
 
         /// <summary>
         /// Called whenever the title screen is loaded to perform ui related functions
         /// </summary>
         public void SetupInputUI()
         {
-            // Load config from file
-            SettingsConfig = Main.Randomizer.Data.LoadConfig();
-
             EditTitleText();
         }
 
@@ -48,38 +46,46 @@ namespace AShortHike.Randomizer.Settings
         /// <summary>
         /// Before opening a begin/continue, always need to reset the settings from last time
         /// </summary>
-        public void RestoreMenuSettings(ConnectionInfo settings, bool isContinue)
+        public void RestoreMenuSettings(ClientSettings settings, bool isContinue)
         {
             _currentServer = settings.server;
             _currentPlayer = settings.player;
             _currentPassword = settings.password;
+            _skipCutscenes = settings.skipCutscenes;
+            _goldenChests = settings.goldenChests;
+            _fastText = settings.fastText;
             _currentIsContinue = isContinue;
         }
 
         /// <summary>
-        /// Gets or sets the multiworld connection info for the current save slot
+        /// Saves or loads the client settings to/from the actual save file
         /// </summary>
-        public ConnectionInfo SettingsForCurrentSave
+        public ClientSettings SaveFileSettings
         {
             get
             {
-                string save = GlobalData.currentSaveFile;
-                if (save.Contains("2"))
-                    return SettingsConfig.saveSlotThree;
-                else if (save.Contains("1"))
-                    return SettingsConfig.saveSlotTwo;
-                else
-                    return SettingsConfig.saveSlotOne;
+                Main.LogWarning("Loading client settings from save file");
+                Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+                return new ClientSettings(
+                    tags.GetString("AP.server"),
+                    tags.GetString("AP.player"),
+                    tags.GetString("AP.password"),
+                    tags.GetBool("AP.cutscenes"),
+                    tags.GetBool("AP.text"),
+                    tags.GetBool("AP.chests"));
             }
             set
             {
-                string save = GlobalData.currentSaveFile;
-                if (save.Contains("2"))
-                    SettingsConfig.saveSlotThree = value;
-                else if (save.Contains("1"))
-                    SettingsConfig.saveSlotTwo = value;
-                else
-                    SettingsConfig.saveSlotOne = value;
+                Main.LogWarning("Saving client settings to save file");
+                Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+                tags.SetString("AP.server", value.server);
+                tags.SetString("AP.player", value.player);
+                tags.SetString("AP.password", value.password);
+                tags.SetBool("AP.cutscenes", value.skipCutscenes);
+                tags.SetBool("AP.text", value.fastText);
+                tags.SetBool("AP.chests", value.goldenChests);
             }
         }
 
@@ -93,8 +99,8 @@ namespace AShortHike.Randomizer.Settings
             }
 
             // Save connection info
-            SettingsForCurrentSave = new ConnectionInfo(_currentServer, _currentPlayer, _currentPassword);
-            Main.Randomizer.Data.SaveConfig(SettingsConfig);
+            Main.Randomizer.ClientSettings = new ClientSettings(
+                _currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText, _goldenChests); ;
 
             // Load game scene
             if (isContinue)
@@ -129,8 +135,74 @@ namespace AShortHike.Randomizer.Settings
             }
         }
 
-        public void OpenTextMenu()
+        // Settings menu
+
+        public void OpenSettingsMenu(int index)
         {
+            UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
+
+            var options = new string[]
+            {
+                $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
+                $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
+                $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
+                $"QoL settings",
+                _currentIsContinue ? "Continue game" : "Start game",
+                "Back",
+            };
+
+            var events = new System.Action[]
+            {
+                delegate ()
+                {
+                    _currentSetting = SettingType.Server;
+                    OpenTextMenu();
+                },
+                delegate ()
+                {
+                    _currentSetting = SettingType.Name;
+                    OpenTextMenu();
+                },
+                delegate ()
+                {
+                    _currentSetting = SettingType.Password;
+                    OpenTextMenu();
+                },
+                delegate ()
+                {
+                    _currentSetting = SettingType.Quality;
+                    OpenQualityMenu(0);
+                },
+                delegate ()
+                {
+                    CloseSettingsMenu();
+                    Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
+                },
+                CloseSettingsMenu,
+            };
+
+            _settingsMenu = ui.CreateSimpleMenu(options, events)
+                .AddTitle($"{(_currentIsContinue ? "Confirm" : "Enter")} multiworld connection details")
+                .Finalize(index);
+        }
+
+        private void CloseSettingsMenu()
+        {
+            _settingsMenu?.Kill();
+        }
+
+        private void RefreshSettingsMenu()
+        {
+            _settingsMenu?.Kill();
+            OpenSettingsMenu((int)_currentSetting);
+        }
+
+        // Text menu
+
+        private void OpenTextMenu()
+        {
+            UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
+
             // Get title and value
             string title, value;
             switch (_currentSetting)
@@ -154,32 +226,14 @@ namespace AShortHike.Randomizer.Settings
             }
 
             // Create menu
-            UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
-            LinearMenu submenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0]);
-
-            // Create setting text
-            GameObject valueObject = ui.CreateTextMenuItem(value);
-            valueObject.transform.SetParent(submenu.transform, false);
-            valueObject.transform.SetAsFirstSibling();
-            valueObject.GetComponentInChildren<TMP_Text>().color = Color.red;
-            valueObject.AddComponent<TextInputItem>();
-
-            // Create title text
-            GameObject titleObject = ui.CreateTextMenuItem(title);
-            titleObject.transform.SetParent(submenu.transform, false);
-            titleObject.transform.SetAsFirstSibling();
-
-            // Finish menu
-            LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
-            (submenu.transform as RectTransform).CenterWithinParent();
-            _textMenu = submenu;
+            _textMenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0])
+                .AddTextInput(value)
+                .AddTitle(title)
+                .Finalize(0);
         }
 
         public void CloseTextMenu()
         {
-            if (_textMenu == null)
-                return;
-
             string input = _textMenu.GetComponentInChildren<TextInputItem>().FinalInput;
             switch (_currentSetting)
             {
@@ -187,75 +241,60 @@ namespace AShortHike.Randomizer.Settings
                 case SettingType.Name: _currentPlayer = input; break;
                 case SettingType.Password: _currentPassword = input; break;
             }
-            _textMenu.Kill();
-            CloseSettingsMenu();
+
+            _textMenu?.Kill();
+            RefreshSettingsMenu();
         }
 
-        public void OpenSettingsMenu(int index)
-        {
-            // Get title and option
-            string title = $"{(_currentIsContinue ? "Confirm" : "Enter")} multiworld connection details";
-            string option = _currentIsContinue ? "Continue game" : "Start game";
+        // Quality Menu
 
-            // Create menu
+        private void OpenQualityMenu(int index)
+        {
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
-            LinearMenu submenu = null;
-            submenu = ui.CreateSimpleMenu(
-                new string[]
+
+            var options = new string[]
+            {
+                $"Golden chests: <color=#EE0000>{_goldenChests.DisplayONOFF()}</color>",
+                $"Skip cutscenes: <color=#EE0000>{_skipCutscenes.DisplayONOFF()}</color>",
+                $"Fast text: <color=#EE0000>{_fastText.DisplayONOFF()}</color>",
+                "Back",
+            };
+
+            var events = new System.Action[]
+            {
+                delegate ()
                 {
-                    $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
-                    $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
-                    $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
-                    option,
-                    "Back",
+                    _goldenChests = !_goldenChests;
+                    RefreshQualityMenu(0);
                 },
-                new System.Action[]
+                delegate ()
                 {
-                    delegate ()
-                    {
-                        _currentSetting = SettingType.Server;
-                        Main.Randomizer.Settings.OpenTextMenu();
-                    },
-                    delegate ()
-                    {
-                        _currentSetting = SettingType.Name;
-                        Main.Randomizer.Settings.OpenTextMenu();
-                    },
-                    delegate ()
-                    {
-                        _currentSetting = SettingType.Password;
-                        Main.Randomizer.Settings.OpenTextMenu();
-                    },
-                    delegate ()
-                    {
-                        submenu.Kill();
-                        Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
-                    },
-                    delegate ()
-                    {
-                        submenu.Kill();
-                    },
-                });
+                    _skipCutscenes = !_skipCutscenes;
+                    RefreshQualityMenu(1);
+                },
+                delegate ()
+                {
+                    _fastText = !_fastText;
+                    RefreshQualityMenu(2);
+                },
+                CloseQualityMenu,
+            };
 
-            // Create title text
-            GameObject titleObject = ui.CreateTextMenuItem(title);
-            titleObject.transform.SetParent(submenu.transform, false);
-            titleObject.transform.SetAsFirstSibling();
-
-            // Finish menu
-            LayoutRebuilder.ForceRebuildLayoutImmediate(submenu.transform as RectTransform);
-            (submenu.transform as RectTransform).CenterWithinParent();
-            submenu.selectedIndex = index;
-            _settingsMenu = submenu;
+            _qualityMenu = ui.CreateUndismissableSimpleMenu(options, events)
+                .AddTitle("Quality of life settings")
+                .Finalize(index);
         }
 
-        public void CloseSettingsMenu()
+        private void CloseQualityMenu()
         {
-            if (_settingsMenu == null)
-                return;
+            _qualityMenu?.Kill();
+            RefreshSettingsMenu();
+        }
 
-            _settingsMenu.Kill();
-            OpenSettingsMenu((int)_currentSetting);
+        private void RefreshQualityMenu(int index)
+        {
+            _qualityMenu?.Kill();
+            OpenQualityMenu(index);
         }
     }
 }

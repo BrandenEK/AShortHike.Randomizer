@@ -117,7 +117,7 @@ namespace AShortHike.Randomizer.Items
             if (location == null)
                 return true;
 
-            if (location.player_name == Main.Randomizer.Settings.SettingsForCurrentSave.player)
+            if (location.player_name == Main.Randomizer.ClientSettings.player)
             {
                 // The item belongs to this world
                 __result = ItemCreator.CreateLocalItem(location.item_name);

@@ -21,7 +21,9 @@ namespace AShortHike.Randomizer
         public SettingsHandler Settings => _settings;
         public DataStorage Data => _data;
 
-        public MultiworldSettings MultiworldSettings { get; set; } = new();
+        // Both are set right after connecting to server before loading game scene
+        public ServerSettings ServerSettings { get; set; } = new();
+        public ClientSettings ClientSettings { get; set; } = new();
 
         public Randomizer()
         {
@@ -42,6 +44,7 @@ namespace AShortHike.Randomizer
                 _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
                 _connection.SendAllLocations();
+                _settings.SaveFileSettings = ClientSettings;
             }
             else
             {
@@ -84,7 +87,7 @@ namespace AShortHike.Randomizer
 
         public void CheckForHelpGoal()
         {
-            if (MultiworldSettings.goal != GoalType.Help)
+            if (ServerSettings.goal != GoalType.Help)
                 return;
 
             var tags = Singleton<GlobalData>.instance.gameData.tags;

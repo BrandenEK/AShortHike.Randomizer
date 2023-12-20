@@ -11,7 +11,7 @@ namespace AShortHike.Randomizer
     {
         public static bool Prefix(string startNode, ref IConversation __result)
         {
-            if (startNode == "TitleScreenIntroStart" && Main.Randomizer.MultiworldSettings.skipCutscenes)
+            if (startNode == "TitleScreenIntroStart" && Main.Randomizer.ClientSettings.skipCutscenes)
             {
                 // If starting the intro cutscene, set conversation to null and skip start
                 __result = null;
@@ -27,15 +27,15 @@ namespace AShortHike.Randomizer
         public static bool Prefix(Cutscene __instance)
         {
             // If starting the intro cutscene, give the phone and skip
-            if (!Main.Randomizer.MultiworldSettings.skipCutscenes)
+            if (!Main.Randomizer.ClientSettings.skipCutscenes)
                 return true;
 
             var data = Singleton<GlobalData>.instance.gameData;
 
-            if (!data.tags.GetBool("Given_Phone"))
+            if (!data.tags.GetBool("OpeningCutscene"))
             {
                 data.AddCollected(CollectableItem.Load("Cellphone"), 1, false);
-                data.tags.SetBool("Given_Phone", true);
+                data.tags.SetBool("OpeningCutscene", true);
             }
 
             Object.Destroy(__instance.gameObject);
@@ -51,7 +51,7 @@ namespace AShortHike.Randomizer
     {
         public static void Prefix(string[] args)
         {
-            if (Main.Randomizer.MultiworldSettings.skipCutscenes && args.Length > 0 && float.Parse(args[0]) >= 5)
+            if (Main.Randomizer.ClientSettings.skipCutscenes && args.Length > 0 && float.Parse(args[0]) >= 5)
             {
                 Main.Log("Shortening waiting cutscene");
                 args[0] = "1";

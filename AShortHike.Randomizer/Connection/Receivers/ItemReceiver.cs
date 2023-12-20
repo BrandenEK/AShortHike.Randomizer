@@ -99,7 +99,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 Singleton<GlobalData>.instance.gameData.AddCollected(collectable, amount, false);
 
                 // If received from another player, display it in an item prompt
-                if (item.player != Main.Randomizer.Settings.SettingsForCurrentSave.player)
+                if (item.player != Main.Randomizer.ClientSettings.player)
                 {
                     Main.Randomizer.Notifications.AddNotification(item.name, item.player);
                 }
