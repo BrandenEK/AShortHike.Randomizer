@@ -27,38 +27,38 @@ namespace AShortHike.Randomizer.Items
                 case "CampRangerNPC": // Visitor's center shop salesman
                     {
                         int visitorFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$FeathersSold");
-                        if (item == "GoldenFeather")
-                            return speaker + $"[{visitorFeathers - 1}]";
-                        else if (item == "ParkHat")
-                            return speaker + "[9]";
-                        break;
+
+                        int id = item switch
+                        {
+                            "GoldenFeather" => visitorFeathers - 1, "ParkHat" => 9, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "ToughBirdNPC (1)": // Tough bird salesman
                     {
                         int toughBirdFeathers = (int)Singleton<GlobalData>.instance.gameData.tags.GetFloat("$ToughBirdSales");
-                        if (item == "GoldenFeather")
-                            return speaker + $"[{toughBirdFeathers - 1}]";
-                        else if (item == "Watch")
-                            return speaker + "[9]";
-                        break;
+
+                        int id = item switch
+                        {
+                            "GoldenFeather" => toughBirdFeathers - 1, "Watch" => 9, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "VolleyballOpponent": // Beachstickball
                     {
-                        if (item == "GoldenFeather")
-                            return speaker + "[0]";
-                        else if (item == "Coin")
-                            return speaker + "[1]";
-                        else if (item == "KidHat")
-                            return speaker + "[2]";
-                        break;
+                        int id = item switch
+                        {
+                            "GoldenFeather" => 0, "Coin" => 1, "KidHat" => 2, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "FishBuyer": // Fisherman
                     {
-                        if (item == "FishEncyclopedia")
-                            return speaker + "[0]";
-                        else if (item == "GoldenFishingRod")
-                            return speaker + "[1]";
-                        break;
+                        int id = item switch
+                        {
+                            "FishEncyclopedia" => 0, "GoldenFishingRod" => 1, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "CamperNPC": // Camper bribe
                     {
@@ -67,41 +67,46 @@ namespace AShortHike.Randomizer.Items
                     }
                 case "Bunny_WalkingNPC (1)": // Racing bunny
                     {
-                        if (item == "RunningShoes")
-                            return speaker + "[0]";
-                        break;
+                        int id = item switch
+                        {
+                            "RunningShoes" => 0, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "RaceOpponent": // Parkour racer
                     {
                         string race = Singleton<GlobalData>.instance.gameData.tags.GetString("RaceId");
                         int raceLevel = race == "MountainTopRace" ? 2 : (race == "OldBuildingRace" ? 1 : 0);
-                        if (item == "Medal")
-                            return speaker + $"[{raceLevel}]";
-                        else if (item == "WalkieTalkie")
-                            return speaker + "[9]";
-                        break;
+
+                        int id = item switch
+                        {
+                            "Medal" => raceLevel, "WalkieTalkie" => 9, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "LittleKidNPCVariant (1)": // Shell kid
                     {
-                        if (item == "ShellNecklace")
-                            return speaker + "[0]";
-                        else if (item == "Shell")
-                            return speaker + "[1]";
-                        break;
+                        int id = item switch
+                        {
+                            "ShellNecklace" => 0, "Shell" => 1, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "DadDeer": // Boat rental guy
                     {
-                        if (item == "BoatKey")
-                            return speaker + "[0]";
-                        else if (item == "BoatManual")
-                            return speaker + "[1]";
-                        break;
+                        int id = item switch
+                        {
+                            "BoatKey" => 0, "BoatManual" => 1, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
                 case "Player": // Talking to yourself
                     {
-                        if (item == "CampingPermit")
-                            return speaker + "[0]";
-                        return speaker + "[-1]";
+                        int id = item switch
+                        {
+                            "CampingPermit" => 0, _ => -1
+                        };
+                        return $"{speaker}[{id}]";
                     }
             }
 
