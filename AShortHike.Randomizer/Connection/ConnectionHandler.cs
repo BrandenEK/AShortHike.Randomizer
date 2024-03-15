@@ -6,6 +6,7 @@ using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -182,22 +183,20 @@ namespace AShortHike.Randomizer.Connection
         }
 
         /// <summary>
-        /// When first loading the game after connecting, send all collected locations by checking the "Opened_" flag
+        /// When first loading the game after connecting, send all collected locations
         /// </summary>
-        public async void SendAllLocations()
+        public async void SendLocations(IEnumerable<ItemLocation> locations)
         {
             if (!Connected)
+            {
+                Main.LogWarning($"Can't send all locations: Not connected to a server!");
                 return;
+            }
 
-            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+            long[] apIds = locations.Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Name)).ToArray();
 
-            var checkedLocations = Main.LocationHandler.GetAllLocations()
-                .Where(x => tags.GetBool($"Opened_{x.Key}"))
-                .Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Value.Name))
-                .ToArray();
-
-            Main.Log($"Sending all {checkedLocations.Length} locations");
-            await _session.Locations.CompleteLocationChecksAsync(checkedLocations);
+            Main.Log($"Sending {apIds.Length} locations");
+            await _session.Locations.CompleteLocationChecksAsync(apIds);
         }
 
         /// <summary>

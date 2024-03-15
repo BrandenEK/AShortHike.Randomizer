@@ -2,6 +2,8 @@
 using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,7 +45,7 @@ namespace AShortHike.Randomizer
             {
                 _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
-                _connection.SendAllLocations();
+                _connection.SendLocations(GetAllCheckedLocations());
                 _settings.SaveFileSettings = ClientSettings;
             }
             else
@@ -83,6 +85,13 @@ namespace AShortHike.Randomizer
             //        Main.LogError("New rotation angle: " + currAngle);
             //    }
             //}
+        }
+
+        private IEnumerable<ItemLocation> GetAllCheckedLocations()
+        {
+            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+            return Main.LocationHandler.GetAllLocations().Values.Where(x => tags.GetBool($"Opened_{x.Id}"));
         }
 
         public void CheckForHelpGoal()
