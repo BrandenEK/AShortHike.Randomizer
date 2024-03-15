@@ -5,7 +5,7 @@ using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -14,6 +14,7 @@ namespace AShortHike.Randomizer.Connection
         private ArchipelagoSession _session;
 
         private readonly ItemReceiver _itemReceiver = new();
+        private const string GAME_NAME = "A Short Hike";
 
         /// <summary>
         /// Set whenever the server is connected to or when manually disconnecting
@@ -36,7 +37,7 @@ namespace AShortHike.Randomizer.Connection
                 _session.Items.ItemReceived += _itemReceiver.OnReceiveItem;
                 //_session.Socket.PacketReceived += messageReceiver.OnReceiveMessage;
                 _session.Socket.SocketClosed += OnDisconnect;
-                result = _session.TryConnectAndLogin("A Short Hike", player, ItemsHandlingFlags.AllItems, new Version(0, 4, 4), null, null, password);
+                result = _session.TryConnectAndLogin(GAME_NAME, player, ItemsHandlingFlags.AllItems, new Version(0, 4, 4), null, null, password);
             }
             catch (Exception e)
             {
@@ -107,12 +108,24 @@ namespace AShortHike.Randomizer.Connection
         /// </summary>
         private void ProcessSlotData(LoginSuccessful login)
         {
-            var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
+            //var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
             var settings = ((JObject)login.SlotData["settings"]).ToObject<ServerSettings>() ?? new ServerSettings();
 
-            Main.Randomizer.Data.StoreItemLocations(apLocations);
+            //Main.Randomizer.Data.StoreItemLocations(apLocations);
             Main.Randomizer.ServerSettings = settings;
-            Main.Log($"Received {apLocations?.Count} locations from slot data");
+            Main.Log($"Received server settings from slot data");
+
+            //List<NewItemLocation> locs = new();
+            //foreach (var kvp in apLocations)
+            //{
+            //    Main.LogError("Storing " + kvp.Key);
+            //    locs.Add(new NewItemLocation(kvp.Key, GetLocationNameFromId(kvp.Value.ap_id), kvp.Value.chest_angle));
+            //}
+
+            //var sortedLocs = locs.OrderBy(x => x.Id.Contains('['))
+            //    .ThenBy(x => x.Id).ToArray();
+
+            //File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "Modding", "data", "locations.json"), JsonConvert.SerializeObject(sortedLocs, Formatting.Indented));
         }
 
         // Receivers
@@ -138,7 +151,7 @@ namespace AShortHike.Randomizer.Connection
         /// <summary>
         /// When collecting a location in the game, send its id to the server
         /// </summary>
-        public void SendLocation(string locationId)
+        public async void SendLocation(string locationId)
         {
             if (!Connected)
             {
@@ -153,29 +166,29 @@ namespace AShortHike.Randomizer.Connection
                 return;
             }
 
-            Main.Log($"Sending location: {locationId} ({location.ap_id})");
-            _session.Locations.CompleteLocationChecksAsync(location.ap_id);
+            long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
+
+            Main.Log($"Sending location: {locationId} ({apId})");
+            await _session.Locations.CompleteLocationChecksAsync(apId);
         }
 
         /// <summary>
         /// When first loading the game after connecting, send all collected locations by checking the "Opened_" flag
         /// </summary>
-        public void SendAllLocations()
+        public async void SendAllLocations()
         {
             if (!Connected)
                 return;
 
-            var checkedLocations = new List<long>();
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            foreach (KeyValuePair<string, ItemLocation> kvp in Main.Randomizer.Data.GetAllLocations())
-            {
-                if (tags.GetBool("Opened_" + kvp.Key))
-                    checkedLocations.Add(kvp.Value.ap_id);
-            }
+            var checkedLocations = Main.Randomizer.Data.GetAllLocations()
+                .Where(x => tags.GetBool($"Opened_{x.Key}"))
+                .Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Value.Name))
+                .ToArray();
 
-            Main.Log($"Sending all {checkedLocations.Count} locations");
-            _session.Locations.CompleteLocationChecksAsync(checkedLocations.ToArray());
+            Main.Log($"Sending all {checkedLocations.Length} locations");
+            await _session.Locations.CompleteLocationChecksAsync(checkedLocations);
         }
 
         /// <summary>

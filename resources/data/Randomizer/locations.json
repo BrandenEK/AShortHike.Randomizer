@@ -1,0 +1,623 @@
+[
+  {
+    "id": "Boat.0",
+    "name": "Fisherman's Boat Chest 1",
+    "chestAngle": 20
+  },
+  {
+    "id": "Boat.7",
+    "name": "Fisherman's Boat Chest 2",
+    "chestAngle": 130
+  },
+  {
+    "id": "Coins.10",
+    "name": "Shirley's Point Chest",
+    "chestAngle": 170
+  },
+  {
+    "id": "Coins.104",
+    "name": "Old Building Chest",
+    "chestAngle": 330
+  },
+  {
+    "id": "Coins.109",
+    "name": "Old Building West Chest",
+    "chestAngle": 310
+  },
+  {
+    "id": "Coins.11",
+    "name": "Caravan Arch Chest",
+    "chestAngle": 270
+  },
+  {
+    "id": "Coins.112",
+    "name": "Sunhat Island Buried Chest",
+    "chestAngle": 50
+  },
+  {
+    "id": "Coins.113",
+    "name": "A Stormy View Buried Treasure Chest",
+    "chestAngle": 330
+  },
+  {
+    "id": "Coins.117",
+    "name": "Orange Islands North Buried Chest",
+    "chestAngle": 20
+  },
+  {
+    "id": "Coins.118",
+    "name": "Orange Islands Ruins Buried Chest",
+    "chestAngle": 20
+  },
+  {
+    "id": "Coins.119",
+    "name": "Orange Islands South Buried Chest",
+    "chestAngle": 350
+  },
+  {
+    "id": "Coins.12",
+    "name": "Caravan Cliff Chest",
+    "chestAngle": 250
+  },
+  {
+    "id": "Coins.120",
+    "name": "Orange Islands East Chest",
+    "chestAngle": 330
+  },
+  {
+    "id": "Coins.121",
+    "name": "Orange Islands West Chest",
+    "chestAngle": 330
+  },
+  {
+    "id": "Coins.124",
+    "name": "Orange Islands South Hidden Chest",
+    "chestAngle": 170
+  },
+  {
+    "id": "Coins.20",
+    "name": "West Waterfall Chest",
+    "chestAngle": 260
+  },
+  {
+    "id": "Coins.21",
+    "name": "Hawk Peak West Chest",
+    "chestAngle": 220
+  },
+  {
+    "id": "Coins.22",
+    "name": "Blackwood Cliff Chest",
+    "chestAngle": 180
+  },
+  {
+    "id": "Coins.28",
+    "name": "North Coast Chest",
+    "chestAngle": 50
+  },
+  {
+    "id": "Coins.31",
+    "name": "Airstream Island Chest",
+    "chestAngle": 100
+  },
+  {
+    "id": "Coins.33",
+    "name": "Good Creek Path West Chest",
+    "chestAngle": 160
+  },
+  {
+    "id": "Coins.34",
+    "name": "West River Waterfall Head Chest",
+    "chestAngle": 260
+  },
+  {
+    "id": "Coins.41",
+    "name": "King Buried Treasure Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "Coins.42",
+    "name": "Visitor's Center Hidden Chest",
+    "chestAngle": 350
+  },
+  {
+    "id": "Coins.45",
+    "name": "Northern East Coast Chest",
+    "chestAngle": 20
+  },
+  {
+    "id": "Coins.46",
+    "name": "Sid Beach Buried Treasure Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "Coins.47",
+    "name": "North Coast Buried Chest",
+    "chestAngle": 330
+  },
+  {
+    "id": "Coins.48",
+    "name": "Good Creek Path Buried Chest",
+    "chestAngle": 170
+  },
+  {
+    "id": "Coins.49",
+    "name": "Bucket Cliff Chest",
+    "chestAngle": 120
+  },
+  {
+    "id": "Coins.50",
+    "name": "Bucket Path Chest",
+    "chestAngle": 260
+  },
+  {
+    "id": "Coins.6",
+    "name": "White Coast Trail Chest",
+    "chestAngle": 260
+  },
+  {
+    "id": "Coins.62",
+    "name": "Good Creek Path East Chest",
+    "chestAngle": 160
+  },
+  {
+    "id": "Coins.64",
+    "name": "Meteor Lake Chest",
+    "chestAngle": 280
+  },
+  {
+    "id": "Coins.65",
+    "name": "House North Beach Chest",
+    "chestAngle": 100
+  },
+  {
+    "id": "Coins.7",
+    "name": "Sid Beach Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "Coins.76",
+    "name": "Hawk Peak East Buried Chest",
+    "chestAngle": 50
+  },
+  {
+    "id": "Coins.79",
+    "name": "Hawk Peak Northeast Chest",
+    "chestAngle": 60
+  },
+  {
+    "id": "Coins.8",
+    "name": "Old Building East Chest",
+    "chestAngle": 260
+  },
+  {
+    "id": "Coins.86",
+    "name": "Meteor Lake Buried Chest",
+    "chestAngle": 230
+  },
+  {
+    "id": "Coins.87",
+    "name": "Small South Island Buried Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "Coins.88",
+    "name": "Secret Island Bottom Chest",
+    "chestAngle": 0
+  },
+  {
+    "id": "Coins.89",
+    "name": "Secret Island Treehouse Chest",
+    "chestAngle": 230
+  },
+  {
+    "id": "Coins.9",
+    "name": "Sid Beach Cliff Chest",
+    "chestAngle": 170
+  },
+  {
+    "id": "Coins.94",
+    "name": "Visitor's Center Buried Chest",
+    "chestAngle": 250
+  },
+  {
+    "id": "Coins.98",
+    "name": "East Coast Chest",
+    "chestAngle": 70
+  },
+  {
+    "id": "Feathers.0",
+    "name": "Lighthouse Golden Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "Feathers.2",
+    "name": "Outlook Cliff Golden Feather",
+    "chestAngle": 260
+  },
+  {
+    "id": "Feathers.3",
+    "name": "Blackwood Forest Golden Feather",
+    "chestAngle": 260
+  },
+  {
+    "id": "Feathers.4",
+    "name": "North Cliff Golden Chest",
+    "chestAngle": 280
+  },
+  {
+    "id": "Feathers.5",
+    "name": "Stone Tower Golden Chest",
+    "chestAngle": 220
+  },
+  {
+    "id": "Feathers.6",
+    "name": "Outlook Golden Chest",
+    "chestAngle": 200
+  },
+  {
+    "id": "Feathers.7",
+    "name": "Meteor Lake Cliff Golden Feather",
+    "chestAngle": 130
+  },
+  {
+    "id": "Feathers.8",
+    "name": "Visitor Camp Rock Golden Feather",
+    "chestAngle": 220
+  },
+  {
+    "id": "Feathers.9",
+    "name": "In Her Shadow Buried Treasure Chest",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.0",
+    "name": "Stone Tower West Cliff Chest",
+    "chestAngle": 120
+  },
+  {
+    "id": "PickUps.1",
+    "name": "Secret Island Beach Seashell",
+    "chestAngle": 310
+  },
+  {
+    "id": "PickUps.10",
+    "name": "West River Seashell",
+    "chestAngle": 230
+  },
+  {
+    "id": "PickUps.11",
+    "name": "Sid Beach Seashell",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.12",
+    "name": "Sid Beach Mound Seashell",
+    "chestAngle": 260
+  },
+  {
+    "id": "PickUps.13",
+    "name": "Airstream Island North Seashell",
+    "chestAngle": 60
+  },
+  {
+    "id": "PickUps.14",
+    "name": "Boat Cliff Seashell",
+    "chestAngle": 40
+  },
+  {
+    "id": "PickUps.15",
+    "name": "Airstream Island South Seashell",
+    "chestAngle": 180
+  },
+  {
+    "id": "PickUps.16",
+    "name": "House North Beach Seashell",
+    "chestAngle": 160
+  },
+  {
+    "id": "PickUps.17",
+    "name": "Shirley's Point Rock Seashell",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.18",
+    "name": "Shirley's Point Beach Seashell",
+    "chestAngle": 240
+  },
+  {
+    "id": "PickUps.19",
+    "name": "Visitor's Center Beach Seashell",
+    "chestAngle": 300
+  },
+  {
+    "id": "PickUps.2",
+    "name": "Beach Hut Seashell",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.20",
+    "name": "Meteor Lake Seashell",
+    "chestAngle": 160
+  },
+  {
+    "id": "PickUps.21",
+    "name": "East Coast Seashell",
+    "chestAngle": 120
+  },
+  {
+    "id": "PickUps.22",
+    "name": "Boat Isle Mound Seashell",
+    "chestAngle": 20
+  },
+  {
+    "id": "PickUps.23",
+    "name": "Stone Tower Riverbank Seashell",
+    "chestAngle": 240
+  },
+  {
+    "id": "PickUps.24",
+    "name": "Secret Island Peak",
+    "chestAngle": 150
+  },
+  {
+    "id": "PickUps.25",
+    "name": "Secret Island Beach Trail Stick",
+    "chestAngle": 240
+  },
+  {
+    "id": "PickUps.26",
+    "name": "Blackwood Trail Rock Toy Shovel",
+    "chestAngle": 260
+  },
+  {
+    "id": "PickUps.27",
+    "name": "Blackwood Trail Lookout Toy Shovel",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.28",
+    "name": "Beach Hut Cliff Toy Shovel",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.29",
+    "name": "Visitor's Center Beach Toy Shovel",
+    "chestAngle": 230
+  },
+  {
+    "id": "PickUps.3",
+    "name": "Start Beach Seashell",
+    "chestAngle": 120
+  },
+  {
+    "id": "PickUps.30",
+    "name": "Shirley's Point Beach Toy Shovel",
+    "chestAngle": 300
+  },
+  {
+    "id": "PickUps.4",
+    "name": "West Riverbank Seashell",
+    "chestAngle": 190
+  },
+  {
+    "id": "PickUps.6",
+    "name": "North Beach Seashell",
+    "chestAngle": 310
+  },
+  {
+    "id": "PickUps.7",
+    "name": "North Coast Seashell",
+    "chestAngle": 80
+  },
+  {
+    "id": "PickUps.8",
+    "name": "Beach Umbrella Seashell",
+    "chestAngle": 160
+  },
+  {
+    "id": "PickUps.9",
+    "name": "Good Creek Path Seashell",
+    "chestAngle": 110
+  },
+  {
+    "id": "SandProvince.3",
+    "name": "Sand Castle Golden Feather",
+    "chestAngle": 270
+  },
+  {
+    "id": "Tools.0",
+    "name": "Beach Hut Rocky Pool Sand Stick",
+    "chestAngle": 230
+  },
+  {
+    "id": "Tools.1",
+    "name": "Stick Under Sid Beach Umbrella",
+    "chestAngle": 190
+  },
+  {
+    "id": "Tools.2",
+    "name": "Cliff Overlooking West River Waterfall Stick",
+    "chestAngle": 260
+  },
+  {
+    "id": "Tools.23",
+    "name": "Hawk Peak Bucket Rock",
+    "chestAngle": 230
+  },
+  {
+    "id": "Tools.3",
+    "name": "Below Lighthouse Walkway Stick",
+    "chestAngle": 190
+  },
+  {
+    "id": "Tools.31",
+    "name": "Blocked Mine Pickaxe 1",
+    "chestAngle": 350
+  },
+  {
+    "id": "Tools.32",
+    "name": "Blocked Mine Pickaxe 2",
+    "chestAngle": 80
+  },
+  {
+    "id": "Tools.33",
+    "name": "Blocked Mine Pickaxe 3",
+    "chestAngle": 0
+  },
+  {
+    "id": "Tools.4",
+    "name": "North Beach Stick",
+    "chestAngle": 330
+  },
+  {
+    "id": "Tools.42",
+    "name": "Orange Islands Bucket Rock",
+    "chestAngle": 10
+  },
+  {
+    "id": "Tools.8",
+    "name": "Trail to Tough Bird Salesman Stick",
+    "chestAngle": 180
+  },
+  {
+    "id": "VolleyballMinigame.4",
+    "name": "Beachstickball Court Stick",
+    "chestAngle": 260
+  },
+  {
+    "id": "AuntMayNPC[0]",
+    "name": "Ranger May Shell Necklace Golden Feather"
+  },
+  {
+    "id": "Bunny_WalkingNPC (1)[0]",
+    "name": "Sue the Rabbit Shoes Reward"
+  },
+  {
+    "id": "CamperNPC[0]",
+    "name": "Permit Guy Bribe"
+  },
+  {
+    "id": "CamperNPC[1]",
+    "name": "Return Camping Permit"
+  },
+  {
+    "id": "CampRangerNPC[0]",
+    "name": "Visitor's Center Shop Golden Feather 1"
+  },
+  {
+    "id": "CampRangerNPC[1]",
+    "name": "Visitor's Center Shop Golden Feather 2"
+  },
+  {
+    "id": "CampRangerNPC[9]",
+    "name": "Visitor's Center Shop Hat"
+  },
+  {
+    "id": "DadDeer[0]",
+    "name": "Boat Rental"
+  },
+  {
+    "id": "DeerKidBoat[0]",
+    "name": "Boat Challenge Reward"
+  },
+  {
+    "id": "Dog_WalkingNPC_BlueEyed[0]",
+    "name": "Outlook Point Dog Gift"
+  },
+  {
+    "id": "FishBuyer[0]",
+    "name": "Catch 3 Fish Reward"
+  },
+  {
+    "id": "FishBuyer[1]",
+    "name": "Catch All Fish Reward"
+  },
+  {
+    "id": "Fox_WalkingNPC[0]",
+    "name": "Compass Guy"
+  },
+  {
+    "id": "Frog_StandingNPC[0]",
+    "name": "Shovel Kid Trade"
+  },
+  {
+    "id": "Goat_StandingNPC[0]",
+    "name": "Wristwatch Trade"
+  },
+  {
+    "id": "LittleKidNPCVariant (1)[0]",
+    "name": "Collect 15 Seashells"
+  },
+  {
+    "id": "LittleKidNPCVariant (1)[1]",
+    "name": "Return to Shell Kid"
+  },
+  {
+    "id": "Player[0]",
+    "name": "Catch Fish with Permit"
+  },
+  {
+    "id": "RaceOpponent[0]",
+    "name": "Lighthouse Race Reward"
+  },
+  {
+    "id": "RaceOpponent[1]",
+    "name": "Old Building Race Reward"
+  },
+  {
+    "id": "RaceOpponent[2]",
+    "name": "Hawk Peak Race Reward"
+  },
+  {
+    "id": "RaceOpponent[9]",
+    "name": "Lose Race Gift"
+  },
+  {
+    "id": "SittingNPC (1)[0]",
+    "name": "Bill the Walrus Fisherman"
+  },
+  {
+    "id": "SittingNPC[0]",
+    "name": "Purchase Sunhat"
+  },
+  {
+    "id": "StandingNPC[0]",
+    "name": "Artist Golden Feather"
+  },
+  {
+    "id": "ToughBirdNPC (1)[0]",
+    "name": "Tough Bird Salesman Golden Feather 1"
+  },
+  {
+    "id": "ToughBirdNPC (1)[1]",
+    "name": "Tough Bird Salesman Golden Feather 2"
+  },
+  {
+    "id": "ToughBirdNPC (1)[2]",
+    "name": "Tough Bird Salesman Golden Feather 3"
+  },
+  {
+    "id": "ToughBirdNPC (1)[3]",
+    "name": "Tough Bird Salesman Golden Feather 4"
+  },
+  {
+    "id": "ToughBirdNPC (1)[9]",
+    "name": "Tough Bird Salesman (400 Coins)"
+  },
+  {
+    "id": "Turtle_WalkingNPC[0]",
+    "name": "Taylor the Turtle Headband Gift"
+  },
+  {
+    "id": "VolleyballOpponent[0]",
+    "name": "Beachstickball (10 Hits)"
+  },
+  {
+    "id": "VolleyballOpponent[1]",
+    "name": "Beachstickball (20 Hits)"
+  },
+  {
+    "id": "VolleyballOpponent[2]",
+    "name": "Beachstickball (30 Hits)"
+  }
+]
