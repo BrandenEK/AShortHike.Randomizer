@@ -1,11 +1,13 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
 using AShortHike.Randomizer.Items;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AShortHike.Randomizer.Connection
 {
@@ -148,27 +150,34 @@ namespace AShortHike.Randomizer.Connection
 
         // Sending
 
-        /// <summary>
-        /// When collecting a location in the game, send its id to the server
-        /// </summary>
-        public async void SendLocation(string locationId)
+        public async Task<NetworkItem> ScoutLocation(ItemLocation location)
         {
             if (!Connected)
             {
-                Main.LogWarning($"Can't send location {locationId}: Not connected to a server!");
-                return;
+                //Main.LogWarning($"Can't scout location {location.Id}: Not connected to a server!");
+                throw new Exception($"Can't scout location {location.Id}: Not connected to a server!");
             }
 
-            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
-            if (location == null)
+            long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
+
+            var packet = await _session.Locations.ScoutLocationsAsync(false, apId);
+            return packet.Locations[0];
+        }
+
+        /// <summary>
+        /// When collecting a location in the game, send its id to the server
+        /// </summary>
+        public async void SendLocation(ItemLocation location)
+        {
+            if (!Connected)
             {
-                Main.LogWarning($"Can't send location {locationId}: Location doesn't exist!");
+                Main.LogWarning($"Can't send location {location.Id}: Not connected to a server!");
                 return;
             }
 
             long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
 
-            Main.Log($"Sending location: {locationId} ({apId})");
+            Main.Log($"Sending location: {location.Id} ({apId})");
             await _session.Locations.CompleteLocationChecksAsync(apId);
         }
 
@@ -182,7 +191,7 @@ namespace AShortHike.Randomizer.Connection
 
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
-            var checkedLocations = Main.Randomizer.Data.GetAllLocations()
+            var checkedLocations = Main.LocationHandler.GetAllLocations()
                 .Where(x => tags.GetBool($"Opened_{x.Key}"))
                 .Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Value.Name))
                 .ToArray();

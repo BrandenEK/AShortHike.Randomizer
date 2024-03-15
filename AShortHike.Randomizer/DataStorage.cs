@@ -28,25 +28,6 @@ namespace AShortHike.Randomizer
                 Main.LogError("Failed to load ap image from " + imagePath);
         }
 
-        // Locations
-
-        private Dictionary<string, ItemLocation> allLocations = new(); // Set whenever connecting to the server
-
-        public void StoreItemLocations(Dictionary<string, ItemLocation> locations)
-        {
-            allLocations = locations ?? new Dictionary<string, ItemLocation>();
-        }
-
-        public ItemLocation GetLocationFromId(string locationId)
-        {
-            return allLocations.TryGetValue(locationId, out ItemLocation location) ? location : null;
-        }
-
-        public Dictionary<string, ItemLocation> GetAllLocations()
-        {
-            return allLocations;
-        }
-
         // Items
 
         private readonly Dictionary<string, CollectableItem> allItems = new();

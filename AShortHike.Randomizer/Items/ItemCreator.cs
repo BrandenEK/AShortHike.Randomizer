@@ -33,6 +33,37 @@ namespace AShortHike.Randomizer.Items
         }
 
         /// <summary>
+        /// Creates an instance of an item when the actual item is unknown
+        /// </summary>
+        /// <returns></returns>
+        public static CollectableItem CreateUnknownItem()
+        {
+            CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
+            item.name = "APL";
+            item.readableName = "Unknown Item";
+            item.icon = Main.Randomizer.Data.ApImage;
+            item.showPrompt = CollectableItem.PickUpPrompt.Always;
+            return item;
+        }
+
+        /// <summary>
+        /// Creates an instance of an item to display when you find any item
+        /// </summary>
+        public static CollectableItem CreateFoundItem(string itemName, string playerName)
+        {
+            if (playerName == Main.Randomizer.ClientSettings.player)
+            {
+                // The item belongs to this world
+                return CreateLocalItem(itemName);
+            }
+            else
+            {
+                // The item goes to another player's world
+                return CreateExternalItem(itemName, playerName);
+            }
+        }
+
+        /// <summary>
         /// Creates an instance of an item to display when someone else finds an item for you
         /// </summary>
         public static CollectableItem CreateReceivedItem(string itemName, string playerName)

@@ -16,10 +16,16 @@ namespace AShortHike.Randomizer
         public static Transform TransformHolder { get; private set; }
         private static ManualLogSource MessageLogger { get; set; }
 
+        // New
+        public static LocationHandler LocationHandler { get; private set; }
+
         private void Awake()
         {
             TransformHolder = transform;
             MessageLogger = Logger;
+
+            // New
+            LocationHandler = new();
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             Randomizer = new Randomizer();
