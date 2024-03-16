@@ -1,4 +1,5 @@
-﻿using AShortHike.Randomizer.Models;
+﻿using AShortHike.Randomizer.Extensions;
+using AShortHike.Randomizer.Models;
 using UnityEngine;
 
 namespace AShortHike.Randomizer.Items

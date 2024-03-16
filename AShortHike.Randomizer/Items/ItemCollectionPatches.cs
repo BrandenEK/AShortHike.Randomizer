@@ -1,7 +1,6 @@
-﻿using Archipelago.MultiClient.Net.Models;
+﻿using AShortHike.Randomizer.Extensions;
 using AShortHike.Randomizer.Models;
 using HarmonyLib;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace AShortHike.Randomizer.Items
