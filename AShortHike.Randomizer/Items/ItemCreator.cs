@@ -12,7 +12,7 @@ namespace AShortHike.Randomizer.Items
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "APL";
             item.readableName = $"{TruncateItemName(itemName)} {ChangeTextWhite("for")} {playerName}";
-            item.icon = Main.Randomizer.Data.ApImage;
+            item.icon = Main.ImageStorage.ApImage;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
         }
@@ -22,7 +22,7 @@ namespace AShortHike.Randomizer.Items
         /// </summary>
         public static CollectableItem CreateLocalItem(string itemName)
         {
-            CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
+            CollectableItem localItem = Main.ItemStorage.GetItemFromName(itemName, out _);
 
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "APL";
@@ -41,7 +41,7 @@ namespace AShortHike.Randomizer.Items
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "APL";
             item.readableName = "Unknown Item";
-            item.icon = Main.Randomizer.Data.ApImage;
+            item.icon = Main.ImageStorage.ApImage;
             item.showPrompt = CollectableItem.PickUpPrompt.Always;
             return item;
         }
@@ -68,7 +68,7 @@ namespace AShortHike.Randomizer.Items
         /// </summary>
         public static CollectableItem CreateReceivedItem(string itemName, string playerName)
         {
-            CollectableItem localItem = Main.Randomizer.Data.GetItemFromName(itemName, out _);
+            CollectableItem localItem = Main.ItemStorage.GetItemFromName(itemName, out _);
 
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
             item.name = "APR";

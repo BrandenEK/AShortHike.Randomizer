@@ -13,13 +13,11 @@ namespace AShortHike.Randomizer
         private readonly ItemHandler _items = new();
         private readonly NotificationHandler _notifications = new();
         private readonly SettingsHandler _settings = new();
-        private readonly DataStorage _data = new();
 
         public ConnectionHandler Connection => _connection;
         public ItemHandler Items => _items;
         public NotificationHandler Notifications => _notifications;
         public SettingsHandler Settings => _settings;
-        public DataStorage Data => _data;
 
         // Both are set right after connecting to server before loading game scene
         public ServerSettings ServerSettings { get; set; } = new();

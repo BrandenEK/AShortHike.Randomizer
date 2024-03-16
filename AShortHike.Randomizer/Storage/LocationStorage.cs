@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AShortHike.Randomizer;
+namespace AShortHike.Randomizer.Storage;
 
 public class LocationStorage
 {

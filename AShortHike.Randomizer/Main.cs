@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using AShortHike.Randomizer.Storage;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using System;
@@ -17,6 +18,8 @@ namespace AShortHike.Randomizer
         private static ManualLogSource MessageLogger { get; set; }
 
         // New
+        public static ImageStorage ImageStorage { get; private set; }
+        public static ItemStorage ItemStorage { get; private set; }
         public static LocationStorage LocationStorage { get; private set; }
 
         private void Awake()
@@ -25,6 +28,8 @@ namespace AShortHike.Randomizer
             MessageLogger = Logger;
 
             // New
+            ImageStorage = new();
+            ItemStorage = new();
             LocationStorage = new();
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);

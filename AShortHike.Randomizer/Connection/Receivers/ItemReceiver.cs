@@ -66,7 +66,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
             {
                 Singleton<GlobalData>.instance.gameData.tags.SetInt("ITEMS_RECEIVED", itemsReceived + 1);
 
-                CollectableItem collectable = Main.Randomizer.Data.GetItemFromName(item.name, out int amount);
+                CollectableItem collectable = Main.ItemStorage.GetItemFromName(item.name, out int amount);
                 if (collectable == null)
                 {
                     Main.LogError("Received invalid item: " + item.name);
@@ -91,7 +91,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 {
                     // If receiving a second fishing rod remove the first and give golden
                     Singleton<GlobalData>.instance.gameData.AddCollected(collectable, -1, false);
-                    collectable = Main.Randomizer.Data.GetItemFromName("Golden Fishing Rod", out _);
+                    collectable = Main.ItemStorage.GetItemFromName("Golden Fishing Rod", out _);
                     Main.Log("Changing fishing rod to golden version");
                 }
 
