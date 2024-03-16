@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace AShortHike.Randomizer.Settings
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// When starting a new game, either show the connection menu, or return normally if connected

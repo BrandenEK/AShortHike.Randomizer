@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using Yarn;
 
-namespace AShortHike.Randomizer.Items
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// After the fishing tutorial is finished, stash the fishing rod

@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace AShortHike.Randomizer
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// When starting the intro conversation, skip it if the setting is enabled

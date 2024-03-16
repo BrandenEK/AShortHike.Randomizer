@@ -1,9 +1,10 @@
 ﻿using AShortHike.Randomizer.Extensions;
+using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Models;
 using HarmonyLib;
 using UnityEngine.UI;
 
-namespace AShortHike.Randomizer.Items
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// These 3 patches just show the location of the object to replace - will be gone soon
@@ -69,7 +70,7 @@ namespace AShortHike.Randomizer.Items
 
                 if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 {
-                    args = [ locationId ];
+                    args = [locationId];
                     Main.Randomizer.Items.CollectLocation(location, false);
                 }
             }
@@ -77,7 +78,7 @@ namespace AShortHike.Randomizer.Items
             {
                 // If the fisher guy is trying to take away the fishing rod, dont let him
                 Main.LogWarning("Preventing loss of fishing rod!");
-                args = [ "FishingRod", "0" ];
+                args = ["FishingRod", "0"];
             }
         }
     }
