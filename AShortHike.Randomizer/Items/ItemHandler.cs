@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net.Models;
+﻿using AShortHike.Randomizer.Models;
 using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
@@ -20,12 +20,10 @@ namespace AShortHike.Randomizer.Items
 
             if (showDisplay)
             {
-                NetworkItem ni = await Main.Randomizer.Connection.ScoutLocation(location);
-                string playerName = Main.Randomizer.Connection.GetPlayerNameFromSlot(ni.Player);
-                string itemName = Main.Randomizer.Connection.GetItemNameFromId(ni.Item);
+                Item item = await Main.Randomizer.Connection.ScoutLocation(location);
 
-                CollectableItem item = ItemCreator.CreateFoundItem(itemName, playerName);
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
+                CollectableItem collectable = ItemCreator.CreateFoundItem(item.Name, item.Player);
+                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(1));
             }
         }
 

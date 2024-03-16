@@ -1,4 +1,4 @@
-﻿using AShortHike.Randomizer.Items;
+﻿using AShortHike.Randomizer.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using AShortHike.Randomizer.Connection;
 using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Models;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
 using System.Collections.Generic;

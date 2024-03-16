@@ -1,5 +1,5 @@
 ﻿
-namespace AShortHike.Randomizer.Items
+namespace AShortHike.Randomizer.Models
 {
     public class ItemLocation(string id, string name, int chestAngle)
     {

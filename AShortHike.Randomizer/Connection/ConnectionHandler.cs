@@ -3,7 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using AShortHike.Randomizer.Connection.Receivers;
-using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -151,7 +151,7 @@ namespace AShortHike.Randomizer.Connection
 
         // Sending
 
-        public async Task<NetworkItem> ScoutLocation(ItemLocation location)
+        public async Task<Item> ScoutLocation(ItemLocation location)
         {
             if (!Connected)
             {
@@ -162,7 +162,14 @@ namespace AShortHike.Randomizer.Connection
             long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
 
             var packet = await _session.Locations.ScoutLocationsAsync(false, apId);
-            return packet.Locations[0];
+            if (packet.Locations.Length == 0)
+                throw new Exception($"Failed to scout location for {location.Id}");
+
+            NetworkItem item = packet.Locations[0];
+            string playerName = GetPlayerNameFromSlot(item.Player);
+            string itemName = GetItemNameFromId(item.Item);
+
+            return new Item(itemName, playerName);
         }
 
         /// <summary>
@@ -208,9 +215,10 @@ namespace AShortHike.Randomizer.Connection
             if (goal != Main.Randomizer.ServerSettings.goal)
                 return;
 
-            var statusUpdatePacket = new StatusUpdatePacket();
-            statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
-            _session.Socket.SendPacket(statusUpdatePacket);
+            _session.Socket.SendPacket(new StatusUpdatePacket()
+            {
+                Status = ArchipelagoClientState.ClientGoal
+            });
         }
 
         // Helpers
