@@ -120,7 +120,7 @@ namespace AShortHike.Randomizer.Items
         private GameObject ReplaceObjectWithRandomChest(GameObject obj, string locationId)
         {
             // Determine whether to randomize this location or not
-            if (!Main.LocationHandler.TryGetLocation(locationId, out ItemLocation location))
+            if (!Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 return null;
 
             Transform parent = obj.transform.parent;

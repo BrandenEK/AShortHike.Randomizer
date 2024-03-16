@@ -2,17 +2,16 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
 namespace AShortHike.Randomizer;
 
-public class LocationHandler
+public class LocationStorage
 {
     private readonly Dictionary<string, ItemLocation> _locations;
 
-    public LocationHandler()
+    public LocationStorage()
     {
         _locations = LoadLocationsFromFile();
         Main.Log($"Loaded {_locations.Count} locations");
@@ -28,9 +27,16 @@ public class LocationHandler
         return _locations[id];
     }
 
-    public ReadOnlyDictionary<string, ItemLocation> GetAllLocations()
+    public IEnumerable<ItemLocation> GetAllLocations()
     {
-        return new ReadOnlyDictionary<string, ItemLocation>(_locations);
+        return _locations.Values;
+    }
+
+    public IEnumerable<ItemLocation> GetAllCheckedLocations()
+    {
+        Tags tags = Singleton<GlobalData>.instance.gameData.tags;
+
+        return _locations.Values.Where(x => tags.GetBool($"Opened_{x.Id}"));
     }
 
     private Dictionary<string, ItemLocation> LoadLocationsFromFile()

@@ -45,7 +45,7 @@ namespace AShortHike.Randomizer.Items
             string locationId = __instance.GetComponent<GameObjectID>().id;
             Main.LogWarning($"Opening chest: {locationId} at location {__instance.transform.position}");
 
-            if (Main.LocationHandler.TryGetLocation(locationId, out ItemLocation location))
+            if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 Main.Randomizer.Items.CollectLocation(location, true);
 
             // Chest angle testing
@@ -68,7 +68,7 @@ namespace AShortHike.Randomizer.Items
 
                 string locationId = context.GetLocationId(args[0]);
 
-                if (Main.LocationHandler.TryGetLocation(locationId, out ItemLocation location))
+                if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 {
                     args = [ locationId ];
                     Main.Randomizer.Items.CollectLocation(location, false);
@@ -120,7 +120,7 @@ namespace AShortHike.Randomizer.Items
         public static bool Prefix(string name, ref CollectableItem __result)
         {
             // If this isnt a valid location, get the regular item at this name
-            if (!Main.LocationHandler.TryGetLocation(name, out ItemLocation location))
+            if (!Main.LocationStorage.TryGetLocation(name, out ItemLocation location))
                 return true;
 
             //Task<NetworkItem> task = Main.Randomizer.Connection.ScoutLocation(location);

@@ -17,7 +17,7 @@ namespace AShortHike.Randomizer
         private static ManualLogSource MessageLogger { get; set; }
 
         // New
-        public static LocationHandler LocationHandler { get; private set; }
+        public static LocationStorage LocationStorage { get; private set; }
 
         private void Awake()
         {
@@ -25,7 +25,7 @@ namespace AShortHike.Randomizer
             MessageLogger = Logger;
 
             // New
-            LocationHandler = new();
+            LocationStorage = new();
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             Randomizer = new Randomizer();
