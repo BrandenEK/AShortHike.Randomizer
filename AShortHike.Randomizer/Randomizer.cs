@@ -102,14 +102,6 @@ namespace AShortHike.Randomizer
         // Chest angle testing
         public Transform lastChest;
 
-        public void OnConnect()
-        {
-        }
-
-        public void OnDisconnect()
-        {
-        }
-
         private readonly string[] _flagsForHelpGoal = new string[]
         {
             "Opened_ToughBirdNPC (1)[9]",       // Give coins to tough bird salesman

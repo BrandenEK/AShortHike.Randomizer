@@ -68,11 +68,8 @@ namespace AShortHike.Randomizer.Connection
             Main.LogWarning("Multiworld connection successful");
             LoginSuccessful login = result as LoginSuccessful;
 
-            OnConnect(); // remove
-
             ProcessSlotData(login);
             Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
-            Main.Randomizer.OnConnect();
             return true;
         }
 
@@ -89,11 +86,6 @@ namespace AShortHike.Randomizer.Connection
             }
         }
 
-        private void OnConnect()
-        {
-
-        }
-
         /// <summary>
         /// Should be called when the socket is closed, but doesnt happen
         /// </summary>
@@ -102,33 +94,18 @@ namespace AShortHike.Randomizer.Connection
             Connected = false;
             _session = null;
             ClearReceivers();
-            Main.Randomizer.OnDisconnect();
             Main.LogWarning("OnDisconnect called");
         }
 
         /// <summary>
-        /// Receives the list of item locations and settings from the server, and stores the necessary data in the data storage
+        /// Receives the server settings from the slot data
         /// </summary>
         private void ProcessSlotData(LoginSuccessful login)
         {
-            //var apLocations = ((JObject)login.SlotData["locations"]).ToObject<Dictionary<string, ItemLocation>>();
             var settings = ((JObject)login.SlotData["settings"]).ToObject<ServerSettings>() ?? new ServerSettings();
 
-            //Main.Randomizer.Data.StoreItemLocations(apLocations);
             Main.Randomizer.ServerSettings = settings;
             Main.Log($"Received server settings from slot data");
-
-            //List<NewItemLocation> locs = new();
-            //foreach (var kvp in apLocations)
-            //{
-            //    Main.LogError("Storing " + kvp.Key);
-            //    locs.Add(new NewItemLocation(kvp.Key, GetLocationNameFromId(kvp.Value.ap_id), kvp.Value.chest_angle));
-            //}
-
-            //var sortedLocs = locs.OrderBy(x => x.Id.Contains('['))
-            //    .ThenBy(x => x.Id).ToArray();
-
-            //File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "Modding", "data", "locations.json"), JsonConvert.SerializeObject(sortedLocs, Formatting.Indented));
         }
 
         // Receivers
