@@ -148,7 +148,7 @@ namespace AShortHike.Randomizer.Connection
             string playerName = GetPlayerNameFromSlot(item.Player);
             string itemName = GetItemNameFromId(item.Item);
 
-            return new Item(itemName, playerName);
+            return new Item(itemName, playerName, item.Flags == ItemFlags.Advancement || item.Flags == ItemFlags.Trap);
         }
 
         /// <summary>
