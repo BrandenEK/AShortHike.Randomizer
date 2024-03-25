@@ -19,6 +19,7 @@ namespace AShortHike.Randomizer
 
         // New
         public static ImageStorage ImageStorage { get; private set; }
+        public static ItemMapper ItemMapper { get; private set; }
         public static ItemStorage ItemStorage { get; private set; }
         public static LocationStorage LocationStorage { get; private set; }
 
@@ -27,13 +28,15 @@ namespace AShortHike.Randomizer
             TransformHolder = transform;
             MessageLogger = Logger;
 
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
+            Randomizer = new Randomizer();
+
             // New
             ImageStorage = new();
             ItemStorage = new();
             LocationStorage = new();
+            ItemMapper = new(Randomizer.Connection, LocationStorage);
 
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
-            Randomizer = new Randomizer();
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
         }
 

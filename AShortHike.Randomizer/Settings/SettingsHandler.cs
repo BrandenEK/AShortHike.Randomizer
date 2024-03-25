@@ -135,6 +135,24 @@ namespace AShortHike.Randomizer.Settings
             }
         }
 
+        private async void TryConnectAndScout()
+        {
+            Main.LogError("Connecting...");
+
+            if (!Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue))
+                return;
+
+            Main.LogWarning("Successful connection");
+            Main.LogError("Scouting...");
+
+            if (!await Main.ItemMapper.OnConnect())
+                return;
+
+            Main.LogWarning("Scouted all");
+            CloseSettingsMenu();
+            BeginGameOnceConnected(_currentIsContinue);
+        }
+
         // Settings menu
 
         public void OpenSettingsMenu(int index)
@@ -175,8 +193,9 @@ namespace AShortHike.Randomizer.Settings
                 },
                 delegate ()
                 {
-                    CloseSettingsMenu();
-                    Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
+                    TryConnectAndScout();
+                    //CloseSettingsMenu();
+                    //Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
                 },
                 CloseSettingsMenu,
             };

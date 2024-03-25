@@ -123,13 +123,8 @@ namespace AShortHike.Randomizer.Patches
             if (!Main.LocationStorage.TryGetLocation(name, out ItemLocation location))
                 return true;
 
-            //Task<NetworkItem> task = Main.Randomizer.Connection.ScoutLocation(location);
-            //NetworkItem item = task.GetAwaiter().GetResult();
-
-            //string playerName = Main.Randomizer.Connection.GetPlayerNameFromSlot(item.Player);
-            //string itemName = Main.Randomizer.Connection.GetItemNameFromId(item.Item);
-
-            __result = ItemCreator.CreateUnknownItem();
+            Item item = Main.ItemMapper.GetItemAtLocation(location);
+            __result = ItemCreator.CreateFoundItem(item.Name, item.Player);
 
             return false;
         }

@@ -51,15 +51,15 @@ namespace AShortHike.Randomizer.Connection
             if (!result.Successful)
             {
                 Connected = false;
-                LoginFailure failure = result as LoginFailure;
-                resultMessage = "Multiworld connection failed: ";
-                if (failure.Errors.Length > 0)
-                    resultMessage += failure.Errors[0];
-                else
-                    resultMessage += "Reason unknown.";
+                //LoginFailure failure = result as LoginFailure;
+                //resultMessage = "Multiworld connection failed: ";
+                //if (failure.Errors.Length > 0)
+                //    resultMessage += failure.Errors[0];
+                //else
+                //    resultMessage += "Reason unknown.";
 
-                Main.LogError(resultMessage);
-                Main.Randomizer.Settings.DisplayFailure(resultMessage);
+                Main.LogError("Failed to connect");
+                //Main.Randomizer.Settings.DisplayFailure(resultMessage);
                 return false;
             }
 
@@ -69,7 +69,8 @@ namespace AShortHike.Randomizer.Connection
             LoginSuccessful login = result as LoginSuccessful;
 
             ProcessSlotData(login);
-            Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
+
+            //Main.Randomizer.Settings.BeginGameOnceConnected(isContinue);
             return true;
         }
 
@@ -95,6 +96,7 @@ namespace AShortHike.Randomizer.Connection
             _session = null;
             ClearReceivers();
             Main.LogWarning("OnDisconnect called");
+            Main.ItemMapper.OnDisconnect();
         }
 
         /// <summary>

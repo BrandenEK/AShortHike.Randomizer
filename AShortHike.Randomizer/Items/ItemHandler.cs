@@ -13,7 +13,7 @@ namespace AShortHike.Randomizer.Items
         /// When a location is "collected" through a chest or npc dialog, set its collected flag and send to the server
         /// Chests should display the location, while npc dialog handles it itself
         /// </summary>
-        public async void CollectLocation(ItemLocation location, bool showDisplay)
+        public void CollectLocation(ItemLocation location, bool showDisplay)
         {
             Singleton<GlobalData>.instance.gameData.tags.SetBool($"Opened_{location.Id}", true);
             Main.Randomizer.Connection.SendLocation(location);
@@ -21,7 +21,7 @@ namespace AShortHike.Randomizer.Items
 
             if (showDisplay)
             {
-                Item item = await Main.Randomizer.Connection.ScoutLocation(location);
+                Item item = Main.ItemMapper.GetItemAtLocation(location);
 
                 CollectableItem collectable = ItemCreator.CreateFoundItem(item.Name, item.Player);
                 Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(1));

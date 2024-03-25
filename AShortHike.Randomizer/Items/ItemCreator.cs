@@ -35,7 +35,6 @@ namespace AShortHike.Randomizer.Items
         /// <summary>
         /// Creates an instance of an item when the actual item is unknown
         /// </summary>
-        /// <returns></returns>
         public static CollectableItem CreateUnknownItem()
         {
             CollectableItem item = ScriptableObject.CreateInstance<CollectableItem>();
