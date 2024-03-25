@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using AShortHike.Randomizer.Storage;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using System;
@@ -16,6 +17,12 @@ namespace AShortHike.Randomizer
         public static Transform TransformHolder { get; private set; }
         private static ManualLogSource MessageLogger { get; set; }
 
+        // New
+        public static ImageStorage ImageStorage { get; private set; }
+        public static ItemMapper ItemMapper { get; private set; }
+        public static ItemStorage ItemStorage { get; private set; }
+        public static LocationStorage LocationStorage { get; private set; }
+
         private void Awake()
         {
             TransformHolder = transform;
@@ -23,6 +30,13 @@ namespace AShortHike.Randomizer
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             Randomizer = new Randomizer();
+
+            // New
+            ImageStorage = new();
+            ItemStorage = new();
+            LocationStorage = new();
+            ItemMapper = new(Randomizer.Connection, LocationStorage);
+
             new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
         }
 

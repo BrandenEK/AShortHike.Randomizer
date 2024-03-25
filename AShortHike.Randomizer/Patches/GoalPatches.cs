@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace AShortHike.Randomizer.Items
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// Check for goal completion when flag is set

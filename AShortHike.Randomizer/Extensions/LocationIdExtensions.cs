@@ -1,5 +1,4 @@
-﻿
-namespace AShortHike.Randomizer.Items
+﻿namespace AShortHike.Randomizer.Extensions
 {
     internal static class LocationIdExtensions
     {
@@ -30,7 +29,9 @@ namespace AShortHike.Randomizer.Items
 
                         int id = item switch
                         {
-                            "GoldenFeather" => visitorFeathers - 1, "ParkHat" => 9, _ => -1
+                            "GoldenFeather" => visitorFeathers - 1,
+                            "ParkHat" => 9,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -40,7 +41,9 @@ namespace AShortHike.Randomizer.Items
 
                         int id = item switch
                         {
-                            "GoldenFeather" => toughBirdFeathers - 1, "Watch" => 9, _ => -1
+                            "GoldenFeather" => toughBirdFeathers - 1,
+                            "Watch" => 9,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -48,7 +51,10 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "GoldenFeather" => 0, "Coin" => 1, "KidHat" => 2, _ => -1
+                            "GoldenFeather" => 0,
+                            "Coin" => 1,
+                            "KidHat" => 2,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -56,7 +62,9 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "FishEncyclopedia" => 0, "GoldenFishingRod" => 1, _ => -1
+                            "FishEncyclopedia" => 0,
+                            "GoldenFishingRod" => 1,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -69,18 +77,21 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "RunningShoes" => 0, _ => -1
+                            "RunningShoes" => 0,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
                 case "RaceOpponent": // Parkour racer
                     {
                         string race = Singleton<GlobalData>.instance.gameData.tags.GetString("RaceId");
-                        int raceLevel = race == "MountainTopRace" ? 2 : (race == "OldBuildingRace" ? 1 : 0);
+                        int raceLevel = race == "MountainTopRace" ? 2 : race == "OldBuildingRace" ? 1 : 0;
 
                         int id = item switch
                         {
-                            "Medal" => raceLevel, "WalkieTalkie" => 9, _ => -1
+                            "Medal" => raceLevel,
+                            "WalkieTalkie" => 9,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -88,7 +99,9 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "ShellNecklace" => 0, "Shell" => 1, _ => -1
+                            "ShellNecklace" => 0,
+                            "Shell" => 1,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -96,7 +109,9 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "BoatKey" => 0, "BoatManual" => 1, _ => -1
+                            "BoatKey" => 0,
+                            "BoatManual" => 1,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }
@@ -104,7 +119,8 @@ namespace AShortHike.Randomizer.Items
                     {
                         int id = item switch
                         {
-                            "CampingPermit" => 0, _ => -1
+                            "CampingPermit" => 0,
+                            _ => -1
                         };
                         return $"{speaker}[{id}]";
                     }

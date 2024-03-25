@@ -2,7 +2,7 @@
 using QuickUnityTools.Input;
 using UnityEngine;
 
-namespace AShortHike.Randomizer
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// Display the key and value whenever something is being saved

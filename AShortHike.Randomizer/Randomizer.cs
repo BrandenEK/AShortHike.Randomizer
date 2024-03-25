@@ -13,13 +13,11 @@ namespace AShortHike.Randomizer
         private readonly ItemHandler _items = new();
         private readonly NotificationHandler _notifications = new();
         private readonly SettingsHandler _settings = new();
-        private readonly DataStorage _data = new();
 
         public ConnectionHandler Connection => _connection;
         public ItemHandler Items => _items;
         public NotificationHandler Notifications => _notifications;
         public SettingsHandler Settings => _settings;
-        public DataStorage Data => _data;
 
         // Both are set right after connecting to server before loading game scene
         public ServerSettings ServerSettings { get; set; } = new();
@@ -43,7 +41,7 @@ namespace AShortHike.Randomizer
             {
                 _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
-                _connection.SendAllLocations();
+                _connection.SendLocations(Main.LocationStorage.GetAllCheckedLocations());
                 _settings.SaveFileSettings = ClientSettings;
             }
             else
@@ -56,14 +54,6 @@ namespace AShortHike.Randomizer
         {
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();
-
-            // Debugging
-            //if (Input.GetKeyDown(KeyCode.Backslash))
-            //{
-            //    Main.Log("Giving cheat items!");
-            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("GoldenFeather"), 10, false);
-            //    Singleton<GlobalData>.instance.gameData.AddCollected(CollectableItem.Load("SilverFeather"), 5, false);
-            //}
 
             // Chest angle testing
             //if (lastChest != null)
@@ -103,14 +93,6 @@ namespace AShortHike.Randomizer
 
         // Chest angle testing
         public Transform lastChest;
-
-        public void OnConnect()
-        {
-        }
-
-        public void OnDisconnect()
-        {
-        }
 
         private readonly string[] _flagsForHelpGoal = new string[]
         {

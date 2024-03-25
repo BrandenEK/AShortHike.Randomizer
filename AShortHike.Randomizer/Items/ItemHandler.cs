@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using AShortHike.Randomizer.Extensions;
+using AShortHike.Randomizer.Models;
+using UnityEngine;
 
 namespace AShortHike.Randomizer.Items
 {
@@ -11,17 +13,18 @@ namespace AShortHike.Randomizer.Items
         /// When a location is "collected" through a chest or npc dialog, set its collected flag and send to the server
         /// Chests should display the location, while npc dialog handles it itself
         /// </summary>
-        public void CollectLocation(string locationId, bool showDisplay)
+        public void CollectLocation(ItemLocation location, bool showDisplay)
         {
-            Singleton<GlobalData>.instance.gameData.tags.SetBool("Opened_" + locationId, true);
-            Main.Randomizer.Connection.SendLocation(locationId);
+            Singleton<GlobalData>.instance.gameData.tags.SetBool($"Opened_{location.Id}", true);
+            Main.Randomizer.Connection.SendLocation(location);
             Main.Randomizer.CheckForHelpGoal();
 
-            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
-            if (showDisplay && location != null)
+            if (showDisplay)
             {
-                CollectableItem item = CollectableItem.Load(locationId);
-                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(item.PickUpRoutine(1));
+                Item item = Main.ItemMapper.GetItemAtLocation(location);
+
+                CollectableItem collectable = ItemCreator.CreateFoundItem(item.Name, item.Player);
+                Singleton<GameServiceLocator>.instance.levelController.player.StartCoroutine(collectable.PickUpRoutine(1));
             }
         }
 
@@ -118,14 +121,13 @@ namespace AShortHike.Randomizer.Items
         private GameObject ReplaceObjectWithRandomChest(GameObject obj, string locationId)
         {
             // Determine whether to randomize this location or not
-            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
-            if (location == null)
+            if (!Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 return null;
 
             Transform parent = obj.transform.parent;
             Vector3 position = obj.transform.position;
-            Quaternion rotation = Quaternion.Euler(0, location.chest_angle, 0);
-            bool useGoldenChest = location.ShouldBeGolden && Main.Randomizer.ClientSettings.goldenChests;
+            Quaternion rotation = Quaternion.Euler(0, location.ChestAngle, 0);
+            bool useGoldenChest = Main.ItemMapper.GetItemAtLocation(location).IsProgression;
 
             Object.Destroy(obj.gameObject);
 

@@ -1,7 +1,10 @@
-﻿using HarmonyLib;
+﻿using AShortHike.Randomizer.Extensions;
+using AShortHike.Randomizer.Items;
+using AShortHike.Randomizer.Models;
+using HarmonyLib;
 using UnityEngine.UI;
 
-namespace AShortHike.Randomizer.Items
+namespace AShortHike.Randomizer.Patches
 {
     /// <summary>
     /// These 3 patches just show the location of the object to replace - will be gone soon
@@ -41,7 +44,9 @@ namespace AShortHike.Randomizer.Items
         {
             string locationId = __instance.GetComponent<GameObjectID>().id;
             Main.LogWarning($"Opening chest: {locationId} at location {__instance.transform.position}");
-            Main.Randomizer.Items.CollectLocation(locationId, true);
+
+            if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
+                Main.Randomizer.Items.CollectLocation(location, true);
 
             // Chest angle testing
             //Main.Randomizer.lastChest = __instance.transform;
@@ -60,19 +65,20 @@ namespace AShortHike.Randomizer.Items
             if (args.Length < 2 || int.TryParse(args[1], out int amount) && amount > 0)
             {
                 Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
-                string locationId = context.GetLocationId(args[0]);
-                ItemLocation location = Main.Randomizer.Data.GetLocationFromId(locationId);
-                if (location == null)
-                    return;
 
-                args = new string[] { locationId };
-                Main.Randomizer.Items.CollectLocation(locationId, false);
+                string locationId = context.GetLocationId(args[0]);
+
+                if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
+                {
+                    args = [locationId];
+                    Main.Randomizer.Items.CollectLocation(location, false);
+                }
             }
             else if (args.Length > 1 && args[0] == "FishingRod" && args[1] == "-1")
             {
                 // If the fisher guy is trying to take away the fishing rod, dont let him
                 Main.LogWarning("Preventing loss of fishing rod!");
-                args = new string[] { "FishingRod", "0" };
+                args = ["FishingRod", "0"];
             }
         }
     }
@@ -106,6 +112,7 @@ namespace AShortHike.Randomizer.Items
 
     /// <summary>
     /// Calling this method with the locationId of a valid location will instead return a new ApItem
+    /// Used when setting the item argument in dialog
     /// </summary>
     [HarmonyPatch(typeof(CollectableItem), nameof(CollectableItem.Load))]
     class CollectableItem_GetItem_Patch
@@ -113,20 +120,11 @@ namespace AShortHike.Randomizer.Items
         public static bool Prefix(string name, ref CollectableItem __result)
         {
             // If this isnt a valid location, get the regular item at this name
-            ItemLocation location = Main.Randomizer.Data.GetLocationFromId(name);
-            if (location == null)
+            if (!Main.LocationStorage.TryGetLocation(name, out ItemLocation location))
                 return true;
 
-            if (location.player_name == Main.Randomizer.ClientSettings.player)
-            {
-                // The item belongs to this world
-                __result = ItemCreator.CreateLocalItem(location.item_name);
-            }
-            else
-            {
-                // The item goes to another player's world
-                __result = ItemCreator.CreateExternalItem(location.item_name, location.player_name);
-            }
+            Item item = Main.ItemMapper.GetItemAtLocation(location);
+            __result = ItemCreator.CreateFoundItem(item.Name, item.Player);
 
             return false;
         }
