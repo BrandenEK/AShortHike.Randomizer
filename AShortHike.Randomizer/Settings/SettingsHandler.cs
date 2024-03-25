@@ -1,5 +1,6 @@
 ﻿using AShortHike.Randomizer.Extensions;
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace AShortHike.Randomizer.Settings
 {
     public class SettingsHandler
     {
+        private readonly StatusDisplay _statusDisplay = new();
+
         private LinearMenu _settingsMenu;
         private LinearMenu _textMenu;
         private LinearMenu _qualityMenu;
@@ -137,19 +140,26 @@ namespace AShortHike.Randomizer.Settings
 
         private async void TryConnectAndScout()
         {
-            Main.LogError("Connecting...");
+            _statusDisplay.DisplayStatus("Connecting...");
+            await Task.Delay(100);
 
             if (!Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue))
+            {
+                _statusDisplay.DisplayFailure("Multiworld connection failed");
                 return;
+            }
 
-            Main.LogWarning("Successful connection");
-            Main.LogError("Scouting...");
+            _statusDisplay.DisplayStatus("Scouting...");
 
             if (!await Main.ItemMapper.OnConnect())
+            {
+                _statusDisplay.DisplayFailure("Location scouting failed");
                 return;
+            }
 
-            Main.LogWarning("Scouted all");
             CloseSettingsMenu();
+            _statusDisplay.Hide();
+
             BeginGameOnceConnected(_currentIsContinue);
         }
 
@@ -191,12 +201,7 @@ namespace AShortHike.Randomizer.Settings
                     _currentSetting = SettingType.Quality;
                     OpenQualityMenu(0);
                 },
-                delegate ()
-                {
-                    TryConnectAndScout();
-                    //CloseSettingsMenu();
-                    //Main.Randomizer.Connection.Connect(_currentServer, _currentPlayer, _currentPassword, _currentIsContinue);
-                },
+                TryConnectAndScout,
                 CloseSettingsMenu,
             };
 

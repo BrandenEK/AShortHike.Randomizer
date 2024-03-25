@@ -24,6 +24,9 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
         catch
         {
             Main.LogError("Failed to scout locations");
+            _connection.Disconnect();
+            _mappedItems.Clear();
+
             return false;
         }
     }
