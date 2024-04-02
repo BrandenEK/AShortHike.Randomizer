@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    
+
+    <Title>Randomizer</Title>
     <Product>Randomizer</Product>
+    <Authors>Damocles</Authors>
     <Company>Damocles</Company>
-    <Description>An item randomizer mod</Description>
+    <Description>A multiworld randomizer client mod</Description>
     <Version>1.1.0</Version>
     
     <TargetName>Randomizer</TargetName>
