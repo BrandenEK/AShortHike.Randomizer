@@ -149,11 +149,12 @@ namespace AShortHike.Randomizer.Settings
                 return;
             }
 
-            _statusDisplay.DisplayStatus("Scouting...");
+            //_statusDisplay.DisplayStatus("Scouting...");
 
             if (!await Main.ItemMapper.OnConnect())
             {
-                _statusDisplay.DisplayFailure("Location scouting failed");
+                _statusDisplay.DisplayFailure("Multiworld connection failed");
+                //_statusDisplay.DisplayFailure("Location scouting failed");
                 return;
             }
 
