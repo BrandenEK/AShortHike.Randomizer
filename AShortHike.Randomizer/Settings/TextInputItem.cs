@@ -14,7 +14,8 @@ namespace AShortHike.Randomizer.Settings
         {
             get
             {
-                string trimmed = input.Trim();
+                string trimmed = input.Trim().Replace("ap:", "archipelago.gg:");
+
                 return trimmed.Length > 0 ? trimmed : null;
             }
         }
