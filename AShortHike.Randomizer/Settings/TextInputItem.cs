@@ -39,10 +39,6 @@ namespace AShortHike.Randomizer.Settings
                 {
                     Main.Randomizer.Settings.CloseTextMenu();
                 }
-                //else if (c == '\\' && !input.Contains(AP_TEXT))//'a' && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) // Fill ap
-                //{
-                //    input += AP_TEXT;
-                //}
                 else // Regular character
                 {
                     input += c;
@@ -51,7 +47,5 @@ namespace AShortHike.Randomizer.Settings
 
             _textField.text = input.DisplayAsDashIfNull();
         }
-
-        private const string AP_TEXT = "archipelago.gg:";
     }
 }
