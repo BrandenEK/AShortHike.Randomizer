@@ -54,7 +54,7 @@
 
     <!-- Export & zip all mod files -->
     <PropertyGroup>
-      <ExportFolder>$(SolutionDir)export\$(TargetName)\</ExportFolder>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
