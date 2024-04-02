@@ -55,6 +55,11 @@ namespace AShortHike.Randomizer
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();
 
+            if (Input.GetKeyDown(KeyCode.Backslash))
+            {
+                new GoalChecker().OpenGoalCheckbox();
+            }
+
             // Chest angle testing
             //if (lastChest != null)
             //{
