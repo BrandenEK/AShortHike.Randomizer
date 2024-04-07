@@ -1,6 +1,7 @@
 ﻿using AShortHike.Randomizer.Connection;
 using AShortHike.Randomizer.Models;
 using AShortHike.Randomizer.Storage;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,9 +22,9 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
             await ScoutAllLocations();
             return true;
         }
-        catch
+        catch (Exception e)
         {
-            Main.LogError("Failed to scout locations");
+            Main.LogError($"Failed to scout locations: {e.Message}");
             _connection.Disconnect();
             _mappedItems.Clear();
 

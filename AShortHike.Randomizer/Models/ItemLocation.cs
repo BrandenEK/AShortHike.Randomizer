@@ -6,5 +6,10 @@ namespace AShortHike.Randomizer.Models
         public string Id { get; } = id;
         public string Name { get; } = name;
         public int ChestAngle { get; } = chestAngle;
+
+        public override string ToString()
+        {
+            return $"{Id} ({Name})";
+        }
     }
 }
