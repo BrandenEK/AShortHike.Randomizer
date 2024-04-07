@@ -3,31 +3,50 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    
-env:
-  MOD_NAME: "Randomizer"
+    tags: [ "**" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.101
-    - name: Restore
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Upload
-      uses: actions/upload-artifact@v3
+        dotnet-version: 3.1.x
+
+    - name: Build Project
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+
+    - name: Export Settings
+      run: |
+        MOD_TITLE=$(grep -oP '<Title>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_TITLE=$MOD_TITLE" >> $GITHUB_ENV
+        MOD_NAME=$(grep -oP '<TargetName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
+        MOD_VERSION=$(grep -oP '<Version>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ${{env.MOD_NAME}}
-        path: export/${{env.MOD_NAME}}/
-        retention-days: 10
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.MOD_TITLE }} v${{ github.ref_name }}
+
+    - name: Upload Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: publish/${{ env.MOD_NAME }}.zip
+        asset_name: ${{ env.MOD_NAME }}.zip
+        asset_content_type: application/zip

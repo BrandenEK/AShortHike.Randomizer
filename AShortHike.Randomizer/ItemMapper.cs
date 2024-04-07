@@ -8,7 +8,7 @@ namespace AShortHike.Randomizer;
 
 public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
 {
-    private readonly Dictionary<ItemLocation, Item> _mappedItems = new();
+    private Dictionary<ItemLocation, Item> _mappedItems = new();
     private readonly ConnectionHandler _connection = connection;
     private readonly LocationStorage _locations = locations;
 
@@ -39,11 +39,8 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
 
     private async Task ScoutAllLocations()
     {
-        foreach (ItemLocation location in _locations.GetAllLocations())
-        {
-            Item item = await _connection.ScoutLocation(location);
-            _mappedItems.Add(location, item);
-        }
+        _mappedItems = await _connection.ScoutLocations(_locations.GetAllLocations());
+
         Main.LogWarning($"Scouted {_mappedItems.Count} locations");
     }
 

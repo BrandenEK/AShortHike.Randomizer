@@ -142,6 +142,25 @@ namespace AShortHike.Randomizer.Connection
             return new Item(itemName, playerName, item.Flags == ItemFlags.Advancement || item.Flags == ItemFlags.Trap);
         }
 
+        public async Task<Dictionary<ItemLocation, Item>> ScoutLocations(IEnumerable<ItemLocation> locations)
+        {
+            if (!Connected)
+                throw new Exception($"Can't scout locations: Not connected to a server!");
+
+            long[] apIds = locations.Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Name)).ToArray();
+
+            var packet = await _session.Locations.ScoutLocationsAsync(false, apIds);
+            if (packet.Locations.Length == 0)
+                throw new Exception($"Failed to scout locations group");
+
+            return packet.Locations.ToDictionary(
+                x => Main.LocationStorage.GetAllLocations().First(l => l.Name == GetLocationNameFromId(x.Location)),
+                x => new Item(
+                    player: GetPlayerNameFromSlot(x.Player),
+                    name: GetItemNameFromId(x.Item),
+                    progression: x.Flags == ItemFlags.Advancement || x.Flags == ItemFlags.Trap));
+        }
+
         /// <summary>
         /// When collecting a location in the game, send its id to the server
         /// </summary>
