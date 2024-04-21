@@ -27,11 +27,6 @@ namespace AShortHike.Randomizer
 
         protected override void OnLevelLoaded(string level)
         {
-            if (level == "TitleScene")
-            {
-                _settings.SetupInputUI();
-            }
-
             if (level == "GameScene")
             {
                 _items.LoadChestObjects();

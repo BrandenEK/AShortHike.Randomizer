@@ -25,28 +25,6 @@ namespace AShortHike.Randomizer.Settings
         private bool _fastText;
 
         /// <summary>
-        /// Called whenever the title screen is loaded to perform ui related functions
-        /// </summary>
-        public void SetupInputUI()
-        {
-            //EditTitleText();
-        }
-
-        /// <summary>
-        /// When loading the title screen, add randomizer to the title
-        /// </summary>
-        //private void EditTitleText()
-        //{
-        //    TitleScreen title = Object.FindObjectOfType<TitleScreen>();
-        //    if (title == null) return;
-
-        //    TextMeshProUGUI text = title.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        //    if (text == null) return;
-
-        //    text.text = $"a short hike randomizer v{ModInfo.MOD_VERSION}";
-        //}
-
-        /// <summary>
         /// Before opening a begin/continue, always need to reset the settings from last time
         /// </summary>
         public void RestoreMenuSettings(ClientSettings settings, bool isContinue)
