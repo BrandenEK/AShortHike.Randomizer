@@ -51,13 +51,13 @@ namespace AShortHike.Randomizer.Connection
             {
                 Connected = false;
 
-                Main.LogError("Failed to connect");
+                Main.Randomizer.LogHandler.Error("Failed to connect");
                 return false;
             }
 
             // Connection successful
             Connected = true;
-            Main.LogWarning("Multiworld connection successful");
+            Main.Randomizer.LogHandler.Warning("Multiworld connection successful");
             LoginSuccessful login = result as LoginSuccessful;
 
             ProcessSlotData(login);
@@ -72,7 +72,7 @@ namespace AShortHike.Randomizer.Connection
         {
             if (Connected)
             {
-                Main.LogWarning("Disconnected from multiworld");
+                Main.Randomizer.LogHandler.Warning("Disconnected from multiworld");
                 _session.Socket.DisconnectAsync();
                 OnDisconnect(null); // In case the actual event handler isnt called
             }
@@ -86,7 +86,7 @@ namespace AShortHike.Randomizer.Connection
             Connected = false;
             _session = null;
             ClearReceivers();
-            Main.LogWarning("OnDisconnect called");
+            Main.Randomizer.LogHandler.Warning("OnDisconnect called");
             Main.ItemMapper.OnDisconnect();
         }
 
@@ -98,7 +98,7 @@ namespace AShortHike.Randomizer.Connection
             var settings = ((JObject)login.SlotData["settings"]).ToObject<ServerSettings>() ?? new ServerSettings();
 
             Main.Randomizer.ServerSettings = settings;
-            Main.Log($"Received server settings from slot data");
+            Main.Randomizer.LogHandler.Info($"Received server settings from slot data");
         }
 
         // Receivers
@@ -125,7 +125,7 @@ namespace AShortHike.Randomizer.Connection
         {
             if (!Connected)
             {
-                //Main.LogWarning($"Can't scout location {location.Id}: Not connected to a server!");
+                //Main.Randomizer.LogHandler.Warning($"Can't scout location {location.Id}: Not connected to a server!");
                 throw new Exception($"Can't scout location {location.Id}: Not connected to a server!");
             }
 
@@ -168,13 +168,13 @@ namespace AShortHike.Randomizer.Connection
         {
             if (!Connected)
             {
-                Main.LogWarning($"Can't send location {location.Id}: Not connected to a server!");
+                Main.Randomizer.LogHandler.Warning($"Can't send location {location.Id}: Not connected to a server!");
                 return;
             }
 
             long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
 
-            Main.Log($"Sending location: {location.Id} ({apId})");
+            Main.Randomizer.LogHandler.Info($"Sending location: {location.Id} ({apId})");
             await _session.Locations.CompleteLocationChecksAsync(apId);
         }
 
@@ -185,13 +185,13 @@ namespace AShortHike.Randomizer.Connection
         {
             if (!Connected)
             {
-                Main.LogWarning($"Can't send all locations: Not connected to a server!");
+                Main.Randomizer.LogHandler.Warning($"Can't send all locations: Not connected to a server!");
                 return;
             }
 
             long[] apIds = locations.Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Name)).ToArray();
 
-            Main.Log($"Sending {apIds.Length} locations");
+            Main.Randomizer.LogHandler.Info($"Sending {apIds.Length} locations");
             await _session.Locations.CompleteLocationChecksAsync(apIds);
         }
 
@@ -200,7 +200,7 @@ namespace AShortHike.Randomizer.Connection
         /// </summary>
         public void SendGoal(GoalType goal)
         {
-            Main.LogWarning("Obtained goal completion?: " + goal);
+            Main.Randomizer.LogHandler.Warning("Obtained goal completion?: " + goal);
             if (goal != Main.Randomizer.ServerSettings.goal)
                 return;
 

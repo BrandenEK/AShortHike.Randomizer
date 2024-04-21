@@ -12,7 +12,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(string tag, int num)
         {
-            Main.Log($"Saving int: {tag} ({num})");
+            Main.Randomizer.LogHandler.Info($"Saving int: {tag} ({num})");
         }
     }
     [HarmonyPatch(typeof(Tags), nameof(Tags.SetString))]
@@ -20,7 +20,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(string tag, string value)
         {
-            Main.Log($"Saving string: {tag} ({value})");
+            Main.Randomizer.LogHandler.Info($"Saving string: {tag} ({value})");
         }
     }
     [HarmonyPatch(typeof(Tags), nameof(Tags.SetFloat))]
@@ -28,7 +28,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(string tag, float number)
         {
-            Main.Log($"Saving float: {tag} ({number})");
+            Main.Randomizer.LogHandler.Info($"Saving float: {tag} ({number})");
         }
     }
 

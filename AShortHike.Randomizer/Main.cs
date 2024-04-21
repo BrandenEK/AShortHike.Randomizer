@@ -23,9 +23,9 @@ public class Main : BaseUnityPlugin
         Randomizer = new Randomizer();
 
         // New
+        LocationStorage = new();
         ImageStorage = new();
         ItemStorage = new();
-        LocationStorage = new();
         ItemMapper = new(Randomizer.Connection, LocationStorage);
     }
 }

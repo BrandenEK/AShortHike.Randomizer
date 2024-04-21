@@ -66,7 +66,7 @@ namespace AShortHike.Randomizer.Items
                 }
             }
 
-            Main.Log("Loaded chest objects");
+            Main.Randomizer.LogHandler.Info("Loaded chest objects");
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace AShortHike.Randomizer.Items
                 ReplaceObjectWithRandomChest(holdable.gameObject, holdable.GetLocationId());
             }
 
-            Main.Log($"Replaced objects in the world with random chests");
+            Main.Randomizer.LogHandler.Info($"Replaced objects in the world with random chests");
         }
 
         /// <summary>

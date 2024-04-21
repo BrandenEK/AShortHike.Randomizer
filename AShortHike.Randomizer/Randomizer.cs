@@ -25,7 +25,6 @@ namespace AShortHike.Randomizer
         public ServerSettings ServerSettings { get; set; } = new();
         public ClientSettings ClientSettings { get; set; } = new();
 
-
         protected override void OnLevelLoaded(string level)
         {
             if (level == "TitleScene")
@@ -60,13 +59,13 @@ namespace AShortHike.Randomizer
             //    {
             //        currAngle = Mathf.Round((currAngle + factor) / factor) * factor;
             //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
-            //        Main.LogError("New rotation angle: " + currAngle);
+            //        Main.Randomizer.LogHandler.Error("New rotation angle: " + currAngle);
             //    }
             //    else if (Input.GetKeyDown(KeyCode.Minus))
             //    {
             //        currAngle = Mathf.Round((currAngle - factor) / factor) * factor;
             //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
-            //        Main.LogError("New rotation angle: " + currAngle);
+            //        Main.Randomizer.LogHandler.Error("New rotation angle: " + currAngle);
             //    }
             //}
         }

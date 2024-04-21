@@ -16,7 +16,7 @@ public class ImageStorage
         if (File.Exists(imagePath))
             _apImage = LoadItemImage(imagePath);
         else
-            Main.LogError("Failed to load ap image from " + imagePath);
+            Main.Randomizer.LogHandler.Error("Failed to load ap image from " + imagePath);
     }
 
     private Sprite LoadItemImage(string path)

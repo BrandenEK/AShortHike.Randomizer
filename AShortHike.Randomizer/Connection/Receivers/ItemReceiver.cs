@@ -45,7 +45,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 int index = helper.Index;
                 helper.DequeueItem();
 
-                Main.Log("Queueing item: " + name);
+                Main.Randomizer.LogHandler.Info("Queueing item: " + name);
                 _itemQueue.Enqueue(new QueuedItem(name, player, index));
             }
         }
@@ -68,7 +68,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
         private void ProcessItem(QueuedItem item)
         {
             int itemsReceived = Singleton<GlobalData>.instance.gameData.tags.GetInt("ITEMS_RECEIVED");
-            Main.LogWarning($"Receiving item: {item.name} at index {item.index} with {itemsReceived} items received");
+            Main.Randomizer.LogHandler.Warning($"Receiving item: {item.name} at index {item.index} with {itemsReceived} items received");
 
             if (item.index > itemsReceived)
             {
@@ -77,7 +77,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                 CollectableItem collectable = Main.ItemStorage.GetItemFromName(item.name, out int amount);
                 if (collectable == null)
                 {
-                    Main.LogError("Received invalid item: " + item.name);
+                    Main.Randomizer.LogHandler.Error("Received invalid item: " + item.name);
                     return;
                 }
 
@@ -100,7 +100,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
                     // If receiving a second fishing rod remove the first and give golden
                     Singleton<GlobalData>.instance.gameData.AddCollected(collectable, -1, false);
                     collectable = Main.ItemStorage.GetItemFromName("Golden Fishing Rod", out _);
-                    Main.Log("Changing fishing rod to golden version");
+                    Main.Randomizer.LogHandler.Info("Changing fishing rod to golden version");
                 }
 
                 // Add the item to the inventory
