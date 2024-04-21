@@ -14,7 +14,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(CollectOnInteract __instance)
         {
-            Main.LogWarning("Collecting interactable: " + __instance.GetLocationId());
+            Main.Randomizer.LogHandler.Warning("Collecting interactable: " + __instance.GetLocationId());
         }
     }
     [HarmonyPatch(typeof(CollectOnTouch), nameof(CollectOnTouch.Collect))]
@@ -22,7 +22,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(CollectOnTouch __instance)
         {
-            Main.LogWarning("Collecting touchable: " + __instance.GetLocationId());
+            Main.Randomizer.LogHandler.Warning("Collecting touchable: " + __instance.GetLocationId());
         }
     }
     [HarmonyPatch(typeof(Holdable), nameof(Holdable.Interact))]
@@ -30,7 +30,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(Holdable __instance)
         {
-            Main.LogWarning("Collecting holdable: " + __instance.GetLocationId());
+            Main.Randomizer.LogHandler.Warning("Collecting holdable: " + __instance.GetLocationId());
         }
     }
 
@@ -43,7 +43,7 @@ namespace AShortHike.Randomizer.Patches
         public static void Postfix(Chest __instance)
         {
             string locationId = __instance.GetComponent<GameObjectID>().id;
-            Main.LogWarning($"Opening chest: {locationId} at location {__instance.transform.position}");
+            Main.Randomizer.LogHandler.Warning($"Opening chest: {locationId} at location {__instance.transform.position}");
 
             if (Main.LocationStorage.TryGetLocation(locationId, out ItemLocation location))
                 Main.Randomizer.Items.CollectLocation(location, true);
@@ -64,7 +64,7 @@ namespace AShortHike.Randomizer.Patches
             // Only give random item if the amount is positive
             if (args.Length < 2 || int.TryParse(args[1], out int amount) && amount > 0)
             {
-                Main.LogWarning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
+                Main.Randomizer.LogHandler.Warning("Receiving item from conversation: " + context.originalSpeaker.name + ", " + args[0]);
 
                 string locationId = context.GetLocationId(args[0]);
 
@@ -77,7 +77,7 @@ namespace AShortHike.Randomizer.Patches
             else if (args.Length > 1 && args[0] == "FishingRod" && args[1] == "-1")
             {
                 // If the fisher guy is trying to take away the fishing rod, dont let him
-                Main.LogWarning("Preventing loss of fishing rod!");
+                Main.Randomizer.LogHandler.Warning("Preventing loss of fishing rod!");
                 args = ["FishingRod", "0"];
             }
         }

@@ -11,7 +11,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix()
         {
-            Main.Log("Stashing fishing rod after tutorial");
+            Main.Randomizer.LogHandler.Info("Stashing fishing rod after tutorial");
             Singleton<GameServiceLocator>.instance.levelController.player.StashHeldItem();
         }
     }
@@ -53,7 +53,7 @@ namespace AShortHike.Randomizer.Patches
             Tags tags = Singleton<GlobalData>.instance.gameData.tags;
             string person = context.originalSpeaker.name;
             string item = itemName.AsString;
-            Main.LogWarning($"{person} is checking for item: {item}");
+            Main.Randomizer.LogHandler.Warning($"{person} is checking for item: {item}");
 
             if (person == "CamperNPC" && item == "CampingPermit")
             {
@@ -97,7 +97,7 @@ namespace AShortHike.Randomizer.Patches
             string flag = tag;
 
             if (!tag.StartsWith("Opened_") && !tag.StartsWith("COLLECTED_") && !tag.StartsWith("Unearthed_") && !tag.StartsWith("Sapling"))
-                Main.LogWarning($"{person} is checking for flag: {flag}");
+                Main.Randomizer.LogHandler.Warning($"{person} is checking for flag: {flag}");
 
             if (person == string.Empty && tag == "MissingPermit")
             {
@@ -147,7 +147,7 @@ namespace AShortHike.Randomizer.Patches
                 return false;
             }
 
-            Main.Log($"Setting flag: {tag} ({value})");
+            Main.Randomizer.LogHandler.Info($"Setting flag: {tag} ({value})");
             return true;
         }
     }

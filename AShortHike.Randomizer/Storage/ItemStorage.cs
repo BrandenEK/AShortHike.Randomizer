@@ -82,6 +82,6 @@ public class ItemStorage
         _items.Add("Walkie Talkie", CollectableItem.Load("WalkieTalkie"));
         _items.Add("Coins", CollectableItem.Load("Coin"));
 
-        Main.Log($"Loaded {_items.Count} items");
+        Main.Randomizer.LogHandler.Info($"Loaded {_items.Count} items");
     }
 }

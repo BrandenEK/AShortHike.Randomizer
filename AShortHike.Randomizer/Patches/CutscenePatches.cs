@@ -53,7 +53,7 @@ namespace AShortHike.Randomizer.Patches
         {
             if (Main.Randomizer.ClientSettings.skipCutscenes && args.Length > 0 && float.Parse(args[0]) >= 5)
             {
-                Main.Log("Shortening waiting cutscene");
+                Main.Randomizer.LogHandler.Info("Shortening waiting cutscene");
                 args[0] = "1";
             }
         }

@@ -14,7 +14,7 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
 
     public async Task<bool> OnConnect()
     {
-        Main.Log("Scouting all locations");
+        Main.Randomizer.LogHandler.Info("Scouting all locations");
 
         try
         {
@@ -23,7 +23,7 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
         }
         catch
         {
-            Main.LogError("Failed to scout locations");
+            Main.Randomizer.LogHandler.Error("Failed to scout locations");
             _connection.Disconnect();
             _mappedItems.Clear();
 
@@ -33,7 +33,7 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
 
     public void OnDisconnect()
     {
-        Main.Log("Clearing all mapped locations");
+        Main.Randomizer.LogHandler.Info("Clearing all mapped locations");
         _mappedItems.Clear();
     }
 
@@ -41,7 +41,7 @@ public class ItemMapper(ConnectionHandler connection, LocationStorage locations)
     {
         _mappedItems = await _connection.ScoutLocations(_locations.GetAllLocations());
 
-        Main.LogWarning($"Scouted {_mappedItems.Count} locations");
+        Main.Randomizer.LogHandler.Warning($"Scouted {_mappedItems.Count} locations");
     }
 
     public Item GetItemAtLocation(ItemLocation location)

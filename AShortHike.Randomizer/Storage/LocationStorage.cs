@@ -14,7 +14,7 @@ public class LocationStorage
     public LocationStorage()
     {
         _locations = LoadLocationsFromFile();
-        Main.Log($"Loaded {_locations.Count} locations");
+        Main.Randomizer.LogHandler.Info($"Loaded {_locations.Count} locations");
     }
 
     public bool TryGetLocation(string id, out ItemLocation location)

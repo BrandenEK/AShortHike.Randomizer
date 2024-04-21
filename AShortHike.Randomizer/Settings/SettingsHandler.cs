@@ -25,28 +25,6 @@ namespace AShortHike.Randomizer.Settings
         private bool _fastText;
 
         /// <summary>
-        /// Called whenever the title screen is loaded to perform ui related functions
-        /// </summary>
-        public void SetupInputUI()
-        {
-            EditTitleText();
-        }
-
-        /// <summary>
-        /// When loading the title screen, add randomizer to the title
-        /// </summary>
-        private void EditTitleText()
-        {
-            TitleScreen title = Object.FindObjectOfType<TitleScreen>();
-            if (title == null) return;
-
-            TextMeshProUGUI text = title.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            if (text == null) return;
-
-            text.text = $"a short hike randomizer v{PluginInfo.PLUGIN_VERSION}";
-        }
-
-        /// <summary>
         /// Before opening a begin/continue, always need to reset the settings from last time
         /// </summary>
         public void RestoreMenuSettings(ClientSettings settings, bool isContinue)
@@ -67,7 +45,7 @@ namespace AShortHike.Randomizer.Settings
         {
             get
             {
-                Main.LogWarning("Loading client settings from save file");
+                Main.Randomizer.LogHandler.Warning("Loading client settings from save file");
                 Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
                 return new ClientSettings(
@@ -80,7 +58,7 @@ namespace AShortHike.Randomizer.Settings
             }
             set
             {
-                Main.LogWarning("Saving client settings to save file");
+                Main.Randomizer.LogHandler.Warning("Saving client settings to save file");
                 Tags tags = Singleton<GlobalData>.instance.gameData.tags;
 
                 tags.SetString("AP.server", value.server);

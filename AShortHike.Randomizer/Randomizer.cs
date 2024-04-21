@@ -1,14 +1,16 @@
-﻿using AShortHike.Randomizer.Connection;
+﻿using AShortHike.ModdingAPI;
+using AShortHike.Randomizer.Connection;
 using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace AShortHike.Randomizer
 {
-    public class Randomizer
+    public class Randomizer : ShortHikeMod
     {
+        public Randomizer() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
         private readonly ConnectionHandler _connection = new();
         private readonly ItemHandler _items = new();
         private readonly NotificationHandler _notifications = new();
@@ -23,21 +25,9 @@ namespace AShortHike.Randomizer
         public ServerSettings ServerSettings { get; set; } = new();
         public ClientSettings ClientSettings { get; set; } = new();
 
-        public Randomizer()
+        protected override void OnLevelLoaded(string level)
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            Main.LogWarning("Scene loaded: " + scene.name);
-
-            if (scene.name == "TitleScene")
-            {
-                _settings.SetupInputUI();
-            }
-
-            if (scene.name == "GameScene")
+            if (level == "GameScene")
             {
                 _items.LoadChestObjects();
                 _items.ReplaceWorldObjectsWithChests();
@@ -64,13 +54,13 @@ namespace AShortHike.Randomizer
             //    {
             //        currAngle = Mathf.Round((currAngle + factor) / factor) * factor;
             //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
-            //        Main.LogError("New rotation angle: " + currAngle);
+            //        Main.Randomizer.LogHandler.Error("New rotation angle: " + currAngle);
             //    }
             //    else if (Input.GetKeyDown(KeyCode.Minus))
             //    {
             //        currAngle = Mathf.Round((currAngle - factor) / factor) * factor;
             //        lastChest.rotation = Quaternion.Euler(0, currAngle, 0);
-            //        Main.LogError("New rotation angle: " + currAngle);
+            //        Main.Randomizer.LogHandler.Error("New rotation angle: " + currAngle);
             //    }
             //}
         }
