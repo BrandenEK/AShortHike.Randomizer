@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Linq;
 
 namespace AShortHike.Randomizer.Patches
 {
@@ -10,29 +11,15 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(string tag, bool value)
         {
-            if (!value)
-                return;
-
-            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
-
-            switch (tag)
-            {
-                // If taking a nap at the house: nap goal
-                case "WonGameNiceJob":
-                    Main.Randomizer.Connection.SendGoal(GoalType.Nap);
-                    Main.Randomizer.CheckForHelpGoal();
-                    return;
-                // If talking to fox and the climb flag is set: photo goal
-                case "MetIceHiker":
-                    if (tags.GetBool("FoxClimbedToTop"))
-                    {
-                        Main.Randomizer.Connection.SendGoal(GoalType.Photo);
-                        Main.Randomizer.CheckForHelpGoal();
-                    }
-                    return;
-
-            }
+            if (value && BOOL_TAGS.Contains(tag))
+                Main.Randomizer.GoalHandler.CheckGoalCompletion();
         }
+
+        private static readonly string[] BOOL_TAGS =
+        {
+            "WonGameNiceJob", // Nap goal
+            "MetIceHiker", // Photo goal
+        };
     }
 
     /// <summary>
@@ -43,21 +30,16 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix(string tag)
         {
-            Tags tags = Singleton<GlobalData>.instance.gameData.tags;
-
-            switch (tag)
-            {
-                // If increasing victories and all victories are at least 1: race goal
-                case "LighthouseRace_Victories":
-                case "OldBuildingRace_Victories":
-                case "MountainTopRace_Victories":
-                    if (tags.GetFloat("LighthouseRace_Victories") > 0 &&
-                        tags.GetFloat("OldBuildingRace_Victories") > 0 &&
-                        tags.GetFloat("MountainTopRace_Victories") > 0)
-                        Main.Randomizer.Connection.SendGoal(GoalType.Race);
-                    return;
-            }
+            if (FLOAT_TAGS.Contains(tag))
+                Main.Randomizer.GoalHandler.CheckGoalCompletion();
         }
+
+        private static readonly string[] FLOAT_TAGS =
+        {
+            "LighthouseRace_Victories", // Race goal
+            "OldBuildingRace_Victories", // Race goal
+            "MountainTopRace_Victories", // Race goal
+        };
     }
 
     /// <summary>
@@ -68,20 +50,7 @@ namespace AShortHike.Randomizer.Patches
     {
         public static void Postfix()
         {
-            var inventory = Singleton<GlobalData>.instance.gameData.inventory;
-
-            bool hasUncaught = false;
-            foreach (var fish in FishSpecies.LoadAll())
-            {
-                if (inventory.GetCatchCount(fish) == 0)
-                {
-                    hasUncaught = true;
-                    break;
-                }
-            }
-
-            if (!hasUncaught)
-                Main.Randomizer.Connection.SendGoal(GoalType.Fish);
+            Main.Randomizer.GoalHandler.CheckGoalCompletion(); // Fish goal
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AShortHike.ModdingAPI;
 using AShortHike.Randomizer.Connection;
+using AShortHike.Randomizer.Goal;
 using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
@@ -20,6 +21,7 @@ namespace AShortHike.Randomizer
         public ItemHandler Items => _items;
         public NotificationHandler Notifications => _notifications;
         public SettingsHandler Settings => _settings;
+        public GoalHandler GoalHandler { get; } = new();
 
         // Both are set right after connecting to server before loading game scene
         public ServerSettings ServerSettings { get; set; } = new();
@@ -40,10 +42,15 @@ namespace AShortHike.Randomizer
             }
         }
 
-        public void UpdateGame()
+        protected override void OnUpdate()
         {
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                GoalHandler.ToggleGoalDisplay();
+            }
 
             // Chest angle testing
             //if (lastChest != null)
@@ -65,38 +72,7 @@ namespace AShortHike.Randomizer
             //}
         }
 
-        public void CheckForHelpGoal()
-        {
-            if (ServerSettings.goal != GoalType.Help)
-                return;
-
-            var tags = Singleton<GlobalData>.instance.gameData.tags;
-
-            foreach (string tag in _flagsForHelpGoal)
-            {
-                if (!tags.GetBool(tag))
-                    return;
-            }
-
-            Connection.SendGoal(GoalType.Help);
-        }
-
         // Chest angle testing
         public Transform lastChest;
-
-        private readonly string[] _flagsForHelpGoal = new string[]
-        {
-            "Opened_ToughBirdNPC (1)[9]",       // Give coins to tough bird salesman
-            "Opened_Frog_StandingNPC[0]",       // Trade toy shovel
-            "Opened_CamperNPC[1]",              // Return camping permit
-            "Opened_DeerKidBoat[0]",            // Complete boat challenge
-            "Opened_Bunny_WalkingNPC (1)[0]",   // Return headband to rabbit
-            "Opened_SittingNPC[0]",             // Purchase sunhat
-            "Opened_Goat_StandingNPC[0]",       // Return watch to camper
-            "Opened_StandingNPC[0]",            // Cheer up artist
-            "Opened_LittleKidNPCVariant (1)[0]",// Collect 15 shells for the kid
-            "Opened_AuntMayNPC[0]",             // Give shell necklace to Ranger May
-            "FoxClimbedToTop",                  // Help fox up the mountain
-        };
     }
 }
