@@ -1,5 +1,6 @@
 ﻿using AShortHike.ModdingAPI;
 using AShortHike.Randomizer.Connection;
+using AShortHike.Randomizer.Goal;
 using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
@@ -20,6 +21,7 @@ namespace AShortHike.Randomizer
         public ItemHandler Items => _items;
         public NotificationHandler Notifications => _notifications;
         public SettingsHandler Settings => _settings;
+        public GoalHandler GoalHandler { get; } = new();
 
         // Both are set right after connecting to server before loading game scene
         public ServerSettings ServerSettings { get; set; } = new();
@@ -44,6 +46,11 @@ namespace AShortHike.Randomizer
         {
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                GoalHandler.ToggleGoalDisplay();
+            }
 
             // Chest angle testing
             //if (lastChest != null)
