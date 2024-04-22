@@ -42,7 +42,7 @@ namespace AShortHike.Randomizer
             }
         }
 
-        public void UpdateGame()
+        protected override void OnUpdate()
         {
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();

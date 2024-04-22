@@ -9,6 +9,10 @@ public class GoalHandler
     public void ToggleGoalDisplay()
     {
         Main.Randomizer.LogHandler.Error("Toggling goal display");
+        GoalType goal = Main.Randomizer.ServerSettings.goal;
+
+        GoalBackground.gameObject.SetActive(!GoalBackground.gameObject.activeSelf);
+        GoalText.text = $"Current goal: {goal}";
 
         CheckGoalCompletion();
     }
@@ -84,6 +88,56 @@ public class GoalHandler
             "Opened_AuntMayNPC[0]",             // Give shell necklace to Ranger May
             "FoxClimbedToTop",                  // Help fox up the mountain
     };
+
+    private Text x_goalText;
+    private Text GoalText
+    {
+        get
+        {
+            if (x_goalText != null)
+                return x_goalText;
+
+            RectTransform rect = new GameObject("Goal text").AddComponent<RectTransform>();
+            rect.SetParent(GoalBackground, false);
+            rect.pivot = new Vector2(0, 1);
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.anchoredPosition = new Vector2(10, -10);
+
+            Text text = rect.gameObject.AddComponent<Text>();
+            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.fontSize = 32;
+            text.alignment = TextAnchor.UpperLeft;
+            text.color = Color.black;
+
+            Main.Randomizer.LogHandler.Warning("Created new text object");
+            return x_goalText = text;
+        }
+    }
+
+    private RectTransform x_goalBackground;
+    private RectTransform GoalBackground
+    {
+        get
+        {
+            if (x_goalBackground != null)
+                return x_goalBackground;
+
+            RectTransform rect = new GameObject("Goal image").AddComponent<RectTransform>();
+            rect.SetParent(Canvas, false);
+            rect.sizeDelta = new Vector2(600, 400);
+            rect.pivot = new Vector2(0, 1);
+            rect.anchorMin = new Vector2(0, 1);
+            rect.anchorMax = new Vector2(0, 1);
+            rect.gameObject.SetActive(false);
+
+            Image image = rect.gameObject.AddComponent<Image>();
+            image.color = Color.white;
+
+            Main.Randomizer.LogHandler.Warning("Created new background object");
+            return x_goalBackground = rect;
+        }
+    }
 
     private Transform x_canvas;
     private Transform Canvas
