@@ -196,13 +196,11 @@ namespace AShortHike.Randomizer.Connection
         }
 
         /// <summary>
-        /// When something happens that would trigger a goal send, check if it exceeds the player's goal and send it to server
+        /// Sends the goal completion packet and performs no validation on the goal
         /// </summary>
-        public void SendGoal(GoalType goal)
+        public void SendGoal()
         {
-            Main.Randomizer.LogHandler.Warning("Obtained goal completion?: " + goal);
-            if (goal != Main.Randomizer.ServerSettings.goal)
-                return;
+            Main.Randomizer.LogHandler.Warning("Sending goal completion");
 
             _session.Socket.SendPacket(new StatusUpdatePacket()
             {

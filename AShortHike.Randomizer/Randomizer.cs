@@ -52,6 +52,12 @@ namespace AShortHike.Randomizer
                 GoalHandler.ToggleGoalDisplay();
             }
 
+            // temp debug !!!!
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                ServerSettings = new(GoalType.Photo);
+            }
+
             // Chest angle testing
             //if (lastChest != null)
             //{
@@ -72,38 +78,7 @@ namespace AShortHike.Randomizer
             //}
         }
 
-        public void CheckForHelpGoal()
-        {
-            if (ServerSettings.goal != GoalType.Help)
-                return;
-
-            var tags = Singleton<GlobalData>.instance.gameData.tags;
-
-            foreach (string tag in _flagsForHelpGoal)
-            {
-                if (!tags.GetBool(tag))
-                    return;
-            }
-
-            Connection.SendGoal(GoalType.Help);
-        }
-
         // Chest angle testing
         public Transform lastChest;
-
-        private readonly string[] _flagsForHelpGoal = new string[]
-        {
-            "Opened_ToughBirdNPC (1)[9]",       // Give coins to tough bird salesman
-            "Opened_Frog_StandingNPC[0]",       // Trade toy shovel
-            "Opened_CamperNPC[1]",              // Return camping permit
-            "Opened_DeerKidBoat[0]",            // Complete boat challenge
-            "Opened_Bunny_WalkingNPC (1)[0]",   // Return headband to rabbit
-            "Opened_SittingNPC[0]",             // Purchase sunhat
-            "Opened_Goat_StandingNPC[0]",       // Return watch to camper
-            "Opened_StandingNPC[0]",            // Cheer up artist
-            "Opened_LittleKidNPCVariant (1)[0]",// Collect 15 shells for the kid
-            "Opened_AuntMayNPC[0]",             // Give shell necklace to Ranger May
-            "FoxClimbedToTop",                  // Help fox up the mountain
-        };
     }
 }
