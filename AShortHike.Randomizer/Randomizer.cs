@@ -52,12 +52,6 @@ namespace AShortHike.Randomizer
                 GoalHandler.ToggleGoalDisplay();
             }
 
-            // temp debug !!!!
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                ServerSettings = new(GoalType.Photo);
-            }
-
             // Chest angle testing
             //if (lastChest != null)
             //{
