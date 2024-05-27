@@ -59,7 +59,7 @@ namespace AShortHike.Randomizer.Patches
     /// <summary>
     /// When starting a new game, skip the "This will overwrite save" message
     /// </summary>
-    [HarmonyPatch(typeof(CrossPlatform), nameof(CrossPlatform.DoesSaveExist))]
+    [HarmonyPatch(typeof(GlobalData), nameof(GlobalData.DoesSaveExist))]
     class TitleScreen_SaveBypass_Patch
     {
         public static bool Prefix(ref bool __result)
