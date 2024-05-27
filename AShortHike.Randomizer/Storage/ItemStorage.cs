@@ -42,6 +42,7 @@ public class ItemStorage
 
         // Fishing
         _items.Add("Fishing Rod", CollectableItem.Load("FishingRod"));
+        _items.Add("Progressive Fishing Rod", CollectableItem.Load("FishingRod"));
         _items.Add("Golden Fishing Rod", CollectableItem.Load("GoldenFishingRod"));
         _items.Add("Fishing Journal", CollectableItem.Load("FishEncyclopedia"));
         _items.Add("Bait", CollectableItem.Load("Bait"));
