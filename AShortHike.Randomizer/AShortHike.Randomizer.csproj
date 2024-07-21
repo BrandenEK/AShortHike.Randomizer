@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.2.0" />
     <PackageReference Include="AShortHike.ModdingAPI" Version="1.0.0" />
     <PackageReference Include="AShortHike.ModdingReferences" Version="1.9.24" />
   </ItemGroup>
