@@ -131,15 +131,12 @@ namespace AShortHike.Randomizer.Connection
 
             long apId = _session.Locations.GetLocationIdFromName(GAME_NAME, location.Name);
 
-            var packet = await _session.Locations.ScoutLocationsAsync(false, apId);
-            if (packet.Locations.Length == 0)
+            var scoutDict = await _session.Locations.ScoutLocationsAsync(false, apId);
+            if (scoutDict.Count == 0)
                 throw new Exception($"Failed to scout location for {location.Id}");
 
-            NetworkItem item = packet.Locations[0];
-            string playerName = GetPlayerNameFromSlot(item.Player);
-            string itemName = GetItemNameFromId(item.Item);
-
-            return new Item(itemName, playerName, item.Flags == ItemFlags.Advancement || item.Flags == ItemFlags.Trap);
+            ScoutedItemInfo item = scoutDict[apId];
+            return new Item(item.ItemName, item.Player.Name, item.Flags == ItemFlags.Advancement || item.Flags == ItemFlags.Trap);
         }
 
         public async Task<Dictionary<ItemLocation, Item>> ScoutLocations(IEnumerable<ItemLocation> locations)
@@ -149,16 +146,16 @@ namespace AShortHike.Randomizer.Connection
 
             long[] apIds = locations.Select(x => _session.Locations.GetLocationIdFromName(GAME_NAME, x.Name)).ToArray();
 
-            var packet = await _session.Locations.ScoutLocationsAsync(false, apIds);
-            if (packet.Locations.Length == 0)
+            var scoutDict = await _session.Locations.ScoutLocationsAsync(false, apIds);
+            if (scoutDict.Count == 0)
                 throw new Exception($"Failed to scout locations group");
 
-            return packet.Locations.ToDictionary(
-                x => Main.LocationStorage.GetAllLocations().First(l => l.Name == GetLocationNameFromId(x.Location)),
+            return scoutDict.ToDictionary(
+                x => Main.LocationStorage.GetAllLocations().First(l => l.Name == GetLocationNameFromId(x.Key)),
                 x => new Item(
-                    player: GetPlayerNameFromSlot(x.Player),
-                    name: GetItemNameFromId(x.Item),
-                    progression: x.Flags == ItemFlags.Advancement || x.Flags == ItemFlags.Trap));
+                    player: x.Value.Player.Name,
+                    name: x.Value.ItemName,
+                    progression: x.Value.Flags == ItemFlags.Advancement || x.Value.Flags == ItemFlags.Trap));
         }
 
         /// <summary>
