@@ -40,7 +40,7 @@ namespace AShortHike.Randomizer.Connection.Receivers
         {
             lock (itemLock)
             {
-                string name = helper.PeekItemName();
+                string name = helper.PeekItem().ItemName;
                 string player = Main.Randomizer.Connection.GetPlayerNameFromSlot(helper.PeekItem().Player);
                 int index = helper.Index;
                 helper.DequeueItem();
