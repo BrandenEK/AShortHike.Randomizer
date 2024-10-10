@@ -19,8 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.2.0" />
-    <PackageReference Include="AShortHike.GameLibs" Version="1.11.17" />
-    <PackageReference Include="AShortHike.ModdingAPI" Version="1.0.0" />
+    <PackageReference Include="AShortHike.GameLibs" Version="1.9.24" />
+    <PackageReference Include="AShortHike.ModdingAPI" Version="1.0.1" />
   </ItemGroup>
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
