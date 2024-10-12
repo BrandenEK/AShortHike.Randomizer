@@ -4,6 +4,7 @@ using AShortHike.Randomizer.Goal;
 using AShortHike.Randomizer.Items;
 using AShortHike.Randomizer.Notifications;
 using AShortHike.Randomizer.Settings;
+using QuickUnityTools.Input;
 using UnityEngine;
 
 namespace AShortHike.Randomizer
@@ -42,15 +43,20 @@ namespace AShortHike.Randomizer
             }
         }
 
+        public void OnEarlyUpdate()
+        {
+            PlayerInput.obeysPriority = false;
+            if (Input.GetKeyDown(KeyCode.G) || PlayerInput.rightBumper.isPressed && PlayerInput.button3.ConsumePress())
+            {
+                GoalHandler.ToggleGoalDisplay();
+            }
+            PlayerInput.obeysPriority = true;
+        }
+
         protected override void OnUpdate()
         {
             _connection.UpdateReceivers();
             _notifications.UpdateNotifications();
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                GoalHandler.ToggleGoalDisplay();
-            }
 
             // Chest angle testing
             //if (lastChest != null)
@@ -70,6 +76,17 @@ namespace AShortHike.Randomizer
             //        Main.Randomizer.LogHandler.Error("New rotation angle: " + currAngle);
             //    }
             //}
+        }
+
+        private GameUserInput x_playerInput;
+        private GameUserInput PlayerInput
+        {
+            get
+            {
+                if (x_playerInput == null)
+                    x_playerInput = GameObject.Find("PlayerInput")?.GetComponent<GameUserInput>();
+                return x_playerInput;
+            }
         }
 
         // Chest angle testing
