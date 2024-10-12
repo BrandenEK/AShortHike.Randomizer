@@ -66,4 +66,16 @@ namespace AShortHike.Randomizer.Patches
                 && ___conversationInput.GetCancelButton().isPressed;
         }
     }
+
+    /// <summary>
+    /// Process goal input before player input
+    /// </summary>
+    [HarmonyPatch(typeof(Player), nameof(Player.Update))]
+    class Player_Update_Patch
+    {
+        public static void Prefix()
+        {
+            Main.Randomizer.OnEarlyUpdate();
+        }
+    }
 }
