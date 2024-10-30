@@ -11,4 +11,4 @@
 
 ## Installation
 This mod is available for download through the [Short Hike Mod Installer](https://github.com/BrandenEK/AShortHike.Modding.Installer)
-- Required dependencies: Modding API
+- Required dependencies: [Modding API](https://github.com/BrandenEK/AShortHike.ModdingAPI)
