@@ -46,7 +46,7 @@ namespace AShortHike.Randomizer
         public void OnEarlyUpdate()
         {
             PlayerInput.obeysPriority = false;
-            if (Input.GetKeyDown(KeyCode.G) || PlayerInput.rightBumper.isPressed && PlayerInput.button3.ConsumePress())
+            if (PressedGoalInput)
             {
                 GoalHandler.ToggleGoalDisplay();
             }
@@ -77,6 +77,8 @@ namespace AShortHike.Randomizer
             //    }
             //}
         }
+
+        private bool PressedGoalInput => Input.GetKeyDown(KeyCode.G) || (PlayerInput.leftBumper.isPressed || PlayerInput.rightBumper.isPressed) && PlayerInput.button3.ConsumePress();
 
         private GameUserInput x_playerInput;
         private GameUserInput PlayerInput
