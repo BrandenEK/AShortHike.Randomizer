@@ -136,7 +136,7 @@ namespace AShortHike.Randomizer.Connection
                 throw new Exception($"Failed to scout location for {location.Id}");
 
             ScoutedItemInfo item = scoutDict[apId];
-            return new Item(item.ItemName, item.Player.Name, item.Flags == ItemFlags.Advancement || item.Flags == ItemFlags.Trap);
+            return new Item(item.ItemName, item.Player.Name, (int)item.Flags);
         }
 
         public async Task<Dictionary<ItemLocation, Item>> ScoutLocations(IEnumerable<ItemLocation> locations)
@@ -155,7 +155,7 @@ namespace AShortHike.Randomizer.Connection
                 x => new Item(
                     player: x.Value.Player.Name,
                     name: x.Value.ItemName,
-                    progression: x.Value.Flags == ItemFlags.Advancement || x.Value.Flags == ItemFlags.Trap));
+                    flags: (int)x.Value.Flags));
         }
 
         /// <summary>

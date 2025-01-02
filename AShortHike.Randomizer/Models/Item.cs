@@ -1,11 +1,14 @@
 ﻿
 namespace AShortHike.Randomizer.Models;
 
-public class Item(string name, string player, bool progression)
+public class Item(string name, string player, int flags)
 {
     public string Name { get; } = name;
     public string Player { get; } = player;
-    public bool IsProgression { get; } = progression;
+    public int Flags { get; } = flags;
 
-    public static Item Unknown => new("Unknown item", "Unknown player", false);
+    // Advancement (Without progression) or a trap
+    public bool IsProgression => (Flags & 0x01) != 0 && (Flags & 0x08) == 0 || (Flags & 0x04) != 0;
+
+    public static Item Unknown => new("Unknown item", "Unknown player", 0);
 }
