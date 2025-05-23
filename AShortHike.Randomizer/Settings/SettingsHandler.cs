@@ -152,11 +152,17 @@ namespace AShortHike.Randomizer.Settings
         {
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
 
+            string server = _currentServer.DisplayAsDashIfNull();
+            string player = _currentPlayer.DisplayAsDashIfNull();
+            string password = _currentPassword != null && _hidePassword
+                ? new string('*', _currentPassword.Length)
+                : _currentPassword.DisplayAsDashIfNull();
+
             var options = new string[]
             {
-                $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
-                $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
-                $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
+                $"Server: <color=#EE0000>{server}</color>",
+                $"Name: <color=#EE0000>{player}</color>",
+                $"Password: <color=#EE0000>{password}</color>",
                 $"QoL settings",
                 _currentIsContinue ? "Continue game" : "Start game",
                 "Back",
