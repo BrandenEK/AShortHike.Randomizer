@@ -17,6 +17,11 @@ namespace AShortHike.Randomizer.Extensions
             return b ? "ON" : "OFF";
         }
 
+        public static string DisplayHidden(this string str)
+        {
+            return new string('*', str.Length);
+        }
+
         /// <summary>
         /// Creates a text object at the top of a menu
         /// </summary>
@@ -33,7 +38,7 @@ namespace AShortHike.Randomizer.Extensions
         /// <summary>
         /// Creates an editable text input field
         /// </summary>
-        public static LinearMenu AddTextInput(this LinearMenu menu, string text)
+        public static LinearMenu AddTextInput(this LinearMenu menu, string text, bool secret)
         {
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
 
@@ -41,7 +46,11 @@ namespace AShortHike.Randomizer.Extensions
             valueObject.transform.SetParent(menu.transform, false);
             valueObject.transform.SetAsFirstSibling();
             valueObject.GetComponentInChildren<TMP_Text>().color = Color.red;
-            valueObject.AddComponent<TextInputItem>();
+            
+            var input = valueObject.AddComponent<TextInputItem>();
+            if (secret)
+                input.IsSecret = true;
+
             return menu;
         }
 

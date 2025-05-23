@@ -10,6 +10,8 @@ namespace AShortHike.Randomizer.Settings
 
         private string input;
 
+        public bool IsSecret { get; set; } = false;
+
         public string FinalInput
         {
             get
@@ -45,7 +47,9 @@ namespace AShortHike.Randomizer.Settings
                 }
             }
 
-            _textField.text = input.DisplayAsDashIfNull();
+            _textField.text = !string.IsNullOrEmpty(input) && IsSecret
+                ? input.DisplayHidden()
+                : input.DisplayAsDashIfNull();
         }
     }
 }

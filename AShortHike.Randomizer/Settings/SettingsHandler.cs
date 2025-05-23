@@ -154,8 +154,8 @@ namespace AShortHike.Randomizer.Settings
 
             string server = _currentServer.DisplayAsDashIfNull();
             string player = _currentPlayer.DisplayAsDashIfNull();
-            string password = _currentPassword != null && _hidePassword
-                ? new string('*', _currentPassword.Length)
+            string password = !string.IsNullOrEmpty(_currentPassword) && _hidePassword
+                ? _currentPassword.DisplayHidden()
                 : _currentPassword.DisplayAsDashIfNull();
 
             var options = new string[]
@@ -240,7 +240,7 @@ namespace AShortHike.Randomizer.Settings
 
             // Create menu
             _textMenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0])
-                .AddTextInput(value)
+                .AddTextInput(value, _currentSetting == SettingType.Password && _hidePassword)
                 .AddTitle(title)
                 .Finalize(0);
         }
