@@ -12,14 +12,20 @@ namespace AShortHike.Randomizer.Extensions
             return string.IsNullOrEmpty(str) ? "---" : str;
         }
 
+        public static string DisplayAsHidden(this string str, bool hidden)
+        {
+            if (string.IsNullOrEmpty(str))
+                return "---";
+
+            if (hidden)
+                return new string('*', str.Length);
+
+            return str;
+        }
+
         public static string DisplayONOFF(this bool b)
         {
             return b ? "ON" : "OFF";
-        }
-
-        public static string DisplayHidden(this string str)
-        {
-            return new string('*', str.Length);
         }
 
         /// <summary>

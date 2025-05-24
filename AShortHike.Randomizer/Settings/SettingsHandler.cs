@@ -152,11 +152,9 @@ namespace AShortHike.Randomizer.Settings
         {
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
 
-            string server = _currentServer.DisplayAsDashIfNull();
-            string player = _currentPlayer.DisplayAsDashIfNull();
-            string password = !string.IsNullOrEmpty(_currentPassword) && _hidePassword
-                ? _currentPassword.DisplayHidden()
-                : _currentPassword.DisplayAsDashIfNull();
+            string server = _currentServer.DisplayAsHidden(_hidePassword);
+            string player = _currentPlayer.DisplayAsHidden(_hidePassword);
+            string password = _currentPassword.DisplayAsHidden(_hidePassword);
 
             var options = new string[]
             {
@@ -240,7 +238,7 @@ namespace AShortHike.Randomizer.Settings
 
             // Create menu
             _textMenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0])
-                .AddTextInput(value, _currentSetting == SettingType.Password && _hidePassword)
+                .AddTextInput(value, _hidePassword)
                 .AddTitle(title)
                 .Finalize(0);
         }
@@ -270,7 +268,7 @@ namespace AShortHike.Randomizer.Settings
                 $"Golden chests: <color=#EE0000>{_goldenChests.DisplayONOFF()}</color>",
                 $"Skip cutscenes: <color=#EE0000>{_skipCutscenes.DisplayONOFF()}</color>",
                 $"Fast text: <color=#EE0000>{_fastText.DisplayONOFF()}</color>",
-                $"Hide password: <color=#EE0000>{_hidePassword.DisplayONOFF()}</color>",
+                $"Hide connection info: <color=#EE0000>{_hidePassword.DisplayONOFF()}</color>",
                 "Back",
             };
 

@@ -47,9 +47,7 @@ namespace AShortHike.Randomizer.Settings
                 }
             }
 
-            _textField.text = !string.IsNullOrEmpty(input) && IsSecret
-                ? input.DisplayHidden()
-                : input.DisplayAsDashIfNull();
+            _textField.text = input.DisplayAsHidden(IsSecret);
         }
     }
 }
