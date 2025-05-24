@@ -39,7 +39,7 @@ namespace AShortHike.Randomizer.Connection
                 _session.Items.ItemReceived += _itemReceiver.OnReceiveItem;
                 //_session.Socket.PacketReceived += messageReceiver.OnReceiveMessage;
                 _session.Socket.SocketClosed += OnDisconnect;
-                result = _session.TryConnectAndLogin(GAME_NAME, player, ItemsHandlingFlags.AllItems, new Version(0, 4, 4), null, null, password);
+                result = _session.TryConnectAndLogin(GAME_NAME, player, ItemsHandlingFlags.AllItems, new Version(0, 6, 0), null, null, password);
             }
             catch (Exception e)
             {

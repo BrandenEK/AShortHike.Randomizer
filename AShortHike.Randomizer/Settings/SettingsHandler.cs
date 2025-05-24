@@ -23,6 +23,7 @@ namespace AShortHike.Randomizer.Settings
         private bool _goldenChests;
         private bool _skipCutscenes;
         private bool _fastText;
+        private bool _hidePassword;
 
         /// <summary>
         /// Before opening a begin/continue, always need to reset the settings from last time
@@ -35,6 +36,7 @@ namespace AShortHike.Randomizer.Settings
             _skipCutscenes = settings.skipCutscenes;
             _goldenChests = settings.goldenChests;
             _fastText = settings.fastText;
+            _hidePassword = settings.hidePassword;
             _currentIsContinue = isContinue;
         }
 
@@ -54,7 +56,8 @@ namespace AShortHike.Randomizer.Settings
                     tags.GetString("AP.password"),
                     tags.GetBool("AP.cutscenes"),
                     tags.GetBool("AP.text"),
-                    tags.GetBool("AP.chests"));
+                    tags.GetBool("AP.chests"),
+                    tags.GetBool("AP.hide"));
             }
             set
             {
@@ -67,6 +70,7 @@ namespace AShortHike.Randomizer.Settings
                 tags.SetBool("AP.cutscenes", value.skipCutscenes);
                 tags.SetBool("AP.text", value.fastText);
                 tags.SetBool("AP.chests", value.goldenChests);
+                tags.SetBool("AP.hide", value.hidePassword);
             }
         }
 
@@ -81,7 +85,7 @@ namespace AShortHike.Randomizer.Settings
 
             // Save connection info
             Main.Randomizer.ClientSettings = new ClientSettings(
-                _currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText, _goldenChests); ;
+                _currentServer, _currentPlayer, _currentPassword, _skipCutscenes, _fastText, _goldenChests, _hidePassword);
 
             // Load game scene
             if (isContinue)
@@ -148,11 +152,15 @@ namespace AShortHike.Randomizer.Settings
         {
             UI ui = Singleton<ServiceLocator>.instance.Locate<UI>(false);
 
+            string server = _currentServer.DisplayAsHidden(_hidePassword);
+            string player = _currentPlayer.DisplayAsHidden(_hidePassword);
+            string password = _currentPassword.DisplayAsHidden(_hidePassword);
+
             var options = new string[]
             {
-                $"Server: <color=#EE0000>{_currentServer.DisplayAsDashIfNull()}</color>",
-                $"Name: <color=#EE0000>{_currentPlayer.DisplayAsDashIfNull()}</color>",
-                $"Password: <color=#EE0000>{_currentPassword.DisplayAsDashIfNull()}</color>",
+                $"Server: <color=#EE0000>{server}</color>",
+                $"Name: <color=#EE0000>{player}</color>",
+                $"Password: <color=#EE0000>{password}</color>",
                 $"QoL settings",
                 _currentIsContinue ? "Continue game" : "Start game",
                 "Back",
@@ -230,7 +238,7 @@ namespace AShortHike.Randomizer.Settings
 
             // Create menu
             _textMenu = ui.CreateUndismissableSimpleMenu(new string[0], new System.Action[0])
-                .AddTextInput(value)
+                .AddTextInput(value, _hidePassword)
                 .AddTitle(title)
                 .Finalize(0);
         }
@@ -260,6 +268,7 @@ namespace AShortHike.Randomizer.Settings
                 $"Golden chests: <color=#EE0000>{_goldenChests.DisplayONOFF()}</color>",
                 $"Skip cutscenes: <color=#EE0000>{_skipCutscenes.DisplayONOFF()}</color>",
                 $"Fast text: <color=#EE0000>{_fastText.DisplayONOFF()}</color>",
+                $"Hide connection info: <color=#EE0000>{_hidePassword.DisplayONOFF()}</color>",
                 "Back",
             };
 
@@ -279,6 +288,11 @@ namespace AShortHike.Randomizer.Settings
                 {
                     _fastText = !_fastText;
                     RefreshQualityMenu(2);
+                },
+                delegate ()
+                {
+                    _hidePassword = !_hidePassword;
+                    RefreshQualityMenu(3);
                 },
                 CloseQualityMenu,
             };

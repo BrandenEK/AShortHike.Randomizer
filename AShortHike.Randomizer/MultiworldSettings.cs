@@ -27,9 +27,10 @@ namespace AShortHike.Randomizer
         public readonly bool skipCutscenes;
         public readonly bool fastText;
         public readonly bool goldenChests;
+        public readonly bool hidePassword;
 
         [JsonConstructor]
-        public ClientSettings(string server, string player, string password, bool skipCutscenes, bool fastText, bool goldenChests)
+        public ClientSettings(string server, string player, string password, bool skipCutscenes, bool fastText, bool goldenChests, bool hidePassword)
         {
             this.server = server;
             this.player = player;
@@ -37,6 +38,7 @@ namespace AShortHike.Randomizer
             this.skipCutscenes = skipCutscenes;
             this.fastText = fastText;
             this.goldenChests = goldenChests;
+            this.hidePassword = hidePassword;
         }
 
         public ClientSettings()
@@ -47,6 +49,7 @@ namespace AShortHike.Randomizer
             skipCutscenes = true;
             fastText = true;
             goldenChests = true;
+            hidePassword = false;
         }
     }
 
