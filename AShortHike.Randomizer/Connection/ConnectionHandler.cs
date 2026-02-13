@@ -39,6 +39,7 @@ namespace AShortHike.Randomizer.Connection
                 _session.Items.ItemReceived += _itemReceiver.OnReceiveItem;
                 //_session.Socket.PacketReceived += messageReceiver.OnReceiveMessage;
                 _session.Socket.SocketClosed += OnDisconnect;
+                _session.Socket.ErrorReceived += OnErrorReceived;
                 result = _session.TryConnectAndLogin(GAME_NAME, player, ItemsHandlingFlags.AllItems, new Version(0, 6, 0), null, null, password);
             }
             catch (Exception e)
@@ -51,7 +52,7 @@ namespace AShortHike.Randomizer.Connection
             {
                 Connected = false;
 
-                Main.Randomizer.LogHandler.Error("Failed to connect");
+                Main.Randomizer.LogHandler.Error($"Failed to connect: {string.Join(", ", ((LoginFailure)result).Errors)}");
                 return false;
             }
 
@@ -63,6 +64,12 @@ namespace AShortHike.Randomizer.Connection
             ProcessSlotData(login);
 
             return true;
+        }
+
+        private void OnErrorReceived(Exception e, string message)
+        {
+            Main.Randomizer.LogHandler.Error($"Received socket error: {message}");
+            Main.Randomizer.LogHandler.Error(e);
         }
 
         /// <summary>
